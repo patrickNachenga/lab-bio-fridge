@@ -20,57 +20,66 @@ export const getReferrals = async (params = {}) => {
     }
 };
 
+export const searchReferrals = async (searchTerm, searchType) => {
+  try {
+    const response = await api.get(`${API_BASE}/external-referral`, {
+      params: { search: searchTerm, type: searchType },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error searching referrals:", error);
+    throw error;
+  }
+};
+
 export const getReferralDetail = async (uid) => {
-    try {
-        const response = await api.get(`${API_BASE}/referrals/${uid}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching referral detail:", error);
-        throw error;
-    }
+  try {
+    const response = await api.get(`${API_BASE}/referrals/${uid}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching referral detail:", error);
+    throw error;
+  }
 };
 
 export const createReferral = async (referralData) => {
-    try {
-        const response = await api.post(`${API_BASE}/referrals/create`, referralData, config);
-        return response.data;
-    } catch (error) {
-        console.error("Error creating referral:", error);
-        throw error;
-    }
+  try {
+    const response = await api.post(
+      `${API_BASE}/referrals/create`,
+      referralData,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating referral:", error);
+    throw error;
+  }
 };
 
 export const updateReferral = async (uid, referralData) => {
-    try {
-        const response = await api.put(`${API_BASE}/referrals/${uid}/update`, referralData, config);
-        return response.data;
-    } catch (error) {
-        console.error("Error updating referral:", error);
-        throw error;
-    }
+  try {
+    const response = await api.put(
+      `${API_BASE}/referrals/${uid}/update`,
+      referralData,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating referral:", error);
+    throw error;
+  }
 };
 
 export const deleteReferral = async (uid) => {
-    try {
-        const response = await api.delete(`${API_BASE}/referrals/${uid}/delete`);
-        return response.data;
-    } catch (error) {
-        console.error("Error deleting referral:", error);
-        throw error;
-    }
+  try {
+    const response = await api.delete(`${API_BASE}/referrals/${uid}/delete`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting referral:", error);
+    throw error;
+  }
 };
 
-export const searchReferrals = async (searchTerm, params = {}) => {
-    try {
-        const response = await api.get(`${API_BASE}/referrals`, {
-            params: { search: searchTerm, ...params }
-        });
-        return response.data;
-    } catch (error) {
-        console.error("Error searching referrals:", error);
-        throw error;
-    }
-};
 
 // ============ FACILITIES ============
 
