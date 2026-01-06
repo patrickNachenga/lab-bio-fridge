@@ -8,7 +8,7 @@ import { formatDate } from "../../../../helpers/DateFormater";
 import Swal from "sweetalert2";
 import dashboardService from "../../ICT-ASSETS/dashboard/DashboardQueries";
 
-export const DashboardPage = () => {
+export const ApproverDashboard = () => {
   const user = useSelector((state) => state.userReducer?.data);
   const [selectedObj, setSelectedObj] = useState(null);
   const [tableRefresh, setTableRefresh] = useState(0);

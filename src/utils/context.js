@@ -55,6 +55,15 @@ export const ReferralFacilityContext = createContext();
 export const ReferralReasonContext = createContext();
 export const ReferralContext = createContext();
 
+// ORPHANAGE MANAGEMENT
+export const FacilitiesContext = createContext();
+export const ChildrenContext = createContext();
+export const StaffContext = createContext();
+export const HospitalVisitsContext = createContext();
+export const PrescriptionsContext = createContext();
+export const RemindersContext = createContext();
+export const HospitalsContext = createContext();
+
 export {
     PageContext,
     ApprovalActionContext,

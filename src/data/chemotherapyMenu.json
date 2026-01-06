@@ -1,0 +1,31 @@
+[
+    {
+        "header": "Chemotherapy Service",
+        "items": [
+            {
+                "text": "Patients",
+                "icon": "bx bx-user",
+                "available": true,
+                "link": "/chemotherapy/patients",
+                "permission": ["view_chemotherapy_service"],
+                "role": ["admin"]
+            },
+            {
+                "text": "Appointments",
+                "icon": "bx bx-calendar",
+                "available": true,
+                "link": "/chemotherapy/appointments",
+                "permission": ["view_chemotherapy_service"],
+                "role": ["admin"]
+            },
+            {
+                "text": "Treatments",
+                "icon": "bx bx-therapy",
+                "available": true,
+                "link": "/chemotherapy/treatments",
+                "permission": ["view_chemotherapy_service"],
+                "role": ["admin"]
+            }
+        ]
+    }
+]

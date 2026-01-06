@@ -1,143 +1,82 @@
 [
   {
-    "id": "e-approval",
-    "text": "E-Approval",
-    "icon": "bx bxl-microsoft",
+    "id": "orphanage-dashboard",
+    "text": "Dashboard",
+    "description": "View system overview and key metrics",
+    "icon": "bx bxs-dashboard",
     "available": true,
-    "link": "/mnh-connect",
-    "permission": [],
-    "role": [
-      "admin"
-    ]
+    "link": "/orphanage",
+    "permission": ["view_orphanage"],
+    "role": ["admin", "staff"]
   },
   {
-    "id": "ict-assets-service",
-    "text": "ICT Assets",
-    "icon": "bx bx-chip",
+    "id": "orphanage-facilities",
+    "text": "Facilities",
+    "description": "Manage orphanage facilities",
+    "icon": "bx bx-building",
     "available": true,
-    "link": "/ict-assets/dashboard",
-    "permission": [],
-    "role": [
-      "admin"
-    ]
+    "link": "/orphanage/facilities",
+    "permission": ["view_facility"],
+    "role": ["admin", "staff"]
   },
   {
-    "text": "Oxygen Management",
-    "icon": "bx bxs-cylinder",
-    "link": "/oxygen-management",
-    "permission": [],
-    "role": [
-      "admin",
-      "store"
-    ]
-  },
-  {
-    "text": "Hospital Analytics",
-    "icon": "bx bx-bar-chart-alt",
+    "id": "orphanage-children",
+    "text": "Children Registry",
+    "description": "Manage orphan children records",
+    "icon": "bx bx-user-check",
     "available": true,
-    "link": "/analytics/dashboard",
-    "permission": [],
-    "role": [
-      "admin"
-    ]
+    "link": "/orphanage/children",
+    "permission": ["view_child"],
+    "role": ["admin", "staff"]
   },
   {
-    "text": "Training Management",
-    "icon": "bx bx-book-open",
+    "id": "orphanage-staff",
+    "text": "Staff Management",
+    "description": "Manage facility staff",
+    "icon": "bx bx-user-pin",
     "available": true,
-    "link": "/training/dashboard",
-    "permission": [],
-    "role": [
-      "admin"
-    ]
+    "link": "/orphanage/staff",
+    "permission": ["view_staff"],
+    "role": ["admin"]
   },
   {
-    "text": "Equipment Tracking",
-    "icon": "bx bx-file-find",
-    "link": "/hr",
-    "permission": [],
-    "role": [
-      "admin",
-      "hr"
-    ]
+    "id": "orphanage-hospital-visits",
+    "text": "Hospital Visits",
+    "description": "Record and track hospital visits",
+    "icon": "bx bx-plus-medical",
+    "available": true,
+    "link": "/orphanage/hospital-visits",
+    "permission": ["view_hospital_visit"],
+    "role": ["admin", "staff"]
   },
   {
-    "text": "E-Jobcards",
-    "icon": "bx bx-wallet",
-    "link": "/finance",
-    "permission": [],
-    "role": [
-      "admin",
-      "finance"
-    ]
+    "id": "orphanage-prescriptions",
+    "text": "Prescriptions",
+    "description": "Manage medical prescriptions",
+    "icon": "bx bx-capsule",
+    "available": true,
+    "link": "/orphanage/prescriptions",
+    "permission": ["view_prescription"],
+    "role": ["admin", "staff"]
   },
   {
-    "text": "ICT Support",
-    "icon": "bx bx-headphone",
-    "link": "/it-support",
-    "permission": [],
-    "role": [
-      "admin",
-      "it"
-    ]
+    "id": "orphanage-reminders",
+    "text": "Health Reminders",
+    "description": "View and manage health reminders",
+    "icon": "bx bx-bell",
+    "available": true,
+    "link": "/orphanage/reminders",
+    "permission": ["view_reminder"],
+    "role": ["admin", "staff"]
   },
   {
-    "text": "Procurement",
-    "icon": "bx bx-cart",
-    "link": "/procurement",
-    "permission": [],
-    "role": [
-      "admin",
-      "procurement"
-    ]
-  },
-  {
-    "text": "Transport",
-    "icon": "bx bx-bus",
-    "link": "/transport",
-    "permission": [],
-    "role": [
-      "admin",
-      "transport"
-    ]
-  },
-  {
-    "text": "Payroll",
-    "icon": "bx bx-credit-card",
-    "link": "/payroll",
-    "permission": [],
-    "role": [
-      "admin",
-      "finance"
-    ]
-  },
-  {
-    "text": "Facility Management",
-    "icon": "bx bx-building-house",
-    "link": "/facility",
-    "permission": [],
-    "role": [
-      "admin",
-      "facility"
-    ]
-  },
-  {
-    "text": "MNH Maoni",
-    "icon": "bx bx-message-dots",
-    "link": "/mnh-maoni",
-    "permission": [],
-    "role": [
-      "admin",
-      "staff"
-    ]
-  },
-  {
-    "text": "External Referral",
-    "icon": "bx bx-braille",
-    "link": "/external-referral",
-    "permission": [],
-    "role": [
-      "admin"
-    ]
+    "id": "orphanage-hospitals",
+    "text": "Partner Hospitals",
+    "description": "Manage partner hospitals",
+    "icon": "bx bx-hospital",
+    "available": true,
+    "link": "/orphanage/hospitals",
+    "permission": ["view_hospital"],
+    "role": ["admin"]
   }
 ]

@@ -827,13 +827,13 @@ export const Services = () => {
               <div className="title-border"></div>
               <h2 className="main-title">
                 <Sparkles className="title-sparkle" size={28} />
-                MNH-CONNECT SERVICES
+                ORPHANAGE MANAGEMENT SYSTEM
                 <Sparkles className="title-sparkle" size={28} />
               </h2>
             </div>
 
             <p className="subtitle">
-              A streamlined portal connecting you to all MNH systems.
+              A comprehensive system for managing orphanage facilities, children, staff, and healthcare records.
             </p>
           </div>
 
@@ -846,7 +846,7 @@ export const Services = () => {
                   ref={searchRef}
                   type="text"
                   className="search-input"
-                  placeholder="Search Muhimbili services ..."
+                  placeholder="Search orphanage services ..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />

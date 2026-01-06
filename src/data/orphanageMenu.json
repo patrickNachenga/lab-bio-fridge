@@ -1,0 +1,102 @@
+[
+  {
+    "header": "",
+    "items": [
+      {
+        "text": "Services",
+        "icon": "bx bxl-microsoft",
+        "available": true,
+        "link": "/",
+        "permission": [],
+        "role": ["staff", "admin"]
+      },
+      {
+        "text": "Dashboard",
+        "icon": "bx bx-home",
+        "available": true,
+        "link": "/orphanage",
+        "permission": [],
+        "role": ["admin", "staff"]
+      },
+      {
+        "text": "Profile",
+        "icon": "bx bx-user",
+        "available": true,
+        "link": "/account/settings",
+        "permission": [],
+        "role": ["admin", "staff"]
+      }
+    ]
+  },
+  {
+    "header": "MANAGEMENT",
+    "items": [
+      {
+        "text": "Facilities",
+        "icon": "bx bx-building",
+        "available": true,
+        "link": "/orphanage/facilities",
+        "permission": [],
+        "role": ["staff", "admin"]
+      },
+      {
+        "text": "Children Registry",
+        "icon": "bx bx-group",
+        "available": true,
+        "link": "/orphanage/children",
+        "permission": [],
+        "role": ["staff", "admin"]
+      },
+      {
+        "text": "Staff Management",
+        "icon": "bx bx-user-check",
+        "available": true,
+        "link": "/orphanage/staff",
+        "permission": [],
+        "role": ["admin"]
+      }
+    ]
+  },
+  {
+    "header": "HEALTH & WELLNESS",
+    "items": [
+      {
+        "text": "Hospital Visits",
+        "icon": "bx bx-clinic",
+        "available": true,
+        "link": "/orphanage/hospital-visits",
+        "permission": [],
+        "role": ["staff", "admin"]
+      },
+      {
+        "text": "Prescriptions",
+        "icon": "bx bx-pill",
+        "available": true,
+        "link": "/orphanage/prescriptions",
+        "permission": [],
+        "role": ["staff", "admin"]
+      },
+      {
+        "text": "Reminders",
+        "icon": "bx bx-bell",
+        "available": true,
+        "link": "/orphanage/reminders",
+        "permission": [],
+        "role": ["staff", "admin"]
+      }
+    ]
+  },
+  {
+    "header": "SETTINGS",
+    "items": [
+      {
+        "text": "Hospitals",
+        "icon": "bx bx-hospital",
+        "available": true,
+        "link": "/orphanage/hospitals",
+        "permission": [],
+        "role": ["admin"]
+      }
+    ]
+  }
+]

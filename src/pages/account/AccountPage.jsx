@@ -1189,7 +1189,12 @@ export const AccountPage = () => {
                   <div className="avatar-wrapper">
                     <img
                       src={previewImage}
-                      alt="Profile"
+                      alt=""
+                      style={{
+                        minWidth: "40px",
+                        minHeight: "40px",
+                        borderRadius: "100%",
+                      }}
                       className="profile-avatar"
                     />
                     {isUploadingPhoto && (

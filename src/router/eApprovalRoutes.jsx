@@ -3,7 +3,7 @@ import { ApprovalActionPage } from "../pages/services/E-APPROVAL/approval_action
 import { ApprovalModulePage } from "../pages/services/E-APPROVAL/approval_module/View";
 import { ApprovalModuleOpenPage } from "../pages/services/E-APPROVAL/approval_module/Open";
 import { ApprovalRequestPage } from "../pages/services/E-APPROVAL/approval_request/View";
-import { ApprovalRequestOpenPage } from "../pages/services/E-APPROVAL/approval_request/Open";
+import ApprovalRequestOpenPage from "../pages/services/E-APPROVAL/approval_request/Open";
 import ProtectedRoute from "../components/wrapper/ProtectedRoute";
 import { PositionalLevelPage } from "../pages/services/E-APPROVAL/positional_level/View";
 import { RequestHandlingPage } from "../pages/services/E-APPROVAL/request_handling/View.jsx";

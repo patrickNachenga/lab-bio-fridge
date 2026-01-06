@@ -873,7 +873,7 @@ const Navbar = ({ isService = false, activeService = "" }) => {
                 >
                   <div className="mnh-user-avatar">
                     {user && user.photo && user.photo.trim() !== "" ? (
-                      <img src={user.photo} alt={user.first_name || "User"} />
+                      <img src={user.photo} alt={""} />
                     ) : (
                       <User size={20} />
                     )}
@@ -943,7 +943,7 @@ const Navbar = ({ isService = false, activeService = "" }) => {
                           {user && user.photo && user.photo.trim() !== "" ? (
                             <img
                               src={user.photo}
-                              alt={user.first_name || "User"}
+                              alt={""}
                               style={{
                                 width: "100%",
                                 height: "100%",

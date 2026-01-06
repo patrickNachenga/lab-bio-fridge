@@ -70,7 +70,7 @@ if (
   document.head.appendChild(style);
 }
 
-export const ApprovalRequestOpenPage = () => {
+const ApprovalRequestOpenPage = () => {
   const { uid } = useParams();
   const user = useSelector((state) => state.userReducer?.data);
 
@@ -1017,3 +1017,5 @@ export const ApprovalRequestOpenPage = () => {
     </ApprovalRequestsContext.Provider>
   );
 };
+
+export default ApprovalRequestOpenPage;

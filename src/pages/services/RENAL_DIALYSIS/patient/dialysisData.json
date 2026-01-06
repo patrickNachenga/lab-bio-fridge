@@ -1,0 +1,222 @@
+{
+  "patient": {
+    "id": 12,
+    "hospital_reg_no": "MNH/REN/002145",
+    "first_name": "Asha",
+    "last_name": "Mwakalobo",
+    "sex": "F",
+    "date_of_birth": "1982-06-14",
+    "phone_number": "0754123456",
+    "next_of_kin": "John Mwakalobo",
+    "next_of_kin_relationship": "Husband",
+    "next_of_kin_phone": "0754888999"
+  },
+  "visits": [
+    {
+      "id": 101,
+      "visit_date": "2026-01-05",
+      "ward": "Renal Ward",
+      "diagnosis": "CKD Stage 5",
+      "attending_doctor": "Dr. Mtey",
+      "discharged": true,
+      "discharge_time": "2026-01-05T16:30:00"
+    },
+    {
+      "id": 98,
+      "visit_date": "2026-01-02",
+      "ward": "Renal Ward",
+      "diagnosis": "CKD Stage 5",
+      "attending_doctor": "Dr. Mtey",
+      "discharged": true,
+      "discharge_time": "2026-01-02T16:10:00"
+    },
+    {
+      "id": 95,
+      "visit_date": "2025-12-30",
+      "ward": "Renal Ward",
+      "diagnosis": "CKD Stage 5",
+      "attending_doctor": "Dr. Nyali",
+      "discharged": true,
+      "discharge_time": "2025-12-30T15:45:00"
+    },
+    {
+      "id": 92,
+      "visit_date": "2025-12-27",
+      "ward": "Renal Ward",
+      "diagnosis": "CKD Stage 5",
+      "attending_doctor": "Dr. Mtey",
+      "discharged": false,
+      "discharge_time": null
+    }
+  ],
+  "visit_details": {
+    "id": 101,
+    "visit_date": "2026-01-05",
+    "ward": "Renal Ward",
+    "diagnosis": "CKD Stage 5",
+    "attending_doctor": "Dr. Mtey",
+    "discharged": true,
+    "discharge_time": "2026-01-05T16:30:00",
+    "vascular_access": {
+      "access_type": "AVF"
+    },
+    "pre_dialysis": {
+      "weight": 64.5,
+      "height_cm": 160,
+      "standing_bp": "150/90",
+      "resting_bp": "145/85",
+      "pulse": 88,
+      "respiration": 20,
+      "temperature": 36.8,
+      "spo2": 97,
+      "time_on": "08:15"
+    },
+    "dialysis_order": {
+      "dialysate_na": 138,
+      "dialysate_k": 2.0,
+      "bicarbonate": 35,
+      "hours_of_dialysis": 4.0,
+      "target_weight_loss": 2.5,
+      "heparin_units": 5000,
+      "lmwh_used": false,
+      "epo_given": true,
+      "iron_given": false
+    },
+    "dialysis_session": {
+      "machine_type": "Fresenius 4008S",
+      "dialyzer_type": "FX80",
+      "started_by": "Nurse Anna",
+      "closed_by": "Nurse Anna",
+      "start_time": "2026-01-05T08:30:00",
+      "end_time": "2026-01-05T12:45:00"
+    },
+    "dialysis_monitoring": [
+      {
+        "time": "09:00",
+        "bp": "140/85",
+        "pulse": 85,
+        "resp": 18,
+        "ap": "-120",
+        "vp": "180",
+        "blood_flow": 300,
+        "tmp": 120,
+        "uf_rate": 650,
+        "total_removed_ml": 800,
+        "iv_po_med": "Saline",
+        "rbg": 6,
+        "spo2": 98,
+        "remarks": "Stable"
+      },
+      {
+        "time": "10:00",
+        "bp": "135/80",
+        "pulse": 82,
+        "resp": 18,
+        "ap": "-118",
+        "vp": "175",
+        "blood_flow": 300,
+        "tmp": 118,
+        "uf_rate": 650,
+        "total_removed_ml": 1600,
+        "iv_po_med": "None",
+        "rbg": 5,
+        "spo2": 97,
+        "remarks": "No complaints"
+      },
+      {
+        "time": "11:00",
+        "bp": "138/82",
+        "pulse": 83,
+        "resp": 18,
+        "ap": "-119",
+        "vp": "178",
+        "blood_flow": 300,
+        "tmp": 119,
+        "uf_rate": 650,
+        "total_removed_ml": 2400,
+        "iv_po_med": "None",
+        "rbg": 5,
+        "spo2": 98,
+        "remarks": "Stable"
+      },
+      {
+        "time": "12:00",
+        "bp": "136/80",
+        "pulse": 81,
+        "resp": 18,
+        "ap": "-118",
+        "vp": "176",
+        "blood_flow": 300,
+        "tmp": 118,
+        "uf_rate": 650,
+        "total_removed_ml": 3000,
+        "iv_po_med": "None",
+        "rbg": 5,
+        "spo2": 98,
+        "remarks": "Good tolerance"
+      }
+    ],
+    "post_dialysis": {
+      "weight": 62.0,
+      "weight_loss": 2.5,
+      "standing_bp": "135/85",
+      "resting_bp": "130/80",
+      "pulse": 80,
+      "respiration": 18,
+      "temperature": 36.7,
+      "spo2": 98,
+      "time_off": "12:45",
+      "elective_time": 4.25,
+      "ideal_body_weight": 61.5
+    },
+    "investigations": [
+      {
+        "name": "Urea",
+        "pre_dialysis_value": "28 mmol/L",
+        "post_dialysis_value": "12 mmol/L"
+      },
+      {
+        "name": "Creatinine",
+        "pre_dialysis_value": "980 µmol/L",
+        "post_dialysis_value": "450 µmol/L"
+      },
+      {
+        "name": "Potassium",
+        "pre_dialysis_value": "6.5 mmol/L",
+        "post_dialysis_value": "4.8 mmol/L"
+      },
+      {
+        "name": "Phosphate",
+        "pre_dialysis_value": "2.2 mmol/L",
+        "post_dialysis_value": "1.8 mmol/L"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Erythropoietin",
+        "dose": "4000 IU",
+        "route": "IV",
+        "frequency": "Stat"
+      },
+      {
+        "name": "Heparin",
+        "dose": "5000 IU",
+        "route": "IV",
+        "frequency": "Once"
+      },
+      {
+        "name": "Calcium Acetate",
+        "dose": "667 mg",
+        "route": "PO",
+        "frequency": "Three times daily"
+      }
+    ],
+    "dialysis_problems": {
+      "hypotension": false,
+      "hypertension": false,
+      "chills": false,
+      "fever": false,
+      "other_problems": ""
+    }
+  }
+}
