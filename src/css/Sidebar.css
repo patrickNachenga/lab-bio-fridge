@@ -376,7 +376,6 @@
 
   overflow-y: auto;
 
-  overflow-x: visible;
 
   padding:
     13px 8px !important;
@@ -1892,7 +1891,6 @@
 
   overflow-y: auto !important;
 
-  overflow-x: visible !important;
 }
 
 
@@ -2576,4 +2574,28 @@
     width:
       calc(100vw - 94px);
   }
+}
+.bio-menu-inner {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.bio-menu-link.menu-toggle,
+.bio-menu-item.open>.bio-menu-link.menu-toggle,
+.bio-menu-item.active>.bio-menu-link.menu-toggle {
+  background-color: transparent !important;
+}
+
+.bio-menu-link.menu-toggle:hover,
+.bio-menu-item.open>.bio-menu-link.menu-toggle:hover,
+.bio-menu-item.active>.bio-menu-link.menu-toggle:hover {
+  background-color: rgba(16, 75, 139, 0.22) !important;
+}
+
+.bio-floating-title {
+  width: 100%;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }

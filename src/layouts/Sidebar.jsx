@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import menuData from "../data/orphanageMenu.json";
 import { useSelector } from "react-redux";
 import "../css/Sidebar.css";
@@ -257,6 +257,7 @@ const MenuItem = ({
 }) => {
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const [hovered, setHovered] = useState(false);
     const [submenuOpen, setSubmenuOpen] = useState(false);
@@ -364,7 +365,7 @@ const MenuItem = ({
         >
 
             {hasSubmenu ? (
-                <button
+                <span
                     type="button"
                     aria-expanded={submenuOpen}
                     aria-label={`${submenuOpen ? "Collapse" : "Expand"} ${item.text}`}
@@ -398,7 +399,7 @@ const MenuItem = ({
                         </div>
                     )}
 
-                </button>
+                </span>
             ) : (
             <NavLink
                 aria-label={`Navigate to ${item.text}${!item.available
@@ -505,7 +506,17 @@ const MenuItem = ({
                     onMouseLeave={hideHoverPanel}
                     >
 
-                        <div className="bio-floating-title">
+                    <button
+                        type="button"
+                        className="bio-floating-title"
+                        onClick={() => {
+                            if (hasSubmenu) {
+                                setSubmenuOpen((previous) => !previous);
+                            } else if (item.link) {
+                                navigate(item.link);
+                            }
+                        }}
+                    >
 
                             <span className="bio-floating-icon">
 
@@ -522,7 +533,7 @@ const MenuItem = ({
                                 {item.text}
                             </span>
 
-                        </div>
+                    </button>
 
 
                         {hasSubmenu &&

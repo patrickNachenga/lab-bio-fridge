@@ -3,86 +3,166 @@
     "header": "",
     "items": [
       {
-        "text": "Services",
-        "icon": "bx bxl-microsoft",
-        "available": true,
-        "link": "/",
-        "permission": [],
-        "role": ["staff", "admin"]
-      },
-      {
         "text": "Dashboard",
         "icon": "bx bx-home",
         "available": true,
-        "link": "/orphanage",
+        "link": "/",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Analytics",
+        "icon": "bx bx-line-chart",
+        "available": true,
+        "link": "/analytics",
         "permission": [],
         "role": ["admin", "staff"]
       },
       {
-        "text": "Profile",
-        "icon": "bx bx-user",
+        "text": "Reports",
+        "icon": "bx bx-bar-chart-alt-2",
         "available": true,
-        "link": "/orphanage/user-profile",
+        "link": "/reports",
         "permission": [],
         "role": ["admin", "staff"]
       }
     ]
   },
   {
-    "header": "MANAGEMENT",
+    "header": "BIOLOGICAL STORAGE",
     "items": [
       {
-        "text": "Facilities",
-        "icon": "bx bx-building",
+        "text": "Fridges",
+        "icon": "bx bx-fridge",
         "available": true,
-        "link": "/orphanage/facilities",
+        "link": "/fridges",
         "permission": [],
-        "role": ["staff", "admin"]
+        "role": [
+          "admin",
+          "staff"
+        ]
       },
       {
-        "text": "Children Registry",
-        "icon": "bx bx-group",
+        "text": "Samples",
+        "icon": "bx bx-test-tube",
         "available": true,
-        "link": "/orphanage/children",
+        "link": "/samples",
         "permission": [],
-        "role": ["staff", "admin"]
+        "role": [
+          "admin",
+          "staff"
+        ]
       },
       {
-        "text": "Staff Management",
-        "icon": "bx bx-user-check",
+        "text": "Projects",
+        "icon": "bx bx-folder-open",
         "available": true,
-        "link": "/orphanage/staff",
+        "link": "/projects",
         "permission": [],
-        "role": ["admin"]
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Sample Mapping",
+        "icon": "bx bx-map",
+        "available": true,
+        "link": "/mapping",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
       }
     ]
   },
   {
-    "header": "HEALTH & WELLNESS",
+    "header": "INVENTORY & MONITORING",
     "items": [
       {
-        "text": "Hospital Visits",
-        "icon": "bx bx-clinic",
+        "text": "Sample Inventory",
+        "icon": "bx bx-package",
         "available": true,
-        "link": "/orphanage/hospital-visits",
+        "link": "/inventory",
         "permission": [],
-        "role": ["staff", "admin"]
+        "role": [
+          "admin",
+          "staff"
+        ]
       },
       {
-        "text": "Prescriptions",
-        "icon": "bx bx-pill",
+        "text": "Storage Locations",
+        "icon": "bx bx-grid-alt",
         "available": true,
-        "link": "/orphanage/prescriptions",
+        "link": "/storage-locations",
         "permission": [],
-        "role": ["staff", "admin"]
+        "role": [
+          "admin",
+          "staff"
+        ]
       },
       {
-        "text": "Reminders",
+        "text": "Temperature Monitoring",
+        "icon": "bx bx-thermometer",
+        "available": true,
+        "link": "/temperature-monitoring",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Alerts & Notifications",
         "icon": "bx bx-bell",
         "available": true,
-        "link": "/orphanage/reminders",
+        "link": "/alerts",
         "permission": [],
-        "role": ["staff", "admin"]
+        "role": [
+          "admin",
+          "staff"
+        ]
+      }
+    ]
+  },
+  {
+    "header": "ACTIVITY",
+    "items": [
+      {
+        "text": "Sample Movements",
+        "icon": "bx bx-transfer",
+        "available": true,
+        "link": "/sample-movements",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Access & Transactions",
+        "icon": "bx bx-history",
+        "available": true,
+        "link": "/transactions",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Audit Trail",
+        "icon": "bx bx-file-find",
+        "available": true,
+        "link": "/audit-trail",
+        "permission": [],
+        "role": [
+          "admin"
+        ]
       }
     ]
   },
@@ -90,25 +170,124 @@
     "header": "SETTINGS",
     "items": [
       {
-        "text": "Hospitals",
-        "icon": "bx bx-building",
+        "text": "Sample Setups",
+        "icon": "bx bx-cog",
         "available": true,
-        "link": "/orphanage/hospitals",
+        "link": "",
+        "role": [
+          "admin"
+        ],
         "permission": [],
-        "role": ["admin"]
+        "submenu": [
+          {
+            "text": "Types",
+            "icon": "bx bx-category",
+            "available": true,
+            "link": "/settings/sample-types",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Sources",
+            "icon": "bx bx-data",
+            "available": true,
+            "link": "/settings/sample-sources",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Natures",
+            "icon": "bx bx-layer",
+            "available": true,
+            "link": "/settings/sample-natures",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Conditions",
+            "icon": "bx bx-check-circle",
+            "available": true,
+            "link": "/settings/sample-conditions",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Units",
+            "icon": "bx bx-ruler",
+            "available": true,
+            "link": "/settings/units",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          }
+        ]
       },
       {
-        "text": "User Managment",
+        "text": "Fridge Settings",
+        "icon": "bx bx-fridge",
+        "available": true,
+        "link": "",
+        "permission": [],
+        "role": [
+          "admin"
+        ],
+        "submenu": [
+          {
+            "text": "Fridge Types",
+            "icon": "bx bx-category",
+            "available": true,
+            "link": "/settings/fridge-types",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Storage Levels",
+            "icon": "bx bx-layer",
+            "available": true,
+            "link": "/settings/storage-levels",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Temperature Ranges",
+            "icon": "bx bx-thermometer",
+            "available": true,
+            "link": "/settings/temperature-ranges",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      {
+        "text": "User Management",
         "icon": "bx bx-group",
         "available": true,
         "link": "",
-        "header": "ADMINISTRATION",
+        "permission": [],
+        "role": [
+          "admin"
+        ],
         "submenu": [
           {
             "text": "Users",
-            "icon": "bx bx-group",
+            "icon": "bx bx-user",
             "available": true,
-            "link": "/orphanage/users",
+            "link": "/users",
             "permission": [
               "view_user",
               "add_user",
@@ -119,10 +298,10 @@
             ]
           },
           {
-            "text": "Roles\t&Permissions",
-            "icon": "bx bx-detail",
+            "text": "Roles & Permissions",
+            "icon": "bx bx-shield-quarter",
             "available": true,
-            "link": "/orphanage/roles-managements",
+            "link": "/roles-management",
             "permission": [
               "view_group"
             ],
@@ -132,7 +311,22 @@
           }
         ]
       }
-      
+    ]
+  },
+  {
+    "header": "",
+    "items": [
+      {
+        "text": "Profile",
+        "icon": "bx bx-user-circle",
+        "available": true,
+        "link": "/profile",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      }
     ]
   }
 ]
