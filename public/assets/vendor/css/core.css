@@ -18559,3 +18559,15 @@ html:not(.layout-footer-fixed) .content-wrapper {
   border-color: rgba(105, 122, 141, 0.0783835294);
 }
 
+
+/* ============================================================
+   ONE COLLAPSED CLASS ONLY
+   ============================================================ */
+
+.bio-sidebar-collapsed {
+  width: var(--bio-sidebar-collapsed) !important;
+}
+
+.bio-sidebar-is-collapsed .layout-menu.bio-sidebar {
+  width: var(--bio-sidebar-collapsed) !important;
+}

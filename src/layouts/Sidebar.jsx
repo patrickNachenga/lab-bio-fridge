@@ -44,6 +44,14 @@ const Sidebar = () => {
         }
     }, []);
 
+    useEffect(() => {
+        window.dispatchEvent(
+            new CustomEvent("bio-sidebar-state", {
+                detail: { collapsed },
+            })
+        );
+    }, [collapsed]);
+
     const toggleSidebar = () => {
         setCollapsed((previous) => {
             const next = !previous;
@@ -240,6 +248,7 @@ const Sidebar = () => {
    MENU ITEM
 ================================================================ */
 
+
 const MenuItem = ({
     collapsed,
     userPermissions,
@@ -250,8 +259,21 @@ const MenuItem = ({
     const location = useLocation();
 
     const [hovered, setHovered] = useState(false);
+    const [submenuOpen, setSubmenuOpen] = useState(false);
 
     const itemRef = useRef(null);
+    const hoverTimerRef = useRef(null);
+
+    const showHoverPanel = () => {
+        clearTimeout(hoverTimerRef.current);
+        setHovered(true);
+    };
+
+    const hideHoverPanel = () => {
+        hoverTimerRef.current = setTimeout(() => {
+            setHovered(false);
+        }, 120);
+    };
 
     const isActive =
         location.pathname === item.link ||
@@ -269,6 +291,12 @@ const MenuItem = ({
             (subitem) =>
                 location.pathname === subitem.link
         );
+
+    useEffect(() => {
+        if (isSubmenuActive) {
+            setSubmenuOpen(true);
+        }
+    }, [isSubmenuActive]);
 
 
     const hasPermission = (
@@ -318,7 +346,7 @@ const MenuItem = ({
                     ? "active"
                     : ""}
                 ${hasSubmenu &&
-                    isSubmenuActive
+                submenuOpen
                     ? "open"
                     : ""
                 }
@@ -331,10 +359,47 @@ const MenuItem = ({
                     : ""
                 }
             `}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+            onMouseEnter={showHoverPanel}
+            onMouseLeave={hideHoverPanel}
         >
 
+            {hasSubmenu ? (
+                <button
+                    type="button"
+                    aria-expanded={submenuOpen}
+                    aria-label={`${submenuOpen ? "Collapse" : "Expand"} ${item.text}`}
+                    className={`
+                        menu-link
+                        bio-menu-link
+                        menu-toggle
+                    `}
+                    onClick={() => setSubmenuOpen((previous) => !previous)}
+                >
+
+                    <span className="bio-menu-icon-wrapper">
+
+                        <i
+                            className={`
+                                menu-icon
+                                tf-icons
+                                ${item.icon}
+                            `}
+                        ></i>
+
+                    </span>
+
+                    <div className="bio-menu-label">
+                        {item.text}
+                    </div>
+
+                    {item.available === false && (
+                        <div className="badge bio-pro-badge">
+                            Pro
+                        </div>
+                    )}
+
+                </button>
+            ) : (
             <NavLink
                 aria-label={`Navigate to ${item.text}${!item.available
                     ? " Pro"
@@ -387,13 +452,14 @@ const MenuItem = ({
                 )}
 
             </NavLink>
+            )}
 
 
             {/* =================================================
                 NORMAL EXPANDED SUBMENU
             ================================================= */}
 
-            {!collapsed && hasSubmenu && (
+            {!collapsed && hasSubmenu && submenuOpen && (
                 <ul className="menu-sub bio-menu-sub">
 
                     {visibleSubmenu.map(
@@ -432,6 +498,11 @@ const MenuItem = ({
                         className="
                             bio-floating-menu
                         "
+                    style={{
+                        top: itemRef.current?.getBoundingClientRect().top ?? 0,
+                    }}
+                    onMouseEnter={showHoverPanel}
+                    onMouseLeave={hideHoverPanel}
                     >
 
                         <div className="bio-floating-title">
