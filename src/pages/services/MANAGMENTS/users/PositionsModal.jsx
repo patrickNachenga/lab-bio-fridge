@@ -1,12 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import showToast from "../../../../helpers/ToastHelper";
 import { UsersContext } from "../../../../utils/context";
-import Select from "react-select";
-import { getDepartments } from "../../MANAGMENTS/department/Queries";
-import { getDirectories } from "../../MANAGMENTS/directory/Queries";
-import { getPositionalLevels } from "../../E-APPROVAL/positional_level/Queries";
 import { createUpdatePositions } from "./Queries";
 import FormikSelect from "../../../../components/ui-templates/form-components/FormikSelect";
 

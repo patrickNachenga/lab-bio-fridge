@@ -1,0 +1,577 @@
+/* Premium AuthWrapper Styling - Multiple Layout Variations */
+
+:root {
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --bg-dark: #0f1419;
+  --bg-card: rgba(232, 236, 245, 0.8);
+  --text-primary: #f0f2f5;
+  --text-secondary: #a8adb8;
+  --border-color: rgba(102, 126, 234, 0.15);
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Authentication Wrapper */
+.authentication-wrapper {
+  display: flex;
+  flex-basis: 100%;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.authentication-wrapper.authentication-center {
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.authentication-wrapper.authentication-left {
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 2%;
+  overflow: hidden;
+}
+
+.authentication-wrapper.authentication-right {
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 2%;
+  overflow: hidden;
+}
+
+.authentication-inner {
+  width: 100%;
+  position: relative;
+}
+
+.authentication-wrapper.authentication-center .authentication-inner {
+  max-width: 400px;
+}
+
+.authentication-wrapper.authentication-left .authentication-inner {
+  max-width: 400px;
+  animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.authentication-wrapper.authentication-right .authentication-inner {
+  max-width: 400px;
+  animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Auth Brand Container */
+.auth-brand {
+  margin-bottom: 2rem !important;
+  animation: brandSlideDown 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-brand-link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1.2rem !important;
+  text-decoration: none !important;
+  transition: var(--transition) !important;
+}
+
+.auth-brand-link:hover {
+  transform: translateY(-4px);
+}
+
+/* Logo Container */
+.auth-logo {
+  width: 90px !important;
+  height: 90px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 16px !important;
+  background: var(--gradient-primary) !important;
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.35) !important;
+  flex-shrink: 0 !important;
+  animation: logoFloat 3.5s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-logo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+  animation: shimmer 3s infinite;
+}
+
+.auth-logo img {
+  border-radius: 12px !important;
+  width: 76px !important;
+  height: 76px !important;
+  object-fit: cover !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Brand Content */
+.auth-brand-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+/* Main Brand Name */
+.auth-brand-main {
+  font-size: 1.8rem !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  background: var(--gradient-primary) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  letter-spacing: -0.5px;
+}
+
+/* Brand Subtitle */
+.auth-brand-sub {
+  font-size: 0.9rem !important;
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--text-secondary), rgba(102, 126, 234, 0.6));
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Card Styling */
+.card {
+  background: var(--bg-dark) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 20px !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  animation: cardSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.card-body {
+  padding: 2.5rem !important;
+}
+
+/* Layout Switcher - For Testing */
+.layout-switcher {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  gap: 0.8rem;
+  z-index: 9999;
+  background: rgba(20, 30, 50, 0.9);
+  padding: 0.8rem;
+  border-radius: 50px;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  backdrop-filter: blur(10px);
+  animation: slideUpIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.switcher-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  font-size: 1.2rem;
+}
+
+.switcher-btn:hover {
+  border-color: #667eea;
+  color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.switcher-btn.active {
+  background: var(--gradient-primary);
+  border-color: #667eea;
+  color: white;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+/* Animations */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes brandSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes logoFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .layout-switcher {
+    bottom: 15px;
+    right: 15px;
+    gap: 0.6rem;
+  }
+
+  .switcher-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .auth-brand {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .auth-brand-link {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .auth-logo {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .auth-logo img {
+    width: 68px !important;
+    height: 68px !important;
+  }
+
+  .auth-brand-main {
+    font-size: 1.5rem !important;
+  }
+
+  .auth-brand-sub {
+    font-size: 0.8rem !important;
+  }
+
+  .card-body {
+    padding: 2rem !important;
+  }
+
+  .authentication-wrapper.authentication-left {
+    justify-content: center;
+    padding-left: 0;
+  }
+
+  .authentication-wrapper.authentication-right {
+    justify-content: center;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-switcher {
+    bottom: 10px;
+    right: 10px;
+    gap: 0.5rem;
+    padding: 0.6rem;
+  }
+
+  .switcher-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .auth-brand-main {
+    font-size: 1.3rem !important;
+  }
+
+  .card-body {
+    padding: 1.5rem !important;
+  }
+}
+
+/* Glow Effect on Hover */
+.auth-brand-link:hover .auth-logo {
+  box-shadow: 0 15px 50px rgba(102, 126, 234, 0.5) !important;
+}
+
+/* Text Selection */
+.auth-brand-main,
+.auth-brand-sub {
+  user-select: none;
+}
+
+/* Quote Container Styling */
+.quote-container {
+  margin-top: 20vh;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  height: 60vh;
+  width: 70%;
+  animation: quoteSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 2rem;
+}
+
+.quote-right {
+  right: 0;
+  top: 0;
+}
+
+.quote-left {
+  left: 0;
+  top: 0;
+}
+
+.quote-content {
+  width: 60%;
+  padding: 3.5rem 2.5rem;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: quotePopIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4),
+    0 10px 40px rgba(102, 126, 234, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+/* Quote Icon */
+.quote-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+.quote-icon i {
+  opacity: 0.8;
+}
+
+/* Quote Title */
+.quote-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.5px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+}
+
+/* Quote Text */
+.quote-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: rgba(240, 242, 245, 0.95);
+  margin: 0 0 2rem 0;
+  line-height: 1.8;
+  letter-spacing: 0.3px;
+  animation: fadeInOut 5s ease-in-out infinite;
+}
+
+.quote-author {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--text-secondary), rgba(102, 126, 234, 0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+/* Animations for Quotes */
+@keyframes quoteSlideIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes quotePopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes textGlow {
+
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(245, 87, 108, 0.3);
+  }
+
+  50% {
+    text-shadow: 0 0 25px rgba(245, 87, 108, 0.6);
+  }
+}
+
+@keyframes iconFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes fadeInOut {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  55% {
+    opacity: 1;
+  }
+}
+
+/* Quote Indicators */
+.quote-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(102, 126, 234, 0.3);
+  border: 1.5px solid rgba(102, 126, 234, 0.5);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.indicator.active {
+  width: 28px;
+  border-radius: 4px;
+  background: var(--gradient-primary);
+  border-color: #667eea;
+  box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+}
+
+.indicator:hover {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.5);
+}
+
+/* Responsive Quote Container */
+@media (max-width: 991px) {
+  .quote-container {
+    display: none !important;
+  }
+}

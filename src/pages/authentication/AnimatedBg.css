@@ -1,0 +1,250 @@
+/* Advanced Animated Gradient Background - No Images */
+
+:root {
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --bg-dark: #0f1419;
+  --text-primary: #f0f2f5;
+  --text-secondary: #a8adb8;
+  --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main Container */
+.auth-wrapper-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Animated Gradient Background */
+.gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  /* Background will be set inline with image + overlay gradient */
+}
+
+/* Floating Gradient Orbs */
+.floating-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.15;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+.orb-1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -100px;
+  background: radial-gradient(circle, #667eea 0%, transparent 70%);
+  animation: float1 20s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 350px;
+  height: 350px;
+  bottom: -50px;
+  left: -50px;
+  background: radial-gradient(circle, #764ba2 0%, transparent 70%);
+  animation: float2 25s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  left: 10%;
+  background: radial-gradient(circle, #f5576c 0%, transparent 70%);
+  animation: float3 22s ease-in-out infinite;
+  opacity: 0.1;
+}
+
+/* Animated Gradient Lines */
+.gradient-line {
+  position: fixed;
+  z-index: 1;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+}
+
+.line-1 {
+  width: 2px;
+  height: 400px;
+  top: 10%;
+  right: 10%;
+  background: linear-gradient(180deg, 
+    rgba(102, 126, 234, 0) 0%, 
+    rgba(102, 126, 234, 0.8) 50%, 
+    rgba(102, 126, 234, 0) 100%);
+  animation: slideDown 6s ease-in-out infinite;
+  opacity: 0.15;
+}
+
+.line-2 {
+  width: 1px;
+  height: 350px;
+  top: 30%;
+  left: 5%;
+  background: linear-gradient(180deg, 
+    rgba(245, 87, 108, 0) 0%, 
+    rgba(245, 87, 108, 0.6) 50%, 
+    rgba(245, 87, 108, 0) 100%);
+  animation: slideDown 7s ease-in-out infinite 1s;
+  opacity: 0.15;
+}
+
+.line-3 {
+  width: 1.5px;
+  height: 380px;
+  bottom: 10%;
+  right: 30%;
+  background: linear-gradient(180deg, 
+    rgba(118, 75, 162, 0) 0%, 
+    rgba(118, 75, 162, 0.7) 50%, 
+    rgba(118, 75, 162, 0) 100%);
+  animation: slideDown 8s ease-in-out infinite 0.5s;
+  opacity: 0.15;
+}
+
+/* Content Wrapper */
+.auth-content-wrapper {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Animations */
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Advanced Glow Effect on Orbs */
+.orb-1::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  filter: blur(40px);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.orb-2::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, transparent 70%);
+  filter: blur(40px);
+  animation: pulse 5s ease-in-out infinite;
+}
+
+.orb-3::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 87, 108, 0.1) 0%, transparent 70%);
+  filter: blur(40px);
+  animation: pulse 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .orb-1 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .orb-2 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orb-3 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .line-1,
+  .line-2,
+  .line-3 {
+    opacity: 0.08;
+  }
+
+  .floating-orb {
+    opacity: 0.1;
+  }
+}
+
+@media (max-width: 480px) {
+  .gradient-bg {
+    animation: gradientShift 12s ease infinite;
+  }
+
+  .floating-orb {
+    opacity: 0.08;
+    filter: blur(40px);
+  }
+
+  .gradient-line {
+    opacity: 0.05;
+  }
+}
+
+/* Ensure proper stacking context */
+.container-xxl {
+  position: relative;
+  z-index: 10;
+}
+
+.authentication-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
+.card {
+  position: relative;
+  z-index: 11;
+}

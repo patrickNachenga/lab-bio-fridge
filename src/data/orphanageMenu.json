@@ -22,7 +22,7 @@
         "text": "Profile",
         "icon": "bx bx-user",
         "available": true,
-        "link": "/account/settings",
+        "link": "/orphanage/user-profile",
         "permission": [],
         "role": ["admin", "staff"]
       }
@@ -91,12 +91,48 @@
     "items": [
       {
         "text": "Hospitals",
-        "icon": "bx bx-hospital",
+        "icon": "bx bx-building",
         "available": true,
         "link": "/orphanage/hospitals",
         "permission": [],
         "role": ["admin"]
+      },
+      {
+        "text": "User Managment",
+        "icon": "bx bx-group",
+        "available": true,
+        "link": "",
+        "header": "ADMINISTRATION",
+        "submenu": [
+          {
+            "text": "Users",
+            "icon": "bx bx-group",
+            "available": true,
+            "link": "/orphanage/users",
+            "permission": [
+              "view_user",
+              "add_user",
+              "delete_user"
+            ],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Roles\t&Permissions",
+            "icon": "bx bx-detail",
+            "available": true,
+            "link": "/orphanage/roles-managements",
+            "permission": [
+              "view_group"
+            ],
+            "role": [
+              "admin"
+            ]
+          }
+        ]
       }
+      
     ]
   }
 ]

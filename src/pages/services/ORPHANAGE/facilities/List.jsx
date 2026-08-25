@@ -7,8 +7,10 @@ import FacilitiesViewModal from "./ViewModal";
 import { formatDate } from "../../../../helpers/DateFormater";
 import Swal from "sweetalert2";
 import showToast from "../../../../helpers/ToastHelper";
+import { useNavigate } from "react-router-dom";
 
 export const FacilitiesPage = () => {
+  const navigate = useNavigate();
   const [selectedObj, setSelectedObj] = useState(null);
   const [viewObj, setViewObj] = useState(null);
   const [tableRefresh, setTableRefresh] = useState(0);
@@ -37,6 +39,10 @@ export const FacilitiesPage = () => {
 
   const handleView = (facility) => {
     setViewObj(facility);
+  };
+
+  const handleOpenFacility = (facility) => {
+    navigate(`/orphanage/facilities/${facility.id}`);
   };
 
   const handleDelete = (facility) => {
@@ -134,21 +140,26 @@ export const FacilitiesPage = () => {
                   </thead>
                   <tbody>
                     {filteredData.length > 0 ? (
-                      filteredData.map((facility, index) => (
-                        <tr key={facility.id} className="border-bottom">
-                          <td className="text-center">
-                            <span className="fw-bold">{index + 1}</span>
-                          </td>
-                          <td>
-                            <span className="badge bg-label-primary">
-                              {facility.facility_code}
-                            </span>
-                          </td>
-                          <td>
-                            <strong className="text-dark">
-                              {facility.name}
-                            </strong>
-                          </td>
+                       filteredData.map((facility, index) => (
+                         <tr
+                           key={facility.id}
+                           className="border-bottom"
+                           style={{ cursor: "pointer" }}
+                           onClick={() => handleOpenFacility(facility)}
+                         >
+                           <td className="text-center">
+                             <span className="fw-bold">{index + 1}</span>
+                           </td>
+                           <td>
+                             <span className="badge bg-label-primary">
+                               {facility.facility_code}
+                             </span>
+                           </td>
+                           <td>
+                             <strong className="text-dark">
+                               {facility.name}
+                             </strong>
+                           </td>
                           <td>
                             <small className="text-muted">
                               {facility.address}

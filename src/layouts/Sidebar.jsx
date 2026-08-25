@@ -1,189 +1,513 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import menuData from "../data/orphanageMenu.json";
 import { useSelector } from "react-redux";
+import "../css/Sidebar.css";
 
-import servicesConfig from "../data/servicesConfig";
-import { hasPermission, hasAnyVisibleItem } from "../utils/permissions";
+const Sidebar = () => {
+    const user = useSelector((state) => state.userReducer?.data);
 
-// KEEPING YOUR ORIGINAL UI EXACTLY THE SAME
+    const userPermissions = user?.user_permissions;
+    const userRoles = user?.groups;
 
-const Sidebar = ({ isService = false }) => {
-  const user = useSelector((state) => state.userReducer?.data);
-  const userPermissions = user?.user_permissions;
-  const userRoles = user?.groups;
+    const [collapsed, setCollapsed] = useState(false);
 
-  const location = useLocation();
+    const hasPermission = (
+        itemPermissions,
+        itemRoles,
+        userPermissions,
+        userRoles
+    ) => {
+        const hasRequiredPermission =
+            !itemPermissions ||
+            itemPermissions.some((permission) =>
+                userPermissions?.includes(permission)
+            );
 
-  const [activeService, setActiveService] = useState(null);
-  const [currentMenu, setCurrentMenu] = useState([]);
+        const hasRequiredRole =
+            !itemRoles ||
+            itemRoles.some((role) =>
+                userRoles?.includes(role)
+            );
 
-  // Detect service by URL
-  useEffect(() => {
-    const currentPath = location.pathname;
+        return hasRequiredPermission || hasRequiredRole;
+    };
 
-    const service = servicesConfig.find((s) => currentPath.startsWith(s.link));
+    /* Remember sidebar state */
+    useEffect(() => {
+        const savedState = localStorage.getItem(
+            "bioRepoSidebarCollapsed"
+        );
 
-    if (service) {
-      setActiveService(service.id);
-      setCurrentMenu(service.menu);
-    } else {
-      setActiveService("");
-      setCurrentMenu(servicesConfig[servicesConfig.length - 1].menu);
-    }
-  }, [location.pathname]);
+        if (savedState !== null) {
+            setCollapsed(savedState === "true");
+        }
+    }, []);
 
-  return (
-    <aside
-      id="layout-menu"
-      className="layout-menu menu-vertical menu bg-menu-theme"
-    >
-      <div className="app-brand demo">
-        <Link to="/" className="app-brand-link">
-          <span className="app-brand-logo demo">
-            <img src="/assets/img/nembo.jpg" width="70" height="70" />
-          </span>
-          <span style={{ width: "70px" }}></span>
-          <span className="app-brand-logo demo">
-            <img src="/assets/img/mnhlogo.png" width="70" height="70" />
-          </span>
-        </Link>
-        <a className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-          <i className="bx bx-chevron-left bx-sm align-middle"></i>
-        </a>
-      </div>
+    const toggleSidebar = () => {
+        setCollapsed((previous) => {
+            const next = !previous;
 
-      <div style={{ textAlign: "center" }}>
-        <span className="app-brand-text demo menu-text fw-bold ms-2">
-          MNH-CONNECT
-        </span>
+            localStorage.setItem(
+                "bioRepoSidebarCollapsed",
+                next
+            );
 
-        {activeService && (
-          <h5 className="text-bold">
-            {activeService
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, (c) => c.toUpperCase())}
-          </h5>
-        )}
-      </div>
+            return next;
+        });
+    };
 
-      <div className="menu-inner-shadow"></div>
+    return (
+        <aside
+            id="layout-menu"
+            className={`layout-menu menu-vertical bio-sidebar ${collapsed ? "bio-sidebar-collapsed" : ""
+                }`}
+        >
 
-      <ul className="menu-inner py-1">
-        {isService ? (
-          // Documentation Mode
-          <>
-            <li className="menu-header small text-uppercase">
-              <span className="menu-header-text">Documentation</span>
-            </li>
+            {/* =====================================================
+                BACKGROUND IMAGE
+            ===================================================== */}
 
-            {servicesConfig.map((service, idx) => (
-              <li className="menu-item" key={idx}>
-                <a className="menu-link" href="#" target="_blank">
-                  <i className="menu-icon tf-icons bx bx-file"></i>
-                  <div>{service.name} Docs</div>
-                </a>
-              </li>
-            ))}
-          </>
-        ) : (
-          // Dynamic Service Menu
-          currentMenu.map((section, sectionIndex) => (
-            <React.Fragment key={"header-" + sectionIndex}>
-              {section.header &&
-                hasAnyVisibleItem(
-                  section.items,
-                  userPermissions,
-                  userRoles
-                ) && (
-                  <li className="menu-header small text-uppercase">
-                    <span className="menu-header-text">{section.header}</span>
-                  </li>
+            <div className="bio-sidebar-background"></div>
+
+
+            {/* =====================================================
+                BLUE / GOLD LIGHT EFFECT
+            ===================================================== */}
+
+            <div className="bio-sidebar-glow"></div>
+
+
+            {/* =====================================================
+                BRAND
+            ===================================================== */}
+
+            <div className="app-brand demo bio-sidebar-brand">
+
+                <Link
+                    aria-label="Navigate to Bio-Repo homepage"
+                    to="/"
+                    className="app-brand-link bio-brand-link"
+                >
+
+                    <span className="app-brand-logo demo bio-brand-logo">
+
+                        <img
+                            src="/assets/img/mnhlogo.png"
+                            alt="MNH logo"
+                            aria-label="MNH logo"
+                        />
+
+                    </span>
+
+
+                    <div className="bio-brand-content">
+
+                        <div className="bio-brand-title">
+                            BIO-REPO
+                        </div>
+
+                        <div className="bio-brand-subtitle">
+                            Sample Repository
+                        </div>
+
+                    </div>
+
+                </Link>
+
+
+                {/* =================================================
+                    COLLAPSE BUTTON
+                ================================================= */}
+
+                <button
+                    type="button"
+                    className="bio-sidebar-toggle"
+                    onClick={toggleSidebar}
+                    aria-label={
+                        collapsed
+                            ? "Expand sidebar"
+                            : "Minimize sidebar"
+                    }
+                >
+
+                    <i
+                        className={
+                            collapsed
+                                ? "bx bx-chevron-right"
+                                : "bx bx-chevron-left"
+                        }
+                    ></i>
+
+                </button>
+
+            </div>
+
+
+            {/* =====================================================
+                INNER SHADOW
+            ===================================================== */}
+
+            <div className="menu-inner-shadow bio-menu-shadow"></div>
+
+
+            {/* =====================================================
+                MENU
+            ===================================================== */}
+
+            <ul className="menu-inner bio-menu-inner">
+
+                {menuData.map((section, sectionIndex) => {
+
+                    const visibleItems = section.items.filter(
+                        (item) =>
+                            hasPermission(
+                                item.permission,
+                                item.role,
+                                userPermissions,
+                                userRoles
+                            )
+                    );
+
+                    if (!visibleItems.length) {
+                        return null;
+                    }
+
+                    return (
+                        <React.Fragment
+                            key={`section-${sectionIndex}`}
+                        >
+
+                            {section.header && (
+                                <li className="menu-header bio-menu-header">
+
+                                    <span className="menu-header-text">
+                                        {section.header}
+                                    </span>
+
+                                </li>
+                            )}
+
+
+                            {visibleItems.map(
+                                (item, itemIndex) => (
+                                    <MenuItem
+                                        key={
+                                            item.id ||
+                                            `${sectionIndex}-${itemIndex}`
+                                        }
+                                        {...item}
+                                        collapsed={collapsed}
+                                        userPermissions={
+                                            userPermissions
+                                        }
+                                        userRoles={userRoles}
+                                    />
+                                )
+                            )}
+
+                        </React.Fragment>
+                    );
+                })}
+
+            </ul>
+
+
+            {/* =====================================================
+                SIDEBAR FOOTER
+            ===================================================== */}
+
+            <div className="bio-sidebar-footer">
+
+                <div className="bio-footer-status">
+
+                    <span className="bio-status-dot"></span>
+
+                    <span className="bio-footer-text">
+                        System Online
+                    </span>
+
+                </div>
+
+            </div>
+
+        </aside>
+    );
+};
+
+
+/* ================================================================
+   MENU ITEM
+================================================================ */
+
+const MenuItem = ({
+    collapsed,
+    userPermissions,
+    userRoles,
+    ...item
+}) => {
+
+    const location = useLocation();
+
+    const [hovered, setHovered] = useState(false);
+
+    const itemRef = useRef(null);
+
+    const isActive =
+        location.pathname === item.link ||
+        location.pathname.startsWith(
+            item.link + "/open/"
+        );
+
+    const hasSubmenu =
+        item.submenu &&
+        item.submenu.length > 0;
+
+    const isSubmenuActive =
+        hasSubmenu &&
+        item.submenu.some(
+            (subitem) =>
+                location.pathname === subitem.link
+        );
+
+
+    const hasPermission = (
+        itemPermissions,
+        itemRoles
+    ) => {
+
+        const hasRequiredPermission =
+            !itemPermissions ||
+            itemPermissions.some(
+                (permission) =>
+                    userPermissions?.includes(permission)
+            );
+
+        const hasRequiredRole =
+            !itemRoles ||
+            itemRoles.some(
+                (role) =>
+                    userRoles?.includes(role)
+            );
+
+        return (
+            hasRequiredPermission ||
+            hasRequiredRole
+        );
+    };
+
+
+    const visibleSubmenu =
+        hasSubmenu
+            ? item.submenu.filter((subitem) =>
+                hasPermission(
+                    subitem.permission,
+                    subitem.role
+                )
+            )
+            : [];
+
+
+    return (
+        <li
+            ref={itemRef}
+            className={`
+                menu-item
+                bio-menu-item
+                ${isActive || isSubmenuActive
+                    ? "active"
+                    : ""}
+                ${hasSubmenu &&
+                    isSubmenuActive
+                    ? "open"
+                    : ""
+                }
+                ${collapsed
+                    ? "bio-collapsed-item"
+                    : ""
+                }
+                ${hovered
+                    ? "bio-item-hovered"
+                    : ""
+                }
+            `}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+
+            <NavLink
+                aria-label={`Navigate to ${item.text}${!item.available
+                    ? " Pro"
+                    : ""
+                    }`}
+                to={item.link}
+                className={`
+                    menu-link
+                    bio-menu-link
+                    ${hasSubmenu
+                        ? "menu-toggle"
+                        : ""
+                    }
+                `}
+                target={
+                    item.link?.includes("http")
+                        ? "_blank"
+                        : undefined
+                }
+            >
+
+                {/* ICON */}
+
+                <span className="bio-menu-icon-wrapper">
+
+                    <i
+                        className={`
+                            menu-icon
+                            tf-icons
+                            ${item.icon}
+                        `}
+                    ></i>
+
+                </span>
+
+
+                {/* LABEL */}
+
+                <div className="bio-menu-label">
+                    {item.text}
+                </div>
+
+
+                {/* PRO */}
+
+                {item.available === false && (
+                    <div className="badge bio-pro-badge">
+                        Pro
+                    </div>
                 )}
 
-              {section.items
-                .filter((item) =>
-                  hasPermission(
-                    item.permission,
-                    item.role,
-                    userPermissions,
-                    userRoles
-                  )
-                )
-                .map((item, itemIndex) => (
-                  <MenuItem
-                    key={item.id || itemIndex}
-                    {...item}
-                    userPermissions={userPermissions}
-                    userRoles={userRoles}
-                  />
-                ))}
-            </React.Fragment>
-          ))
-        )}
-      </ul>
-    </aside>
-  );
+            </NavLink>
+
+
+            {/* =================================================
+                NORMAL EXPANDED SUBMENU
+            ================================================= */}
+
+            {!collapsed && hasSubmenu && (
+                <ul className="menu-sub bio-menu-sub">
+
+                    {visibleSubmenu.map(
+                        (subitem, index) => (
+                            <MenuItem
+                                key={
+                                    subitem.id ||
+                                    `${item.id}-${index}`
+                                }
+                                {...subitem}
+                                collapsed={false}
+                                userPermissions={
+                                    userPermissions
+                                }
+                                userRoles={
+                                    userRoles
+                                }
+                            />
+                        )
+                    )}
+
+                </ul>
+            )}
+
+
+            {/* =================================================
+                COLLAPSED FLOATING MENU
+            ================================================= */}
+
+            {collapsed &&
+                hovered &&
+                (hasSubmenu ||
+                    item.text) && (
+
+                    <div
+                        className="
+                            bio-floating-menu
+                        "
+                    >
+
+                        <div className="bio-floating-title">
+
+                            <span className="bio-floating-icon">
+
+                                <i
+                                    className={`
+                                        tf-icons
+                                        ${item.icon}
+                                    `}
+                                ></i>
+
+                            </span>
+
+                            <span>
+                                {item.text}
+                            </span>
+
+                        </div>
+
+
+                        {hasSubmenu &&
+                            visibleSubmenu.length >
+                            0 && (
+
+                                <div className="bio-floating-submenu">
+
+                                    {visibleSubmenu.map(
+                                        (
+                                            subitem,
+                                            index
+                                        ) => (
+
+                                            <Link
+                                                key={
+                                                    subitem.id ||
+                                                    index
+                                                }
+                                                to={
+                                                    subitem.link
+                                                }
+                                                className={
+                                                    location.pathname ===
+                                                        subitem.link
+                                                        ? "active"
+                                                        : ""
+                                                }
+                                            >
+
+                                                <i
+                                                    className={`
+                                                        tf-icons
+                                                        ${subitem.icon}
+                                                    `}
+                                                ></i>
+
+                                                <span>
+                                                    {
+                                                        subitem.text
+                                                    }
+                                                </span>
+
+                                            </Link>
+                                        )
+                                    )}
+
+                                </div>
+                            )}
+
+                    </div>
+                )}
+
+        </li>
+    );
 };
 
-// KEEP YOUR ORIGINAL MENU ITEM UI
-const MenuItem = (item) => {
-  const { userPermissions, userRoles, submenu } = item;
-  const location = useLocation();
-
-  const filteredSubmenu = submenu
-    ? submenu.filter((subitem) =>
-        hasPermission(
-          subitem.permission,
-          subitem.role,
-          userPermissions,
-          userRoles
-        )
-      )
-    : [];
-
-  if (submenu && filteredSubmenu.length === 0) return null;
-
-  const isActive =
-    location.pathname === item.link ||
-    location.pathname.startsWith(item.link + "/open/");
-
-  const hasSubmenu = filteredSubmenu.length > 0;
-
-  return (
-    <li
-      className={`menu-item ${isActive ? "active" : ""} ${
-        hasSubmenu && isActive ? "open" : ""
-      }`}
-    >
-      <NavLink
-        to={item.link}
-        className={`menu-link ${hasSubmenu ? "menu-toggle" : ""}`}
-        target={item.link.includes("http") ? "_blank" : undefined}
-      >
-        <i className={`menu-icon tf-icons ${item.icon}`}></i>
-        <div>{item.text}</div>
-
-        {item.available === false && (
-          <div className="badge bg-label-primary fs-tiny rounded-pill ms-auto">
-            Pro
-          </div>
-        )}
-      </NavLink>
-
-      {hasSubmenu && (
-        <ul className="menu-sub">
-          {filteredSubmenu.map((sub, i) => (
-            <MenuItem
-              key={sub.id || `${item.id}-${i}`}
-              {...sub}
-              userPermissions={userPermissions}
-              userRoles={userRoles}
-            />
-          ))}
-        </ul>
-      )}
-    </li>
-  );
-};
 
 export default Sidebar;

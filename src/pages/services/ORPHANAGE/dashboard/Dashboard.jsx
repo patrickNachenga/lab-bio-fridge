@@ -51,7 +51,7 @@ export const OrphanageDashboard = () => {
     <>
       {/* Welcome Card */}
       <div className="row">
-        <div className="col-lg-8 mb-4 order-0">
+        {/* <div className="col-lg-8 mb-4 order-0">
           <div className="card">
             <div className="d-flex align-items-end row">
               <div className="col-sm-7">
@@ -86,10 +86,10 @@ export const OrphanageDashboard = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Summary Cards */}
-        <div className="col-lg-4 col-md-4 order-1">
+        {/* <div className="col-lg-4 col-md-4 order-1">
           <div className="row">
             <div className="col-lg-6 col-md-12 col-6 mb-4">
               <div className="card">
@@ -114,7 +114,7 @@ export const OrphanageDashboard = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Key Metrics */}

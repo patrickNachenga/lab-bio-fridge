@@ -19,16 +19,16 @@ import { OpenRolesManagementPage } from "../pages/services/MANAGMENTS/roles_mana
 
 export const managementRoutes = (
   <>
-    <Route path="/mnh-connect/account/settings" element={<AccountPage />} />
+    <Route path="/managements/account/settings" element={<AccountPage />} />
     <Route
-      path="/mnh-connect/account/notifications"
+      path="/managements/account/notifications"
       element={<NotificationPage />}
     />
-    <Route path="/mnh-connect/account/connections" element={<Connections />} />
-    <Route path="/mnh-connect/account/password" element={<ChangePassword />} />
+    <Route path="/managements/account/connections" element={<Connections />} />
+    <Route path="/managements/account/password" element={<ChangePassword />} />
 
     <Route
-      path="/mnh-connect/settings/directories"
+      path="/managements/settings/directories"
       element={
         <ProtectedRoute
           requiredPermissions={[
@@ -42,7 +42,7 @@ export const managementRoutes = (
       }
     />
     <Route
-      path="/mnh-connect/settings/directories/open/:uid"
+      path="/managements/settings/directories/open/:uid"
       element={
         <ProtectedRoute
           requiredPermissions={[
@@ -56,7 +56,7 @@ export const managementRoutes = (
       }
     />
     <Route
-      path="/mnh-connect/settings/departments"
+      path="/managements/settings/departments"
       element={
         <ProtectedRoute
           requiredPermissions={[
@@ -70,7 +70,7 @@ export const managementRoutes = (
       }
     />
     <Route
-      path="/mnh-connect/settings/date-ranges"
+      path="/managements/settings/date-ranges"
       element={
         <ProtectedRoute
           requiredPermissions={[
@@ -86,7 +86,7 @@ export const managementRoutes = (
     />
 
     <Route
-      path="/mnh-connect/users"
+      path="/managements/users"
       element={
         <ProtectedRoute
           requiredPermissions={["view_user", "add_user", "delete_user"]}
@@ -96,7 +96,7 @@ export const managementRoutes = (
       }
     />
     <Route
-      path="/mnh-connect/users/open/:uid"
+      path="/managements/users/open/:uid"
       element={
         <ProtectedRoute
           requiredPermissions={["view_user", "add_user", "delete_user"]}
@@ -107,7 +107,7 @@ export const managementRoutes = (
     />
 
     <Route
-      path="/mnh-connect/roles-managements"
+      path="/managements/roles-managements"
       element={
         <ProtectedRoute requiredPermissions={[]} requiredRoles={["admin"]}>
           <RolesManagementPage />
@@ -115,7 +115,7 @@ export const managementRoutes = (
       }
     />
     <Route
-      path="/mnh-connect/roles-managements/open/:uid"
+      path="/managements/roles-managements/open/:uid"
       element={
         <ProtectedRoute requiredPermissions={[]} requiredRoles={["admin"]}>
           <OpenRolesManagementPage />

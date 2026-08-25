@@ -1,7 +1,7 @@
 services:
-  frontend:
-    image: mnh-connect-frontend
-    container_name: frontend-container
+  orphanage-frontend:
+    image: orphanage-frontend
+    container_name: orphanage-frontend
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,12 +9,12 @@ services:
       - ./:/app
       - /app/node_modules
     networks:
-      - mnh-network
+      - tibu-esb-network
     ports:
       - "8091:80"
     restart: unless-stopped
 
 
 networks:
-  mnh-network:
+  tibu-esb-network:
     external: true

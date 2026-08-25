@@ -1,0 +1,2579 @@
+/* ============================================================
+   BIO-FRIDGE / BIO-REPO SIDEBAR
+   ============================================================ */
+
+:root {
+
+  --bio-navy: #061a3a;
+  --bio-navy-deep: #03132d;
+  --bio-blue: #075fd2;
+  --bio-blue-light: #1680ff;
+
+  --bio-gold: #d9a441;
+  --bio-gold-light: #f0c45a;
+
+  --bio-red: #d84a3a;
+
+  --bio-text: #eef5ff;
+  --bio-text-muted: #9aaac1;
+
+  --bio-border:
+    rgba(70, 137, 220, 0.18);
+
+  --bio-transition:
+    all 0.3s cubic-bezier(0.4,
+      0,
+      0.2,
+      1);
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+.layout-menu.bio-sidebar {
+
+  position: fixed;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 270px;
+
+  background:
+    linear-gradient(180deg,
+      #061a3a 0%,
+      #04152f 45%,
+      #031129 100%) !important;
+
+  border-right:
+    1px solid rgba(45, 117, 201, 0.18) !important;
+
+  overflow: visible !important;
+
+  z-index: 1100;
+
+  box-shadow:
+    12px 0 40px rgba(0, 10, 30, 0.28);
+
+  transition:
+    width 0.35s cubic-bezier(0.4,
+      0,
+      0.2,
+      1);
+}
+
+
+/* ============================================================
+   FAR LAB IMAGE
+   ============================================================ */
+
+.bio-sidebar-background {
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+    url("/assets/img/bio-lab-background.png");
+
+  background-size: cover;
+
+  background-position:
+    center center;
+
+  opacity: 0.045;
+
+  filter:
+    blur(1px) saturate(0.65);
+
+  transform:
+    scale(1.15);
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* dark veil */
+
+.bio-sidebar-background::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(180deg,
+      #061a3a 5%,
+      rgba(4, 20, 48, 0.96) 45%,
+      #031129 100%);
+
+  opacity: 0.90;
+}
+
+
+/* ============================================================
+   BLUE ATMOSPHERIC GLOW
+   ============================================================ */
+
+.bio-sidebar-glow {
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 420px;
+
+  background:
+    radial-gradient(circle at 30% 5%,
+      rgba(22, 128, 255, 0.18),
+      transparent 60%);
+
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+
+/* ============================================================
+   BRAND
+   ============================================================ */
+
+.bio-sidebar-brand {
+
+  position: relative;
+
+  z-index: 5;
+
+  height: 82px;
+
+  padding:
+    14px 14px !important;
+
+  border-bottom:
+    1px solid var(--bio-border) !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: space-between !important;
+
+  background:
+    rgba(4, 20, 48, 0.48);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+
+.bio-brand-link {
+
+  min-width: 0;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  text-decoration: none !important;
+
+  transition:
+    var(--bio-transition);
+}
+
+
+.bio-brand-link:hover {
+
+  transform:
+    translateX(2px);
+}
+
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+
+.app-brand-logo.demo.bio-brand-logo {
+
+  width: 48px !important;
+  height: 48px !important;
+
+  min-width: 48px;
+
+  border-radius: 13px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  background:
+    linear-gradient(145deg,
+      #075fd2,
+      #0b397f) !important;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 8px 25px rgba(7, 95, 210, 0.30);
+
+  animation:
+    bioLogoFloat 4s ease-in-out infinite;
+}
+
+
+.bio-brand-logo img {
+
+  width: 37px !important;
+  height: 37px !important;
+
+  object-fit: contain !important;
+
+  border-radius: 8px !important;
+}
+
+
+/* ============================================================
+   BRAND TEXT
+   ============================================================ */
+
+.bio-brand-content {
+
+  margin-left: 11px;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  transition:
+    opacity 0.2s ease,
+    width 0.3s ease;
+}
+
+
+.bio-brand-title {
+
+  font-size: 1.12rem;
+
+  line-height: 1.1;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  background:
+    linear-gradient(90deg,
+      #1680ff 0%,
+      #d9a441 52%,
+      #d84a3a 100%);
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  background-clip: text;
+}
+
+
+.bio-brand-subtitle {
+
+  margin-top: 4px;
+
+  color:
+    rgba(220, 232, 248, 0.58);
+
+  font-size: 0.59rem;
+
+  letter-spacing: 0.7px;
+
+  text-transform: uppercase;
+}
+
+
+/* ============================================================
+   COLLAPSE BUTTON
+   ============================================================ */
+
+.bio-sidebar-toggle {
+
+  position: absolute;
+
+  right: -12px;
+
+  top: 28px;
+
+  width: 25px;
+  height: 25px;
+
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 50%;
+
+  background:
+    #0a3979;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 20;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.35);
+
+  transition:
+    var(--bio-transition);
+}
+
+
+.bio-sidebar-toggle:hover {
+
+  background:
+    #075fd2;
+
+  transform:
+    scale(1.08);
+
+  box-shadow:
+    0 5px 18px rgba(7, 95, 210, 0.42);
+}
+
+
+.bio-sidebar-toggle i {
+
+  font-size: 17px;
+}
+
+
+/* ============================================================
+   MENU
+   ============================================================ */
+
+.bio-menu-inner {
+
+  position: relative;
+
+  z-index: 4;
+
+  height:
+    calc(100vh - 135px);
+
+  overflow-y: auto;
+
+  overflow-x: visible;
+
+  padding:
+    13px 8px !important;
+}
+
+
+.bio-menu-inner::-webkit-scrollbar {
+
+  width: 4px;
+}
+
+
+.bio-menu-inner::-webkit-scrollbar-track {
+
+  background: transparent;
+}
+
+
+.bio-menu-inner::-webkit-scrollbar-thumb {
+
+  background:
+    rgba(66, 136, 214, 0.25);
+
+  border-radius: 10px;
+}
+
+
+/* ============================================================
+   MENU HEADER
+   ============================================================ */
+
+.bio-menu-header {
+
+  padding:
+    16px 13px 7px !important;
+
+  margin: 0 !important;
+}
+
+
+.bio-menu-header:first-child {
+
+  padding-top: 5px !important;
+}
+
+
+.bio-menu-header .menu-header-text {
+
+  color:
+    rgba(151, 174, 204, 0.58) !important;
+
+  font-size:
+    0.62rem !important;
+
+  font-weight:
+    800 !important;
+
+  letter-spacing:
+    1.4px !important;
+
+  background: none !important;
+
+  -webkit-text-fill-color:
+    rgba(151, 174, 204, 0.58) !important;
+}
+
+
+/* ============================================================
+   MENU ITEM
+   ============================================================ */
+
+.bio-menu-item {
+
+  position: relative;
+
+  margin-bottom: 3px;
+
+  overflow: visible !important;
+}
+
+
+/* ============================================================
+   MENU LINK
+   ============================================================ */
+
+.bio-menu-link {
+
+  height: 45px;
+
+  margin:
+    0 3px !important;
+
+  padding:
+    0 12px !important;
+
+  border-radius:
+    10px !important;
+
+  color:
+    var(--bio-text-muted) !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  gap: 11px !important;
+
+  font-size:
+    0.82rem !important;
+
+  font-weight:
+    500 !important;
+
+  text-decoration: none !important;
+
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    var(--bio-transition) !important;
+}
+
+
+/* left active line */
+
+.bio-menu-link::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  top: 8px;
+  bottom: 8px;
+
+  width: 3px;
+
+  border-radius:
+    0 5px 5px 0;
+
+  background:
+    linear-gradient(180deg,
+      #1680ff,
+      #d9a441);
+
+  transform:
+    scaleY(0);
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+/* hover background */
+
+.bio-menu-link::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(90deg,
+      rgba(7, 95, 210, 0.15),
+      rgba(7, 95, 210, 0.045));
+
+  opacity: 0;
+
+  transition:
+    opacity 0.25s ease;
+
+  pointer-events: none;
+}
+
+
+.bio-menu-link:hover {
+
+  color:
+    #ffffff !important;
+
+  background:
+    rgba(16, 75, 139, 0.22) !important;
+
+  transform:
+    translateX(3px);
+}
+
+
+.bio-menu-link:hover::after {
+
+  opacity: 1;
+}
+
+
+.bio-menu-link:hover::before {
+
+  transform:
+    scaleY(1);
+}
+
+
+/* ============================================================
+   ACTIVE
+   ============================================================ */
+
+.bio-menu-item.active>.bio-menu-link {
+
+  color:
+    #ffffff !important;
+
+  background:
+    linear-gradient(90deg,
+      rgba(7, 95, 210, 0.30),
+      rgba(7, 95, 210, 0.10)) !important;
+
+  box-shadow:
+    inset 0 0 20px rgba(7, 95, 210, 0.08);
+}
+
+
+.bio-menu-item.active>.bio-menu-link::before {
+
+  transform:
+    scaleY(1);
+}
+
+
+.bio-menu-item.active .bio-menu-label {
+
+  font-weight:
+    700;
+}
+
+
+/* ============================================================
+   ICON
+   ============================================================ */
+
+.bio-menu-icon-wrapper {
+
+  width: 22px;
+
+  min-width: 22px;
+
+  height: 22px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+
+.bio-menu-link .menu-icon {
+
+  width: auto !important;
+  height: auto !important;
+
+  margin: 0 !important;
+
+  font-size:
+    19px !important;
+
+  color:
+    #8da4c3 !important;
+
+  transition:
+    var(--bio-transition) !important;
+}
+
+
+.bio-menu-item.active .menu-icon {
+
+  color:
+    #1680ff !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(22, 128, 255, 0.35));
+}
+
+
+.bio-menu-link:hover .menu-icon {
+
+  color:
+    #ffffff !important;
+
+  transform:
+    scale(1.08);
+}
+
+
+/* ============================================================
+   LABEL
+   ============================================================ */
+
+.bio-menu-label {
+
+  position: relative;
+
+  z-index: 2;
+
+  flex: 1;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s ease;
+}
+
+
+/* ============================================================
+   PRO BADGE
+   ============================================================ */
+
+.bio-pro-badge {
+
+  position: relative;
+
+  z-index: 3;
+
+  background:
+    rgba(217, 164, 65, 0.12) !important;
+
+  border:
+    1px solid rgba(217, 164, 65, 0.28) !important;
+
+  color:
+    #e9bd5b !important;
+
+  font-size:
+    0.55rem !important;
+
+  padding:
+    3px 6px !important;
+}
+
+
+/* ============================================================
+   SUBMENU - EXPANDED
+   ============================================================ */
+
+.bio-menu-sub {
+
+  padding:
+    3px 0 3px 0 !important;
+
+  margin:
+    2px 0 !important;
+
+  max-height:
+    1000px !important;
+
+  overflow:
+    hidden;
+}
+
+
+.bio-menu-sub .bio-menu-link {
+
+  height: 39px;
+
+  padding-left:
+    43px !important;
+
+  font-size:
+    0.76rem !important;
+}
+
+
+.bio-menu-sub .bio-menu-icon-wrapper {
+
+  width: 17px;
+
+  min-width: 17px;
+}
+
+
+.bio-menu-sub .menu-icon {
+
+  font-size:
+    15px !important;
+}
+
+
+/* ============================================================
+   COLLAPSED SIDEBAR
+   ============================================================ */
+
+.bio-sidebar-collapsed {
+
+  width: 76px !important;
+}
+
+
+/* hide brand text */
+
+.bio-sidebar-collapsed .bio-brand-content {
+
+  width: 0;
+
+  opacity: 0;
+
+  margin: 0;
+
+  pointer-events: none;
+}
+
+
+/* center logo */
+
+.bio-sidebar-collapsed .bio-brand-link {
+
+  justify-content: center;
+
+  width: 100%;
+}
+
+
+.bio-sidebar-collapsed .bio-sidebar-brand {
+
+  justify-content: center;
+
+  padding:
+    14px 8px !important;
+}
+
+
+/* toggle */
+
+.bio-sidebar-collapsed .bio-sidebar-toggle {
+
+  right: -12px;
+}
+
+
+/* menu */
+
+.bio-sidebar-collapsed .bio-menu-inner {
+
+  padding:
+    13px 8px !important;
+}
+
+
+/* hide section headers */
+
+.bio-sidebar-collapsed .bio-menu-header {
+
+  display: none;
+}
+
+
+/* icon-only link */
+
+.bio-sidebar-collapsed .bio-menu-link {
+
+  width: 52px;
+
+  margin:
+    0 auto !important;
+
+  padding:
+    0 !important;
+
+  justify-content:
+    center !important;
+
+  gap: 0 !important;
+}
+
+
+/* hide text */
+
+.bio-sidebar-collapsed .bio-menu-label {
+
+  display: none;
+}
+
+
+.bio-sidebar-collapsed .bio-pro-badge {
+
+  display: none;
+}
+
+
+/* hide normal submenu */
+
+.bio-sidebar-collapsed .menu-sub {
+
+  display: none !important;
+}
+
+
+/* ============================================================
+   FLOATING MENU
+   ============================================================ */
+
+.bio-floating-menu {
+
+  position: absolute;
+
+  left: calc(100% + 8px);
+
+  top: -4px;
+
+  width: 225px;
+
+  padding:
+    8px;
+
+  border:
+    1px solid rgba(65, 137, 219, 0.28);
+
+  border-radius:
+    13px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(6, 29, 62, 0.98),
+      rgba(3, 18, 43, 0.98));
+
+  box-shadow:
+    12px 15px 40px rgba(0, 8, 25, 0.50),
+
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  backdrop-filter:
+    blur(18px);
+
+  animation:
+    bioFloatingIn 0.22s cubic-bezier(0.2,
+      0.8,
+      0.2,
+      1);
+
+  z-index:
+    5000;
+}
+
+
+/* small connection line */
+
+.bio-floating-menu::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: -6px;
+
+  top: 19px;
+
+  width: 10px;
+
+  height: 10px;
+
+  background:
+    #071d3d;
+
+  border-left:
+    1px solid rgba(65, 137, 219, 0.28);
+
+  border-bottom:
+    1px solid rgba(65, 137, 219, 0.28);
+
+  transform:
+    rotate(45deg);
+}
+
+
+/* floating title */
+
+.bio-floating-title {
+
+  min-height:
+    39px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    7px 9px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    0.79rem;
+
+  font-weight:
+    700;
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(7, 95, 210, 0.15);
+}
+
+
+.bio-floating-icon {
+
+  width: 27px;
+
+  height: 27px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius:
+    8px;
+
+  background:
+    linear-gradient(135deg,
+      #075fd2,
+      #0a438c);
+
+  color:
+    #ffffff;
+
+  font-size:
+    15px;
+
+  flex-shrink: 0;
+}
+
+
+/* floating submenu */
+
+.bio-floating-submenu {
+
+  margin-top:
+    5px;
+
+  padding-top:
+    5px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.bio-floating-submenu a {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-height:
+    35px;
+
+  padding:
+    6px 9px;
+
+  border-radius:
+    8px;
+
+  color:
+    #8fa6c3;
+
+  text-decoration:
+    none;
+
+  font-size:
+    0.73rem;
+
+  transition:
+    var(--bio-transition);
+}
+
+
+.bio-floating-submenu a i {
+
+  font-size:
+    15px;
+
+  color:
+    #6984a7;
+}
+
+
+.bio-floating-submenu a:hover {
+
+  color:
+    #ffffff;
+
+  background:
+    rgba(7, 95, 210, 0.18);
+
+  transform:
+    translateX(3px);
+}
+
+
+.bio-floating-submenu a:hover i {
+
+  color:
+    #1680ff;
+}
+
+
+.bio-floating-submenu a.active {
+
+  color:
+    #ffffff;
+
+  background:
+    rgba(7, 95, 210, 0.22);
+}
+
+
+.bio-floating-submenu a.active i {
+
+  color:
+    #d9a441;
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.bio-sidebar-footer {
+
+  position: absolute;
+
+  bottom: 0;
+
+  left: 0;
+  right: 0;
+
+  height:
+    52px;
+
+  z-index: 5;
+
+  padding:
+    0 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  border-top:
+    1px solid var(--bio-border);
+
+  background:
+    rgba(3, 17, 41, 0.70);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+
+.bio-footer-status {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color:
+    rgba(180, 200, 225, 0.60);
+
+  font-size:
+    0.65rem;
+
+  letter-spacing:
+    0.4px;
+}
+
+
+.bio-status-dot {
+
+  width: 7px;
+
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    #36d399;
+
+  box-shadow:
+    0 0 8px rgba(54, 211, 153, 0.65);
+
+  animation:
+    bioStatusPulse 2s infinite;
+}
+
+
+.bio-sidebar-collapsed .bio-footer-text {
+
+  display: none;
+}
+
+
+.bio-sidebar-collapsed .bio-sidebar-footer {
+
+  justify-content:
+    center;
+
+  padding: 0;
+}
+
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes bioFloatingIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateX(-8px) scale(0.97);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateX(0) scale(1);
+  }
+}
+
+
+@keyframes bioLogoFloat {
+
+  0%,
+  100% {
+
+    transform:
+      translateY(0);
+  }
+
+  50% {
+
+    transform:
+      translateY(-3px);
+  }
+}
+
+
+@keyframes bioStatusPulse {
+
+  0%,
+  100% {
+
+    opacity: 1;
+
+    box-shadow:
+      0 0 7px rgba(54, 211, 153, 0.5);
+  }
+
+  50% {
+
+    opacity: 0.55;
+
+    box-shadow:
+      0 0 13px rgba(54, 211, 153, 0.8);
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1199px) {
+
+  .layout-menu.bio-sidebar {
+
+    width: 250px;
+  }
+
+  .bio-sidebar-collapsed {
+
+    width: 76px !important;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .layout-menu.bio-sidebar {
+
+    width: 76px;
+  }
+
+  .bio-brand-content {
+
+    display: none;
+  }
+
+  .bio-sidebar-brand {
+
+    justify-content: center;
+
+    padding:
+      14px 8px !important;
+  }
+
+  .bio-brand-link {
+
+    justify-content: center;
+
+    width: 100%;
+  }
+
+  .bio-sidebar-toggle {
+
+    display: none;
+  }
+
+  .bio-menu-header {
+
+    display: none;
+  }
+
+  .bio-menu-link {
+
+    width: 52px;
+
+    margin:
+      0 auto !important;
+
+    padding: 0 !important;
+
+    justify-content: center !important;
+  }
+
+  .bio-menu-label {
+
+    display: none;
+  }
+
+  .bio-pro-badge {
+
+    display: none;
+  }
+
+  .bio-menu-sub {
+
+    display: none !important;
+  }
+
+  .bio-floating-menu {
+
+    left:
+      calc(100% + 8px);
+  }
+}
+
+
+
+/* ==========================================================
+   BIO-REPO APPLICATION LAYOUT
+   ========================================================== */
+
+:root {
+
+  --bio-sidebar-width: 280px;
+  --bio-sidebar-mini-width: 82px;
+
+  --bio-navy:
+    #061a3a;
+
+  --bio-navy-deep:
+    #031229;
+
+  --bio-blue:
+    #0764d5;
+
+  --bio-blue-light:
+    #1680ff;
+
+  --bio-gold:
+    #d9a441;
+
+  --bio-red:
+    #d84a3a;
+
+  --bio-page:
+    #f4f7fb;
+
+  --bio-text:
+    #eaf3ff;
+
+  --bio-muted:
+    #8da3c1;
+
+  --bio-border:
+    rgba(69, 130, 202, 0.18);
+
+  --bio-transition:
+    all 0.32s cubic-bezier(0.4,
+      0,
+      0.2,
+      1);
+}
+
+
+/* ==========================================================
+   ROOT
+   ========================================================== */
+
+.bio-app-layout {
+
+  min-height: 100vh;
+
+  width: 100%;
+
+  background:
+    var(--bio-page);
+}
+
+
+/* ==========================================================
+   SIDEBAR
+   ========================================================== */
+
+.layout-menu.bio-sidebar {
+
+  position: fixed !important;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width:
+    var(--bio-sidebar-width) !important;
+
+  height: 100vh;
+
+  margin: 0 !important;
+
+  z-index: 1200;
+
+  overflow: visible !important;
+
+  background:
+    linear-gradient(180deg,
+      #061c40 0%,
+      #051834 45%,
+      #031229 100%) !important;
+
+  border-right:
+    1px solid rgba(62, 128, 205, 0.20) !important;
+
+  box-shadow:
+    10px 0 40px rgba(1, 13, 35, 0.18);
+
+  transition:
+    width 0.32s cubic-bezier(0.4,
+      0,
+      0.2,
+      1);
+}
+
+
+/* ==========================================================
+   MAIN AREA
+   ========================================================== */
+
+.bio-main-area {
+
+  min-height: 100vh;
+
+  margin-left:
+    var(--bio-sidebar-width);
+
+  width:
+    calc(100% - var(--bio-sidebar-width));
+
+  transition:
+    margin-left 0.32s cubic-bezier(0.4,
+      0,
+      0.2,
+      1),
+    width 0.32s cubic-bezier(0.4,
+      0,
+      0.2,
+      1);
+}
+
+
+/* ==========================================================
+   COLLAPSED
+   ========================================================== */
+
+.bio-sidebar-is-collapsed .bio-main-area {
+
+  margin-left:
+    var(--bio-sidebar-mini-width);
+
+  width:
+    calc(100% - var(--bio-sidebar-mini-width));
+}
+
+
+.bio-sidebar-is-collapsed .layout-menu.bio-sidebar {
+
+  width:
+    var(--bio-sidebar-mini-width) !important;
+}
+
+
+/* ==========================================================
+   NAVBAR
+   ========================================================== */
+
+.bio-main-area .mnh-navbar-main {
+
+  width: 100%;
+
+  margin: 0 !important;
+
+  border-radius: 0 !important;
+
+  min-height: 68px;
+
+  background:
+    rgba(255, 255, 255, 0.96) !important;
+
+  border-bottom:
+    1px solid rgba(6, 35, 75, 0.08);
+
+  box-shadow:
+    0 3px 18px rgba(9, 38, 73, 0.055);
+
+  backdrop-filter:
+    blur(14px);
+
+  position: relative;
+
+  z-index: 100;
+}
+
+
+/* ==========================================================
+   CONTENT
+   ========================================================== */
+
+.bio-content-area {
+
+  min-height:
+    calc(100vh - 68px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  background:
+    #f4f7fb;
+}
+
+
+.bio-content-container {
+
+  flex: 1;
+
+  width: 100%;
+
+  padding:
+    24px;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================
+   SIDEBAR BRAND
+   ========================================================== */
+
+.bio-sidebar-brand {
+
+  position: relative;
+
+  z-index: 10;
+
+  height: 82px;
+
+  padding:
+    13px 14px !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content:
+    space-between !important;
+
+  border-bottom:
+    1px solid rgba(65, 137, 219, 0.16) !important;
+
+  background:
+    rgba(3, 18, 43, 0.58);
+
+  backdrop-filter:
+    blur(16px);
+}
+
+
+.bio-brand-link {
+
+  display: flex;
+
+  align-items: center;
+
+  min-width: 0;
+
+  text-decoration: none;
+
+  flex: 1;
+}
+
+
+/* ==========================================================
+   BRAND LOGO
+   ========================================================== */
+
+.bio-brand-logo {
+
+  width: 49px;
+
+  height: 49px;
+
+  min-width: 49px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(145deg,
+      #0869dc,
+      #0a3978);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.13);
+
+  box-shadow:
+    0 8px 25px rgba(7, 95, 210, 0.30);
+}
+
+
+.bio-brand-logo img {
+
+  width: 37px;
+
+  height: 37px;
+
+  object-fit: contain;
+}
+
+
+/* ==========================================================
+   BRAND TEXT
+   ========================================================== */
+
+.bio-brand-content {
+
+  margin-left: 11px;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  opacity: 1;
+
+  width: auto;
+
+  transition:
+    opacity 0.2s ease,
+    width 0.3s ease;
+}
+
+
+.bio-brand-title {
+
+  font-size:
+    1.08rem;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1.1px;
+
+  line-height:
+    1.1;
+
+  background:
+    linear-gradient(90deg,
+      #1680ff 0%,
+      #d9a441 52%,
+      #d84a3a 100%);
+
+  -webkit-background-clip:
+    text;
+
+  -webkit-text-fill-color:
+    transparent;
+
+  background-clip:
+    text;
+}
+
+
+.bio-brand-subtitle {
+
+  margin-top: 4px;
+
+  color:
+    rgba(208, 226, 248, 0.55);
+
+  font-size:
+    0.56rem;
+
+  font-weight:
+    600;
+
+  letter-spacing:
+    0.7px;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* ==========================================================
+   SIDEBAR TOGGLE
+   INSIDE SIDEBAR
+   ========================================================== */
+
+.bio-sidebar-toggle {
+
+  position: relative;
+
+  flex-shrink: 0;
+
+  width: 31px;
+
+  height: 31px;
+
+  margin-left: 5px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid rgba(107, 161, 221, 0.22);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.045);
+
+  color:
+    #a9c2df;
+
+  cursor: pointer;
+
+  transition:
+    var(--bio-transition);
+
+  z-index: 20;
+}
+
+
+.bio-sidebar-toggle:hover {
+
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(135deg,
+      rgba(7, 100, 213, 0.45),
+      rgba(7, 72, 145, 0.35));
+
+  border-color:
+    rgba(72, 153, 239, 0.50);
+
+  box-shadow:
+    0 4px 15px rgba(7, 95, 210, 0.25);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.bio-sidebar-toggle i {
+
+  font-size:
+    18px;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+/* ==========================================================
+   COLLAPSED BRAND
+   ========================================================== */
+
+.bio-sidebar-is-collapsed .bio-sidebar-brand {
+
+  justify-content:
+    center !important;
+
+  padding:
+    13px 8px !important;
+}
+
+
+.bio-sidebar-is-collapsed .bio-brand-link {
+
+  flex: 0;
+
+  justify-content:
+    center;
+}
+
+
+.bio-sidebar-is-collapsed .bio-brand-content {
+
+  width: 0;
+
+  opacity: 0;
+
+  margin: 0;
+
+  pointer-events: none;
+}
+
+
+.bio-sidebar-is-collapsed .bio-sidebar-toggle {
+
+  position: absolute;
+
+  right: 7px;
+
+  bottom: 5px;
+
+  width: 22px;
+
+  height: 22px;
+
+  border-radius: 7px;
+
+  background:
+    rgba(7, 100, 213, 0.20);
+}
+
+
+.bio-sidebar-is-collapsed .bio-sidebar-toggle i {
+
+  font-size:
+    15px;
+}
+
+
+/* ==========================================================
+   SIDEBAR NAVIGATION
+   ========================================================== */
+
+.bio-menu-inner {
+
+  position: relative;
+
+  z-index: 5;
+
+  height:
+    calc(100vh - 134px);
+
+  padding:
+    12px 9px 70px !important;
+
+  overflow-y: auto !important;
+
+  overflow-x: visible !important;
+}
+
+
+.bio-menu-inner::-webkit-scrollbar {
+
+  width: 4px;
+}
+
+
+.bio-menu-inner::-webkit-scrollbar-track {
+
+  background: transparent;
+}
+
+
+.bio-menu-inner::-webkit-scrollbar-thumb {
+
+  background:
+    rgba(92, 143, 197, 0.24);
+
+  border-radius:
+    10px;
+}
+
+
+/* ==========================================================
+   COLLAPSED NAV
+   ========================================================== */
+
+.bio-sidebar-is-collapsed .bio-menu-inner {
+
+  padding:
+    12px 7px 70px !important;
+
+  overflow-x:
+    visible !important;
+}
+
+
+.bio-sidebar-is-collapsed .bio-menu-item {
+
+  display: flex;
+
+  justify-content: center;
+
+  overflow: visible !important;
+}
+
+
+.bio-sidebar-is-collapsed .bio-menu-link {
+
+  width: 54px;
+
+  height: 47px;
+
+  margin:
+    0 auto !important;
+
+  padding:
+    0 !important;
+
+  justify-content:
+    center !important;
+
+  gap: 0 !important;
+}
+
+
+.bio-sidebar-is-collapsed .bio-menu-label {
+
+  display:
+    none !important;
+}
+
+
+.bio-sidebar-is-collapsed .bio-pro-badge {
+
+  display:
+    none !important;
+}
+
+
+.bio-sidebar-is-collapsed .bio-menu-header {
+
+  display:
+    none !important;
+}
+
+
+/* ==========================================================
+   ICON
+   ========================================================== */
+
+.bio-menu-icon-wrapper {
+
+  width:
+    23px;
+
+  height:
+    23px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+}
+
+
+.bio-menu-link .menu-icon {
+
+  font-size:
+    19px !important;
+
+  color:
+    #8fa8c8 !important;
+
+  margin:
+    0 !important;
+
+  transition:
+    var(--bio-transition);
+}
+
+
+.bio-menu-item.active .menu-icon {
+
+  color:
+    #1680ff !important;
+
+  filter:
+    drop-shadow(0 0 6px rgba(22, 128, 255, 0.35));
+}
+
+
+.bio-menu-link:hover .menu-icon {
+
+  color:
+    #ffffff !important;
+
+  transform:
+    scale(1.12);
+}
+
+
+/* ==========================================================
+   COLLAPSED HOVER
+   ========================================================== */
+
+.bio-sidebar-is-collapsed .bio-menu-link:hover {
+
+  transform:
+    translateY(-1px);
+
+  background:
+    rgba(8, 101, 211, 0.20) !important;
+}
+
+
+/* ==========================================================
+   FLOATING SUBMENU
+   IMPORTANT:
+   position fixed + huge z-index
+   prevents clipping by sidebar
+   ========================================================== */
+
+.bio-floating-menu {
+
+  position: fixed !important;
+
+  left:
+    calc(var(--bio-sidebar-mini-width) + 10px);
+
+  width:
+    245px;
+
+  min-height:
+    45px;
+
+  padding:
+    8px;
+
+  border:
+    1px solid rgba(72, 144, 222, 0.30);
+
+  border-radius:
+    14px;
+
+  background:
+    linear-gradient(145deg,
+      rgba(7, 31, 65, 0.985),
+      rgba(3, 17, 40, 0.985));
+
+  box-shadow:
+    0 20px 55px rgba(0, 8, 24, 0.55),
+
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  backdrop-filter:
+    blur(20px);
+
+  z-index:
+    99999;
+
+  animation:
+    bioFloatingMenuIn 0.18s ease-out;
+}
+
+
+/* ==========================================================
+   FLOATING MENU TITLE
+   ========================================================== */
+
+.bio-floating-title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  min-height:
+    39px;
+
+  padding:
+    6px 9px;
+
+  border-radius:
+    9px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    0.78rem;
+
+  font-weight:
+    700;
+
+  background:
+    rgba(7, 100, 213, 0.17);
+}
+
+
+.bio-floating-icon {
+
+  width:
+    28px;
+
+  height:
+    28px;
+
+  min-width:
+    28px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    8px;
+
+  color:
+    #ffffff;
+
+  background:
+    linear-gradient(135deg,
+      #0871e8,
+      #084b9b);
+}
+
+
+/* ==========================================================
+   FLOATING SUBMENU
+   ========================================================== */
+
+.bio-floating-submenu {
+
+  margin-top:
+    6px;
+
+  padding-top:
+    5px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.bio-floating-submenu a {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    9px;
+
+  min-height:
+    36px;
+
+  padding:
+    7px 9px;
+
+  border-radius:
+    8px;
+
+  color:
+    #8fa7c4;
+
+  text-decoration:
+    none;
+
+  font-size:
+    0.73rem;
+
+  transition:
+    var(--bio-transition);
+}
+
+
+.bio-floating-submenu a:hover {
+
+  color:
+    #ffffff;
+
+  background:
+    rgba(7, 100, 213, 0.20);
+
+  transform:
+    translateX(3px);
+}
+
+
+.bio-floating-submenu a.active {
+
+  color:
+    #ffffff;
+
+  background:
+    rgba(7, 100, 213, 0.25);
+}
+
+
+.bio-floating-submenu a i {
+
+  color:
+    #718baa;
+
+  font-size:
+    15px;
+}
+
+
+.bio-floating-submenu a:hover i,
+.bio-floating-submenu a.active i {
+
+  color:
+    #d9a441;
+}
+
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+
+.bio-sidebar-footer {
+
+  position:
+    absolute;
+
+  left:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    0;
+
+  height:
+    52px;
+
+  z-index:
+    10;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  padding:
+    0 17px;
+
+  background:
+    rgba(2, 16, 38, 0.82);
+
+  border-top:
+    1px solid rgba(70, 132, 202, 0.15);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+
+.bio-footer-status {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  color:
+    rgba(185, 205, 229, 0.60);
+
+  font-size:
+    0.64rem;
+}
+
+
+.bio-status-dot {
+
+  width:
+    7px;
+
+  height:
+    7px;
+
+  border-radius:
+    50%;
+
+  background:
+    #39d98a;
+
+  box-shadow:
+    0 0 10px rgba(57, 217, 138, 0.65);
+}
+
+
+.bio-sidebar-is-collapsed .bio-sidebar-footer {
+
+  justify-content:
+    center;
+
+  padding:
+    0;
+}
+
+
+.bio-sidebar-is-collapsed .bio-footer-text {
+
+  display:
+    none;
+}
+
+
+/* ==========================================================
+   BACKGROUND LAB
+   ========================================================== */
+
+.bio-sidebar-background {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    0;
+
+  pointer-events:
+    none;
+
+  background-image:
+    url("/assets/img/bio-lab-background.png");
+
+  background-size:
+    cover;
+
+  background-position:
+    center;
+
+  opacity:
+    0.045;
+
+  filter:
+    blur(1px) saturate(0.65);
+
+  transform:
+    scale(1.12);
+}
+
+
+.bio-sidebar-background::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    linear-gradient(180deg,
+      rgba(4, 20, 48, 0.86),
+      rgba(3, 18, 43, 0.98));
+}
+
+
+/* ==========================================================
+   ANIMATION
+   ========================================================== */
+
+@keyframes bioFloatingMenuIn {
+
+  from {
+
+    opacity:
+      0;
+
+    transform:
+      translateX(-7px) scale(0.97);
+  }
+
+  to {
+
+    opacity:
+      1;
+
+    transform:
+      translateX(0) scale(1);
+  }
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+  :root {
+
+    --bio-sidebar-width:
+      76px;
+
+    --bio-sidebar-mini-width:
+      76px;
+  }
+
+
+  .layout-menu.bio-sidebar {
+
+    width:
+      76px !important;
+  }
+
+
+  .bio-main-area {
+
+    margin-left:
+      76px;
+
+    width:
+      calc(100% - 76px);
+  }
+
+
+  .bio-sidebar-brand {
+
+    justify-content:
+      center !important;
+
+    padding:
+      12px 6px !important;
+  }
+
+
+  .bio-brand-content {
+
+    display:
+      none;
+  }
+
+
+  .bio-sidebar-toggle {
+
+    display:
+      none;
+  }
+
+
+  .bio-menu-header {
+
+    display:
+      none !important;
+  }
+
+
+  .bio-menu-link {
+
+    width:
+      52px;
+
+    margin:
+      0 auto !important;
+
+    padding:
+      0 !important;
+
+    justify-content:
+      center !important;
+  }
+
+
+  .bio-menu-label {
+
+    display:
+      none !important;
+  }
+
+
+  .bio-floating-menu {
+
+    left:
+      84px;
+
+    width:
+      min(245px,
+        calc(100vw - 94px));
+  }
+
+
+  .bio-content-container {
+
+    padding:
+      16px;
+  }
+}
+
+
+/* ==========================================================
+   SMALL PHONE
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+  .bio-content-container {
+
+    padding:
+      12px;
+  }
+
+
+  .bio-floating-menu {
+
+    left:
+      82px;
+
+    width:
+      calc(100vw - 94px);
+  }
+}

@@ -1,77 +1,131 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './page-auth.css'
-export const AuthWrapper = ({ children, maxWidth }) => {
-    maxWidth = maxWidth || "400px";
+import './AuthWrapper.css'
+
+export const AuthWrapper = ({ children }) => {
     return (
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100vh",
-          backgroundImage: `linear-gradient(rgba(20, 1, 1, 0.59), rgba(32, 2, 2, 0.65)), url('/assets/img/hospital-mohimbili.jpg')`,
-          backgroundSize: "110%", // starting slightly zoomed in
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          animation: "backgroundZoom 10s ease-in-out infinite",
-        }}
-      >
-        <style>
-          {`
-      @keyframes backgroundZoom {
-        0% {
-          background-size: 100%;
-        }
-        50% {
-          background-size: 110%;
-        }
-        100% {
-          background-size: 100%;
-        }
-      }
-    `}
-        </style>
-        <div className="container-xxl">
-          <div className="authentication-wrapper authentication-basic container-p-y">
-            <div
-              className="authentication-inner"
-              style={{ maxWidth: maxWidth }}
-            >
-              <div className="card">
-                <div className="card-body">
-                  <div className="app-brand justify-content-center">
-                    <Link
-                      aria-label="Go to Home Page"
-                      to="/"
-                      className="app-brand-link gap-2"
-                    >
-                      <span className="app-brand-logo demo">
-                        <img
-                          src="/assets/img/nembo.jpg"
-                          alt="sneat-logo"
-                          width={"70px"}
-                          height={"70px"}
-                        />
-                      </span>
-                      <span className="app-brand-text demo text-body fw-bold">
-                        MNH-CONNECT
-                      </span>
-                      <span className="app-brand-logo demo">
-                        <img
-                          src="/assets/img/mnhlogo.png"
-                          alt="sneat-logo"
-                          width={"70px"}
-                          height={"70px"}
-                        />
-                      </span>
-                    </Link>
-                  </div>
-                  {children}
-                </div>
-              </div>
+      <div className="bio-auth-wrapper">
+
+        {/* Full laboratory background */}
+        <div className="bio-auth-background" />
+
+        {/* Main two-column layout */}
+        <div className="bio-auth-layout">
+
+          {/* =====================================================
+                    LEFT SIDE
+                ===================================================== */}
+          <section className="bio-auth-left">
+
+            {/* MNH Logo */}
+            <div className="bio-mnh-logo">
+              <img src="/assets/img/mnhlogo.png" alt="" width={"60px"} height={"60px"} aria-label='Sneat logo image' />
             </div>
-          </div>
+
+
+            {/* Main Branding */}
+            <div className="bio-brand-content">
+
+              <h1 className="bio-system-title">
+                BIO-FRIDGE SYSTEM
+              </h1>
+
+              <p className="bio-system-subtitle">
+                Biological Sample Repository &amp;<br />
+                Cold Storage Mapping System
+              </p>
+
+
+              <div className="bio-world-class">
+                <strong>LABORATORY</strong>
+                <span>SAMPLE MAPPING</span>
+                <span>SYSTEM</span>
+              </div>
+
+            </div>
+
+
+            {/* Feature Cards */}
+            <div className="bio-feature-grid">
+
+              <div className="bio-feature-card">
+                <div className="bio-feature-icon">
+                  <i className="bx bx-box"></i>
+                </div>
+
+                <span>
+                  Smart Storage<br />
+                  Management
+                </span>
+              </div>
+
+
+              <div className="bio-feature-card">
+                <div className="bio-feature-icon">
+                  <i className="bx bx-pulse"></i>
+                </div>
+
+                <span>
+                  Real-time<br />
+                  Monitoring
+                </span>
+              </div>
+
+
+              <div className="bio-feature-card">
+                <div className="bio-feature-icon">
+                  <i className="bx bx-dna"></i>
+                </div>
+
+                <span>
+                  100% Sample<br />
+                  Traceability
+                </span>
+              </div>
+
+
+              <div className="bio-feature-card">
+                <div className="bio-feature-icon">
+                  <i className="bx bx-shield-quarter"></i>
+                </div>
+
+                <span>
+                  Secure &amp;<br />
+                  Reliable
+                </span>
+              </div>
+
+            </div>
+
+
+            {/* Bottom Quote */}
+            <p className="bio-auth-quote">
+              "Preserving today's samples for tomorrow's breakthroughs."
+            </p>
+
+          </section>
+
+
+          {/* =====================================================
+                    RIGHT SIDE
+                ===================================================== */}
+          <section className="bio-auth-right">
+
+            <div className="bio-login-card">
+
+              {/* 
+                            IMPORTANT:
+                            Your existing Login page becomes the child.
+                        */}
+              {children}
+
+            </div>
+
+          </section>
+
         </div>
+
       </div>
-    );
+    )
 }

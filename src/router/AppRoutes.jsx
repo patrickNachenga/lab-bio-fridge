@@ -22,6 +22,7 @@ const AppRoutes = () => {
       {/* Orphanage Management Routes */}
       {orphanageRoutes}
 
+
       {/* Catch-all 404 */}
       <Route path="*" element={<MaintenancePage />} />
     </Routes>

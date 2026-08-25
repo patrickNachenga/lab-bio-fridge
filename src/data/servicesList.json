@@ -73,7 +73,7 @@
     "id": "orphanage-hospitals",
     "text": "Partner Hospitals",
     "description": "Manage partner hospitals",
-    "icon": "bx bx-hospital",
+    "icon": "bx bx-building",
     "available": true,
     "link": "/orphanage/hospitals",
     "permission": ["view_hospital"],

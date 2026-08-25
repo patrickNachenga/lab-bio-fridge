@@ -1,0 +1,796 @@
+/* ============================================================
+   BIO-FRIDGE AUTH WRAPPER
+   ============================================================ */
+
+.bio-auth-wrapper {
+  --bio-blue: #075fd2;
+  --bio-blue-dark: #063b9d;
+  --bio-blue-light: #1680ff;
+
+  --bio-yellow: #ffd029;
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.78);
+
+  --transition:
+    all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  background: #032b78;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* ============================================================
+   LAB BACKGROUND
+   ============================================================ */
+
+.bio-auth-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background-image:
+    url("/assets/img/laboratory.png");
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* ============================================================
+   BLUE SIDE SHADOW / OVERLAY
+   - Strong on left and right
+   - Fades toward center
+   - Center of laboratory/person remains visible
+   ============================================================ */
+
+.bio-auth-background::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(90deg,
+
+      /* LEFT */
+      rgba(2, 42, 112, 0.88) 0%,
+      rgba(3, 57, 140, 0.72) 13%,
+      rgba(4, 68, 155, 0.42) 25%,
+      rgba(4, 70, 155, 0.12) 36%,
+
+      /* CENTER - intentionally clear */
+      rgba(4, 70, 155, 0.00) 45%,
+      rgba(4, 70, 155, 0.00) 55%,
+
+      /* RIGHT */
+      rgba(4, 70, 155, 0.12) 64%,
+      rgba(4, 68, 155, 0.42) 75%,
+      rgba(3, 57, 140, 0.72) 87%,
+      rgba(2, 42, 112, 0.88) 100%);
+}
+
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+
+.bio-auth-layout {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  display: grid;
+
+  /*
+     Left side gets most of the screen.
+     Right side stays compact for the login form.
+  */
+  grid-template-columns:
+    minmax(0, 1fr) minmax(340px, 395px);
+
+  /*
+     Small but visible gap between the laboratory
+     content and login panel.
+  */
+  column-gap: clamp(28px, 3vw, 52px);
+
+  align-items: center;
+
+  padding:
+    45px clamp(45px, 5vw, 80px);
+}
+
+
+/* ============================================================
+   LEFT SIDE
+   ============================================================ */
+
+.bio-auth-left {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+  max-width: 760px;
+
+  min-height: 700px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  color: white;
+
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.22);
+}
+
+
+/* ============================================================
+   MNH LOGO
+   ============================================================ */
+
+.bio-mnh-logo {
+  width: 82px;
+  height: 82px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  color: #063b9d;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-shadow:
+    0 8px 30px rgba(0, 25, 90, 0.22);
+
+  animation:
+    bioLogoIn 0.7s ease both;
+}
+
+
+.bio-mnh-name {
+  font-size: 23px;
+
+  font-weight: 800;
+
+  line-height: 1;
+}
+
+
+.bio-mnh-text {
+  margin-top: 4px;
+
+  text-align: center;
+
+  font-size: 5px;
+
+  line-height: 1.25;
+
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   BRAND CONTENT
+   ============================================================ */
+
+.bio-brand-content {
+  margin-top: 28px;
+
+  animation:
+    bioContentIn 0.8s ease 0.1s both;
+}
+
+
+/*
+   USER REQUEST:
+   BIO-FRIDGE SYSTEM MUST BE WHITE.
+*/
+
+.bio-system-title {
+  margin: 0;
+
+  color: #ffffff !important;
+
+  font-size:
+    clamp(25px, 2vw, 42px);
+
+  line-height: 1.1;
+
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
+
+  text-shadow:
+    0 2px 10px rgba(7, 95, 210),
+    0 3px 14px rgba(217, 164, 65),
+    0 2px 10px rgba(216, 74, 58);
+}
+
+
+.bio-system-subtitle {
+  margin:
+    10px 0 0;
+
+  color:
+    rgba(255, 255, 255, 0.9);
+
+  font-size:
+    clamp(12px, 1vw, 16px);
+
+  line-height: 1.5;
+
+  font-weight: 400;
+}
+
+
+/* ============================================================
+   WORLD CLASS TEXT
+   ============================================================ */
+
+.bio-world-class {
+  display: flex;
+
+  flex-direction: column;
+
+  margin-top: 35px;
+
+  line-height: 1.12;
+}
+
+
+.bio-world-class strong,
+.bio-world-class span {
+  color: var(--bio-yellow);
+
+  font-size:
+    clamp(22px, 2.3vw, 38px);
+
+  font-weight: 800;
+
+  text-shadow:
+    0 3px 15px rgba(0, 0, 0, 0.25);
+}
+
+
+.bio-world-class strong {
+  margin-bottom: 2px;
+}
+
+
+/* ============================================================
+   FEATURE CARDS
+   ============================================================ */
+
+.bio-feature-grid {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 40px;
+
+  animation:
+    bioContentIn 0.8s ease 0.25s both;
+}
+
+
+.bio-feature-card {
+  width: 112px;
+
+  min-height: 105px;
+
+  padding:
+    13px 9px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid rgba(100, 190, 255, 0.35);
+
+  background:
+    rgba(3, 58, 135, 0.48);
+
+  backdrop-filter: blur(8px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  color: rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    0 8px 25px rgba(0, 20, 80, 0.15);
+
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
+.bio-feature-card:hover {
+  transform: translateY(-4px);
+
+  background:
+    rgba(4, 75, 160, 0.62);
+
+  border-color:
+    rgba(120, 205, 255, 0.65);
+}
+
+
+.bio-feature-icon {
+  width: 34px;
+  height: 34px;
+
+  margin-bottom: 8px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.65);
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: white;
+
+  font-size: 17px;
+}
+
+
+.bio-feature-card span {
+  font-size: 10px;
+
+  line-height: 1.35;
+}
+
+
+/* ============================================================
+   QUOTE
+   ============================================================ */
+
+.bio-auth-quote {
+  margin:
+    25px 0 0;
+
+  color:
+    rgba(255, 255, 255, 0.78);
+
+  font-size: 13px;
+
+  font-style: italic;
+
+  animation:
+    bioContentIn 0.8s ease 0.4s both;
+}
+
+
+/* ============================================================
+   RIGHT LOGIN AREA
+   ============================================================ */
+
+.bio-auth-right {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-start;
+}
+
+
+/* ============================================================
+   LOGIN CARD
+   ============================================================ */
+
+.bio-login-card {
+  width: 100%;
+
+  max-width: 395px;
+
+  padding:
+    35px 32px 27px;
+
+  border-radius: 18px;
+
+  /*
+     White premium login card.
+  */
+  background:
+    rgba(255, 255, 255, 0.97);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.9);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.28);
+
+  color: #16243c;
+
+  animation:
+    bioLoginIn 0.75s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+
+/* ============================================================
+   LOGIN CHILD NORMALIZATION
+   ============================================================ */
+
+/*
+   If the existing login component contains a .card,
+   prevent it from creating another visible card.
+*/
+
+.bio-login-card>.card,
+.bio-login-card .card {
+  background: transparent !important;
+
+  border: none !important;
+
+  box-shadow: none !important;
+
+  border-radius: 0 !important;
+
+  backdrop-filter: none !important;
+
+  animation: none !important;
+}
+
+
+.bio-login-card>.card>.card-body,
+.bio-login-card .card .card-body {
+  padding: 0 !important;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (min-width: 1600px) {
+
+  .bio-auth-layout {
+    grid-template-columns:
+      minmax(700px, 1fr) 410px;
+
+    column-gap: 55px;
+
+    padding-left: 85px;
+
+    padding-right: 85px;
+  }
+
+  .bio-auth-left {
+    max-width: 820px;
+  }
+
+  .bio-login-card {
+    max-width: 410px;
+  }
+}
+
+
+@media (max-width: 1150px) {
+
+  .bio-auth-layout {
+    grid-template-columns:
+      minmax(0, 1fr) 365px;
+
+    column-gap: 30px;
+
+    padding:
+      35px;
+  }
+
+  .bio-auth-left {
+    min-height: auto;
+  }
+
+  .bio-system-title {
+    font-size: 2.4rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.2px;
+
+    text-shadow:
+      0 2px 10px rgba(7, 95, 210),
+      0 3px 14px rgba(217, 164, 65),
+      0 2px 10px rgba(216, 74, 58);
+
+    opacity: 0.96;
+
+    line-height: 1.1;
+
+    margin: 0;
+  }
+
+  .bio-world-class strong,
+  .bio-world-class span {
+    font-size: 29px;
+  }
+
+  .bio-feature-card {
+    width: 100px;
+  }
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 850px) {
+
+  .bio-auth-wrapper {
+    overflow-y: auto;
+  }
+
+  .bio-auth-background {
+    position: fixed;
+
+    background-position:
+      center center;
+  }
+
+  .bio-auth-layout {
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 35px;
+
+    padding:
+      35px 25px 45px;
+  }
+
+  .bio-auth-left {
+    max-width: 600px;
+
+    min-height: auto;
+
+    align-items: center;
+
+    text-align: center;
+  }
+
+  .bio-feature-grid {
+    justify-content: center;
+  }
+
+  .bio-auth-right {
+    justify-content: center;
+
+    max-width: 430px;
+  }
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+  .bio-auth-layout {
+    padding:
+      25px 18px 40px;
+
+    gap: 28px;
+  }
+
+  .bio-mnh-logo {
+    width: 65px;
+    height: 65px;
+  }
+
+  .bio-mnh-name {
+    font-size: 19px;
+  }
+
+  .bio-system-title {
+    font-size: 27px;
+  }
+
+  .bio-system-subtitle {
+    font-size: 13px;
+  }
+
+  .bio-world-class {
+    margin-top: 25px;
+  }
+
+  .bio-world-class strong,
+  .bio-world-class span {
+    font-size: 25px;
+  }
+
+  .bio-feature-grid {
+    gap: 7px;
+  }
+
+  .bio-feature-card {
+    width:
+      calc(50% - 4px);
+  }
+
+  .bio-login-card {
+    padding:
+      30px 22px 24px;
+  }
+}
+
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes bioLogoIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-20px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0) scale(1);
+  }
+}
+
+
+@keyframes bioContentIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(-25px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0);
+  }
+}
+
+
+@keyframes bioLoginIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateX(35px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateX(0) scale(1);
+  }
+}
+
+@media (max-width: 850px) {
+
+  /* Keep background */
+  .bio-auth-background {
+    position: fixed;
+    inset: 0;
+    background-position: center center;
+  }
+
+  /* Keep the main layout */
+  .bio-auth-layout {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px 18px;
+  }
+
+  /* LEFT SECTION */
+  .bio-auth-left {
+    display: flex;
+    width: 100%;
+
+    min-height: auto;
+
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Hide these on phone */
+
+  .bio-system-subtitle {
+    display: none !important;
+  }
+
+  .bio-world-class {
+    display: none !important;
+  }
+
+  .bio-feature-grid {
+    display: none !important;
+  }
+
+  .bio-auth-quote {
+    display: none !important;
+  }
+
+
+  /* Keep BIO-FRIDGE SYSTEM if desired */
+  .bio-system-title {
+    display: block;
+  }
+
+
+  /* Login */
+  .bio-auth-right {
+    width: 100%;
+    max-width: 430px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bio-login-card {
+    width: 100%;
+    max-width: 410px;
+  }
+}
