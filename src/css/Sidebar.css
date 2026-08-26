@@ -77,7 +77,7 @@
   inset: 0;
 
   background-image:
-    url("/assets/img/bio-lab-background.png");
+    url("/assets/img/laboratory.png");
 
   background-size: cover;
 
@@ -376,6 +376,7 @@
 
   overflow-y: auto;
 
+  overflow-x: visible;
 
   padding:
     13px 8px !important;
@@ -1891,6 +1892,7 @@
 
   overflow-y: auto !important;
 
+  overflow-x: visible !important;
 }
 
 
@@ -2384,7 +2386,7 @@
     none;
 
   background-image:
-    url("/assets/img/bio-lab-background.png");
+    url("/assets/img/laboratory.png");
 
   background-size:
     cover;

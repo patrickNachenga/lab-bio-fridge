@@ -8,9 +8,12 @@ import showToast from "../../helpers/ToastHelper";
 import Select from "react-select";
 import "animate.css";
 
+const getGroupKey = (g) => g.group || g.key;
+
 const PaginatedTable = ({
   fetchPath,
-  title,
+  data = null,
+  title = "",
   columns,
   buttons,
   onSelect,
@@ -19,7 +22,15 @@ const PaginatedTable = ({
   filterSelected = ["ALL"],
   filterGroups = [],
   isFullPath = false,
+  initialPageSize = 10,
+  pageSizeOptions = [10, 25, 50, 100],
+  hideTitle = false,
+  initialFilters = {},
+  searchPlaceholder = "Search...",
+  clearFiltersOnEmpty = true,
+  rowClassName,
 }) => {
+  const isStaticData = Array.isArray(data);
   const {
     currentPage,
     totalCount,
@@ -28,33 +39,81 @@ const PaginatedTable = ({
     updatePageSize,
     updatePagination,
     updateTotalCount,
-  } = usePagination(10, 1, true);
+  } = usePagination(initialPageSize, 1, true);
   const [rowRecords, setRowRecords] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
-  const pageSizeData = [10, 25, 50, 100];
+  const pageSizeData = pageSizeOptions;
   const [searchQuery, setSearchQuery] = useState("");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState(filterSelected);
-  const [selectedFilterGroups, setSelectedFilterGroups] = useState(
-    () =>
-      filterGroups.reduce((acc, group) => {
-        acc[group.group] = group.selected || [];
-        return acc;
-      }, {})
-  );
+  const [selectedFilterGroups, setSelectedFilterGroups] = useState(() => {
+    const base = filterGroups.reduce((acc, group) => {
+      acc[getGroupKey(group)] = group.selected || [];
+      return acc;
+    }, {});
+    Object.entries(initialFilters || {}).forEach(([k, v]) => {
+      if (v != null && v !== "" && (Array.isArray(v) ? v.length : true)) {
+        base[k] = Array.isArray(v) ? v : [v];
+      }
+    });
+    return base;
+  });
 
   const handlePageClick = (event) => {
     updatePage(event.selected + 1);
   };
 
-  const handleFetchData = async (clearFiltersOnEmpty = true) => {
+  const handleFetchData = async () => {
     setLoading(true);
     setError(null);
+
+    if (isStaticData) {
+      const search = searchQuery.trim().toLowerCase();
+      const filteredData = data.filter((row) => {
+        const matchesSearch =
+          !search ||
+          Object.values(row || {})
+            .flatMap((value) => {
+              if (value == null) return [];
+              if (typeof value === "object") return Object.values(value);
+              return [value];
+            })
+            .join(" ")
+            .toLowerCase()
+            .includes(search);
+
+        const matchesSimpleFilter =
+          !selectedFilters.length ||
+          selectedFilters.includes("ALL") ||
+          selectedFilters.some((filterValue) =>
+            Object.values(row || {}).some(
+              (value) => String(value).toLowerCase() === String(filterValue).toLowerCase()
+            )
+          );
+
+        const matchesGroupFilters = Object.entries(selectedFilterGroups).every(
+          ([group, values]) =>
+            !values?.length ||
+            values.some((filterValue) => String(row?.[group]).toLowerCase() === String(filterValue).toLowerCase())
+        );
+
+        return matchesSearch && matchesSimpleFilter && matchesGroupFilters;
+      });
+
+      const start = (currentPage - 1) * pageSize;
+      const pagedData = filteredData.slice(start, start + pageSize);
+      setRowRecords(pagedData);
+      updatePagination({ page: currentPage, page_size: pageSize, total: filteredData.length });
+      updateTotalCount(filteredData.length);
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Format filter groups for API
+      // Format filter groups for API (skip invalid keys from legacy state)
       const formattedFilterGroups = Object.entries(selectedFilterGroups)
-        .filter(([_, values]) => values.length > 0)
+        .filter(([groupKey, values]) => groupKey && values.length > 0)
         .reduce((acc, [group, values]) => {
           acc[group] = values.join(",");
           return acc;
@@ -86,7 +145,7 @@ const PaginatedTable = ({
           
           // Clear filters and fetch all data
           const cleared = {};
-          filterGroups.forEach((g) => (cleared[g.group] = []));
+          filterGroups.forEach((g) => (cleared[getGroupKey(g)] = []));
           setSelectedFilterGroups(cleared);
           setSelectedFilters([]);
           
@@ -163,37 +222,39 @@ const PaginatedTable = ({
   // Handle Group filter resert
   const resetAllFilters = () => {
     const cleared = {};
-    filterGroups.forEach((g) => (cleared[g.group] = []));
+    filterGroups.forEach((g) => (cleared[getGroupKey(g)] = []));
     setSelectedFilterGroups(cleared);
   };
 
 
   return (
     <div className="card">
-      <div className="d-flex justify-content-between align-items-center card-header mb-1">
-        <h5 className="mb-0">{title || "Presentation Table"}</h5>
-        <div key="action_button_div" className=" d-flex align-items-center">
-          {buttons &&
-            buttons.length > 0 &&
-            buttons.map((button, index) =>
-              button.render ? (
-                <React.Fragment key={`action_button_${index}`}>
-                  {button.render()}
-                </React.Fragment>
-              ) : (
-                <button
-                  key={"action_button_" + index}
-                  className={`btn btn-sm ${
-                    button.className || "btn-primary"
-                  } me-2`}
-                  onClick={button.onClick}
-                >
-                  {button.label}
-                </button>
-              )
-            )}
+      {!hideTitle && (title || (buttons && buttons.length > 0)) && (
+        <div className="d-flex justify-content-between align-items-center card-header mb-1">
+          {title && <h5 className="mb-0">{title}</h5>}
+          <div key="action_button_div" className="d-flex align-items-center">
+            {buttons &&
+              buttons.length > 0 &&
+              buttons.map((button, index) =>
+                button.render ? (
+                  <React.Fragment key={`action_button_${index}`}>
+                    {button.render()}
+                  </React.Fragment>
+                ) : (
+                  <button
+                    key={"action_button_" + index}
+                    className={`btn btn-sm ${
+                      button.className || "btn-primary"
+                    } me-2`}
+                    onClick={button.onClick}
+                  >
+                    {button.label}
+                  </button>
+                )
+              )}
+          </div>
         </div>
-      </div>
+      )}
       <div className="card-body">
         <div className="row d-flex justify-content-between align-items-center mb-2 ">
          
@@ -201,7 +262,7 @@ const PaginatedTable = ({
           {filterGroups.length > 0 && (
             <div className="row g-2 mb-2">
               {filterGroups.map((group) => (
-                <div key={group.group} className="col-auto">
+                <div key={getGroupKey(group)} className="col-auto">
                   <div className="input-group">
                     <span className="input-group-text text-info">
                       {group.label}
@@ -211,10 +272,12 @@ const PaginatedTable = ({
                       isMulti
                       options={group.options}
                       value={group.options.filter((opt) =>
-                        selectedFilterGroups[group.group]?.includes(opt.value)
+                        (selectedFilterGroups[getGroupKey(group)] || []).some(
+                          (v) => v === opt.value || String(v) === String(opt.value)
+                        )
                       )}
                       onChange={(selected) =>
-                        handleGroupFilterChange(group.group, selected)
+                        handleGroupFilterChange(getGroupKey(group), selected)
                       }
                       placeholder={group.placeholder || `Select ${group.label}`}
                       classNamePrefix="react-select"
@@ -236,7 +299,7 @@ const PaginatedTable = ({
               {/*Reset All Button */}
               <div className="col-auto d-flex align-items-center">
                   <button
-                    className="btn btn-outline-info me-2"
+                  className="btn btn-sm btn-outline-info me-2"
                     onClick={resetAllFilters}
                     title="Reset All Filters"
                   >
@@ -313,6 +376,11 @@ const PaginatedTable = ({
                       zIndex: 99999,
                       minHeight: "32px",
                       borderColor: "#17a2b8",
+                      minWidth: "250px",
+                    }),
+                    control: (base) => ({
+                      ...base,
+                      minWidth: "250px"
                     }),
                   }}
                 />
@@ -329,7 +397,7 @@ const PaginatedTable = ({
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Search..."
+                  placeholder={searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -403,6 +471,11 @@ const PaginatedTable = ({
                   rowRecords.map((row, rowIndex) => (
                     <tr
                       key={row.id || rowIndex}
+                      className={
+                        typeof rowClassName === "function"
+                          ? rowClassName(row, rowIndex)
+                          : rowClassName || ""
+                      }
                       onClick={() => onSelect && onSelect(row)}
                     >
                       {columns.map((col) => {
@@ -471,8 +544,9 @@ const PaginatedTable = ({
 };
 
 PaginatedTable.propTypes = {
-  title: PropTypes.string.isRequired,
-  fetchPath: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  fetchPath: PropTypes.string,
+  data: PropTypes.array,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -502,11 +576,12 @@ PaginatedTable.propTypes = {
   filterSelected: PropTypes.arrayOf(PropTypes.string.isRequired),
   filterGroups: PropTypes.arrayOf(
     PropTypes.shape({
-      group: PropTypes.string.isRequired,
+      group: PropTypes.string,
+      key: PropTypes.string,
       label: PropTypes.string.isRequired,
       options: PropTypes.arrayOf(
         PropTypes.shape({
-          value: PropTypes.string.isRequired,
+          value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
           label: PropTypes.string.isRequired,
         })
       ).isRequired,
@@ -514,6 +589,10 @@ PaginatedTable.propTypes = {
       placeholder: PropTypes.string,
     })
   ),
+  initialFilters: PropTypes.object,
+  searchPlaceholder: PropTypes.string,
+  clearFiltersOnEmpty: PropTypes.bool,
+  rowClassName: PropTypes.func,
 };
 
 export default PaginatedTable;

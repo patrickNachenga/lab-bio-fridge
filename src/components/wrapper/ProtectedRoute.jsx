@@ -1,12 +1,10 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { REFRESH_TOKEN, ACCESS_TOKEN } from "../../Costants";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import api from "../../api";
 import LinearIndeterminate from "../../LinearIndeterminate";
-import { logout } from "../../redux/actions/authentication/logoutAction";
 import { jwtDecode } from "jwt-decode";
-import Swal from "sweetalert2";
+import { normalizeUserRoles } from "../../utils/permissions";
+import { clearAuthState, refreshAuthSession } from "../../features/auth/authSession";
 
 function ProtectedRoute({
   children,
@@ -16,27 +14,28 @@ function ProtectedRoute({
   const [isAuthorized, setIsAuthorized] = useState(null);
   const location = useLocation();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userReducer?.data);
+  const authState = useSelector((state) => state.userReducer);
+  const user = authState?.data;
+  const accessToken = authState?.access_token || localStorage.getItem("accessToken");
+  const refreshToken = authState?.refresh_token || localStorage.getItem("refreshToken");
+  const isAuthenticated = Boolean(user && accessToken);
 
   useEffect(() => {
     checkAuth();
-  }, [user, dispatch]);
+  }, [accessToken, dispatch]);
 
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem(ACCESS_TOKEN);
-      if (!token) {
+      if (!accessToken) {
         throw new Error("No token found");
       }
 
-      const decoded = jwtDecode(token);
+      const decoded = jwtDecode(accessToken);
       const now = Date.now() / 1000;
 
       if (decoded.exp < now) {
-        const refreshed = await refreshToken();
+        const refreshed = await refreshAuthSession(dispatch, refreshToken, user);
         if (!refreshed) {
-          localStorage.clear();
-          dispatch(logout());
           throw new Error("Token refresh failed");
         }
       }
@@ -45,26 +44,8 @@ function ProtectedRoute({
     } catch (error) {
       console.error("Authorization error:", error);
       setIsAuthorized(false);
-      dispatch(logout());
+      clearAuthState(dispatch);
     }
-  };
-
-  const refreshToken = async () => {
-    try {
-      const refresh = localStorage.getItem(REFRESH_TOKEN);
-      if (!refresh) {
-        return false;
-      }
-
-      const res = await api.post("/token/refresh/", { refresh });
-      if (res.status === 200) {
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        return true;
-      }
-    } catch (error) {
-      console.error("Token refresh error:", error);
-    }
-    return false;
   };
 
   // Show loader while determining
@@ -79,6 +60,12 @@ function ProtectedRoute({
     return <Navigate to="/auth/login" />;
   }
 
+  // During/after logout, redux user can be cleared before route settles.
+  // Redirect silently to login instead of showing "Access Denied" popup.
+  if ((isAuthorized || isAuthenticated) && !user && !isAuthPath) {
+    return <Navigate to="/auth/login" replace />;
+  }
+
   // Logged in but navigating to auth page
   if (isAuthorized && isAuthPath) {
     return <Navigate to="/" />;
@@ -86,30 +73,22 @@ function ProtectedRoute({
 
   // ✅ If user is logged in, now check permissions and roles
   const userPermissions = user?.user_permissions || [];
-  const userRoles = user?.groups || [];
+  const userRolesNorm = normalizeUserRoles(user?.groups || []);
+  const permLower = new Set(userPermissions.map((p) => String(p).toLowerCase()));
 
   const hasRequiredPermissions =
     !requiredPermissions.length ||
-    requiredPermissions.some((perm) => userPermissions.includes(perm));
+    requiredPermissions.some((perm) =>
+      permLower.has(String(perm).toLowerCase())
+    );
 
+  const roleLower = new Set(userRolesNorm.map((r) => r.toLowerCase()));
   const hasRequiredRoles =
     !requiredRoles.length ||
-    requiredRoles.some((role) => userRoles.includes(role));
+    requiredRoles.some((role) => roleLower.has(String(role).toLowerCase()));
 
   if (!hasRequiredPermissions || !hasRequiredRoles) {
-    Swal.fire({
-      title: "Access Denied",
-      text: "You don’t have permission to access this page.",
-      icon: "warning",
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      confirmButtonText: "Go to Dashboard",
-    }).then(() => {
-      window.location.href = "/";
-    });
-
-    return null;
+    return <Navigate to="/" replace />;
   }
 
   return children;

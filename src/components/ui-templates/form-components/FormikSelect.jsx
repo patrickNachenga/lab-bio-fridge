@@ -19,6 +19,7 @@ const FormikSelect = ({
   minChars = 2,
   isReadOnly = false,
   onSelectObject,
+  errorMessage,
   ...selectProps
 }) => {
   const [field, meta] = useField(name);
@@ -38,11 +39,11 @@ const FormikSelect = ({
 
   // Initialize static options once
   useEffect(() => {
-    if (Array.isArray(staticOptions) && staticOptions.length > 0) {
+    if (Array.isArray(staticOptions) && (staticOptions.length > 0 || !url)) {
       const mapped = staticOptions.map(stableMapOption).filter(Boolean);
       setOptions(mapped);
     }
-  }, [staticOptions, stableMapOption]);
+  }, [staticOptions, stableMapOption, url]);
 
   // Merge helper: ensures previously selected options stay in the list
   const mergeOptions = useCallback((newOpts) => {
@@ -111,43 +112,44 @@ const FormikSelect = ({
     doFetch("");
   }, [url, filtersString, isFullPath, doFetch]);
 
-  // Fetch initial value if not in options (for edit mode)
-  useEffect(() => {
-    const initValue = field.value;
-    if (!initValue || !url) return;
+    // Fetch initial value if not in options (for edit mode)
+    useEffect(() => {
+        const initValue = field.value;
+        if (!initValue || !url) return;
 
-    // For multi-select, check if all values exist
-    if (Array.isArray(initValue)) {
-      if (initValue.length === 0) return;
-      const allExist = initValue.every(v => options.find((opt) => opt.value === v));
-      if (allExist) return;
-    } else {
-      const exists = options.find((opt) => opt.value === initValue);
-      if (exists) return;
-    }
-
-    // Fetch first missing value
-    const valueToFetch = Array.isArray(initValue) ? initValue[0] : initValue;
-    if (!valueToFetch) return;
-
-    (async () => {
-      try {
-        const fetchUrl = isFullPath ? `${url}/${valueToFetch}` : `${url}/${valueToFetch}`;
-        const res = await fetchData({
-          url: fetchUrl,
-          isFullPath: true,
-        });
-        if ((res?.status === 200 || res?.status === 8000) && res.data) {
-          const mapped = stableMapOption(res.data);
-          if (mapped) mergeOptions([mapped]);
+        // For multi-select, check if all values exist
+        if (Array.isArray(initValue)) {
+            if (initValue.length === 0) return;
+            const allExist = initValue.every(v => options.find((opt) => opt.value === v));
+            if (allExist) return;
+        } else {
+            const exists = options.find((opt) => opt.value === initValue);
+            if (exists) return;
         }
-      } catch (err) {
-        console.error("Failed to load initial option:", err);
-      }
-    })();
-    // Only depend on field.value and options length to avoid loops
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [field.value, options.length]);
+
+        // Fetch first missing value
+        const valueToFetch = Array.isArray(initValue) ? initValue[0] : initValue;
+        if (!valueToFetch) return;
+
+        (async () => {
+            try {
+                // For isFullPath, use the URL directly without prepending API_BASE_URL
+                const fetchUrl = isFullPath ? `${url}/${valueToFetch}` : `${url}/${valueToFetch}`;
+                const res = await fetchData({
+                    url: fetchUrl,
+                    isFullPath: isFullPath,
+                });
+                if ((res?.status === 200 || res?.status === 8000) && res.data) {
+                    const mapped = stableMapOption(res.data);
+                    if (mapped) mergeOptions([mapped]);
+                }
+            } catch (err) {
+                console.error("Failed to load initial option:", err);
+            }
+        })();
+        // Only depend on field.value and options length to avoid loops
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [field.value, options.length]);
 
   // Compute current value for react-select
   const currentValue = useMemo(() => {
@@ -210,7 +212,7 @@ const FormikSelect = ({
           menu: (base) => ({
             ...base,
             position: "absolute",
-            zIndex: 9999,
+            zIndex: 9999999999,
           }),
         }}
         formatOptionLabel={(option, context) =>
@@ -224,7 +226,7 @@ const FormikSelect = ({
       />
 
       {meta.touched && meta.error && (
-        <div className="text-danger small">{meta.error}</div>
+        <div className="text-danger small">{errorMessage ? errorMessage : meta.error}</div>
       )}
     </div>
   );

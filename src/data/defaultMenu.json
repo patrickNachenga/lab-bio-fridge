@@ -3,17 +3,336 @@
     "header": "",
     "items": [
       {
-        "text": "Services",
-        "icon": "bx bxl-microsoft",
+        "text": "Dashboard",
+        "icon": "bx bx-home",
         "available": true,
         "link": "/",
         "permission": [],
-        "role": ["staff","admin"]
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Analytics",
+        "icon": "bx bx-line-chart",
+        "available": true,
+        "link": "/analytics",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Reports",
+        "icon": "bx bx-bar-chart-alt-2",
+        "available": true,
+        "link": "/reports",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      }
+    ]
+  },
+  {
+    "header": "BIOLOGICAL STORAGE",
+    "items": [
+      {
+        "text": "Fridges",
+        "icon": "bx bx-fridge",
+        "available": true,
+        "link": "/fridges",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Samples",
+        "icon": "bx bx-test-tube",
+        "available": true,
+        "link": "/samples",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Projects",
+        "icon": "bx bx-folder-open",
+        "available": true,
+        "link": "/projects",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Sample Mapping",
+        "icon": "bx bx-map",
+        "available": true,
+        "link": "/mapping",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      }
+    ]
+  },
+  {
+    "header": "INVENTORY & MONITORING",
+    "items": [
+      {
+        "text": "Sample Inventory",
+        "icon": "bx bx-package",
+        "available": true,
+        "link": "/inventory",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Storage Locations",
+        "icon": "bx bx-grid-alt",
+        "available": true,
+        "link": "/storage-locations",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Temperature Monitoring",
+        "icon": "bx bx-thermometer",
+        "available": true,
+        "link": "/temperature-monitoring",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Alerts & Notifications",
+        "icon": "bx bx-bell",
+        "available": true,
+        "link": "/alerts",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      }
+    ]
+  },
+  {
+    "header": "ACTIVITY",
+    "items": [
+      {
+        "text": "Sample Movements",
+        "icon": "bx bx-transfer",
+        "available": true,
+        "link": "/sample-movements",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Access & Transactions",
+        "icon": "bx bx-history",
+        "available": true,
+        "link": "/transactions",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
+      },
+      {
+        "text": "Audit Trail",
+        "icon": "bx bx-file-find",
+        "available": true,
+        "link": "/audit-trail",
+        "permission": [],
+        "role": [
+          "admin"
+        ]
+      }
+    ]
+  },
+  {
+    "header": "SETTINGS",
+    "items": [
+      {
+        "text": "Sample Setups",
+        "icon": "bx bx-cog",
+        "available": true,
+        "link": "",
+        "role": [
+          "admin"
+        ],
+        "permission": [],
+        "submenu": [
+          {
+            "text": "Types",
+            "icon": "bx bx-category",
+            "available": true,
+            "link": "/settings/sample-types",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Sources",
+            "icon": "bx bx-data",
+            "available": true,
+            "link": "/settings/sample-sources",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Natures",
+            "icon": "bx bx-layer",
+            "available": true,
+            "link": "/settings/sample-natures",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Conditions",
+            "icon": "bx bx-check-circle",
+            "available": true,
+            "link": "/settings/sample-conditions",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Units",
+            "icon": "bx bx-ruler",
+            "available": true,
+            "link": "/settings/units",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      {
+        "text": "Fridge Settings",
+        "icon": "bx bx-fridge",
+        "available": true,
+        "link": "",
+        "permission": [],
+        "role": [
+          "admin"
+        ],
+        "submenu": [
+          {
+            "text": "Fridge Types",
+            "icon": "bx bx-category",
+            "available": true,
+            "link": "/settings/fridge-types",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Storage Levels",
+            "icon": "bx bx-layer",
+            "available": true,
+            "link": "/settings/storage-levels",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Temperature Ranges",
+            "icon": "bx bx-thermometer",
+            "available": true,
+            "link": "/settings/temperature-ranges",
+            "permission": [],
+            "role": [
+              "admin"
+            ]
+          }
+        ]
+      },
+      {
+        "text": "User Management",
+        "icon": "bx bx-group",
+        "available": true,
+        "link": "",
+        "permission": [],
+        "role": [
+          "admin"
+        ],
+        "submenu": [
+          {
+            "text": "Users",
+            "icon": "bx bx-user",
+            "available": true,
+            "link": "/users",
+            "permission": [
+              "view_user",
+              "add_user",
+              "delete_user"
+            ],
+            "role": [
+              "admin"
+            ]
+          },
+          {
+            "text": "Roles & Permissions",
+            "icon": "bx bx-shield-quarter",
+            "available": true,
+            "link": "/roles-management",
+            "permission": [
+              "view_group"
+            ],
+            "role": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "header": "",
+    "items": [
+      {
+        "text": "Profile",
+        "icon": "bx bx-user-circle",
+        "available": true,
+        "link": "/profile",
+        "permission": [],
+        "role": [
+          "admin",
+          "staff"
+        ]
       }
     ]
   }
-
 ]
-
-
-

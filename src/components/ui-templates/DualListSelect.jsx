@@ -95,6 +95,17 @@ const DualListSelect = ({
     }
   };
 
+  const normalize = (items) =>
+    (items || []).map((item) => ({
+      value: item.value ?? item.id ?? item.uid,
+      label: String(item.label ?? item.name ?? item.code ?? ""),
+    }));
+
+  const getLeftOptionsList = () =>
+    onlineLeftOptions.length > 0 ? normalize(onlineLeftOptions) : normalize(leftOptions);
+
+  const getRightOptionsList = () => normalize(rightOptions);
+
   const handleAssign = () => {
     if (onAssign && selectedLeft.length > 0) {
       onAssign(selectedLeft);
@@ -109,11 +120,21 @@ const DualListSelect = ({
     }
   };
 
-  const normalize = (items) =>
-    (items || []).map((item) => ({
-      value: item.value ?? item.id ?? item.uid,
-      label: String(item.label ?? item.name ?? item.code ?? ""),
-    }));
+  const handleAssignAll = () => {
+    const allLeft = getLeftOptionsList();
+    if (onAssign && allLeft.length > 0) {
+      onAssign(allLeft);
+      setSelectedLeft([]);
+    }
+  };
+
+  const handleRemoveAll = () => {
+    const allRight = getRightOptionsList();
+    if (onRemove && allRight.length > 0) {
+      onRemove(allRight);
+      setSelectedRight([]);
+    }
+  };
 
   useEffect(() => {
     setSelectedLeft([]);
@@ -123,7 +144,17 @@ const DualListSelect = ({
   return (
     <div className="row">
       <div className="col-sm-5">
-        <label className="fw-bold mb-2">{leftTitle}</label>
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          <label className="fw-bold mb-0">{leftTitle}</label>
+          <button
+            type="button"
+            className="btn btn-link btn-sm p-0"
+            onClick={handleAssignAll}
+            disabled={getLeftOptionsList().length === 0}
+          >
+            Select all
+          </button>
+        </div>
         <Select
           isLoading={isLoadingLeft || loadingLeftOnline}
           isSearchable
@@ -131,13 +162,16 @@ const DualListSelect = ({
           menuIsOpen
           closeMenuOnSelect={false}
           className="select2-selection fetched-select2"
-          options={
-            onlineLeftOptions.length > 0
-              ? normalize(onlineLeftOptions)
-              : normalize(leftOptions)
-          }
-          value={normalize(selectedLeft)}
-          onChange={(selected) => setSelectedLeft(normalize(selected))}
+          options={getLeftOptionsList()}
+          value={selectedLeft}
+          onChange={(selected) => {
+            const normalized = normalize(selected);
+            setSelectedLeft(normalized);
+            if (normalized.length > 0 && onAssign) {
+              onAssign(normalized);
+              setSelectedLeft([]);
+            }
+          }}
           styles={selectStyles}
           placeholder="Search or select items..."
         />
@@ -163,7 +197,17 @@ const DualListSelect = ({
       </div>
 
       <div className="col-sm-5">
-        <label className="fw-bold mb-2">{rightTitle}</label>
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          <label className="fw-bold mb-0">{rightTitle}</label>
+          <button
+            type="button"
+            className="btn btn-link btn-sm p-0"
+            onClick={handleRemoveAll}
+            disabled={getRightOptionsList().length === 0}
+          >
+            Select all
+          </button>
+        </div>
         <Select
           isLoading={isLoadingRight}
           isSearchable
@@ -171,9 +215,16 @@ const DualListSelect = ({
           menuIsOpen
           closeMenuOnSelect={false}
           className="select2-selection fetched-select2"
-          options={rightOptions}
+          options={getRightOptionsList()}
           value={selectedRight}
-          onChange={setSelectedRight}
+          onChange={(selected) => {
+            const normalized = normalize(selected);
+            setSelectedRight(normalized);
+            if (normalized.length > 0 && onRemove) {
+              onRemove(normalized);
+              setSelectedRight([]);
+            }
+          }}
           styles={selectStyles}
           placeholder="Selected items..."
         />

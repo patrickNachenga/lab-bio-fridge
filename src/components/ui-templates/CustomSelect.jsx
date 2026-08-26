@@ -19,6 +19,7 @@ const CustomSelect = ({
   minSearchLength = 2,
   isMulti = true,
   menuAlwaysOpen = true,
+  menuPosition = "absolute",
 }) => {
   const [onlineOptions, setOnlineOptions] = useState([]);
   const [loadingOnline, setLoadingOnline] = useState(false);
@@ -43,7 +44,7 @@ const CustomSelect = ({
   const selectStyles = {
     menu: (base) => ({
       ...base,
-      position: "relative",
+      position: menuPosition,
       zIndex: 9999,
       textAlign: "left",
       padding: "8px",
@@ -86,6 +87,7 @@ CustomSelect.propTypes = {
   minSearchLength: PropTypes.number,
   isMulti: PropTypes.bool,
   menuAlwaysOpen: PropTypes.bool,
+  menuPosition: PropTypes.string,
 };
 
 export default CustomSelect;

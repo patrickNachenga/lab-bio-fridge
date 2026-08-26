@@ -26,3 +26,8 @@ export const hasAnyVisibleItem = (items, userPermissions, userRoles) => {
         return false;
     });
 };
+
+export const normalizeUserRoles = (roles = []) =>
+    roles
+        .map((role) => (typeof role === "string" ? role : role?.name || role?.code || ""))
+        .filter(Boolean);

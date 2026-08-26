@@ -1,7 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import { ErrorPage } from "../pages/misc/ErrorPage";
-import { Services } from "../pages/Services";
-import ProtectedRoute from "../components/wrapper/ProtectedRoute";
 
 // Import orphanage routes
 import { orphanageRoutes } from "./orphanageRoutes";
@@ -9,12 +6,13 @@ import { orphanageRoutes } from "./orphanageRoutes";
 // Import auth routes
 import { authRoutes } from "./authRoutes";
 import { MaintenancePage } from "../pages/misc/MaintenancePage";
+import { bioRoutes } from "./bioRoutes";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Home & Services */}
-      <Route path="/" element={<Services />} />
+      {/* BIOFRIDGE routes */}
+      {bioRoutes}
 
       {/* Auth Routes */}
       {authRoutes}
