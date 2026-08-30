@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { temperatureReadings, excursions } from "./bioData";
-import { PageHeader, Fade, StatusBadge, SparkBars } from "./bioUI";
+import { temperatureReadings, excursions } from "../bioData";
+import { PageHeader, Fade, StatusBadge, SparkBars } from "../bioUI";
 
 export default function Temperature() {
   const [fid, setFid] = useState("all");

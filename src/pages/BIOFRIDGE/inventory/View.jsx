@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { samples, SAMPLE_TYPES } from "./bioData";
-import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "./bioUI";
+import { samples, SAMPLE_TYPES } from "../bioData";
+import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "../bioUI";
 
 export default function Inventory() {
   const [q, setQ] = useState("");

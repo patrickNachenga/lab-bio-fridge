@@ -2,7 +2,7 @@
 
 ## ✅ Project Setup & Configuration
 
-- [x] Update package.json project name to "orphanage_system"
+- [x] Update package.json project name to "bio-mapping"
 - [x] Create project structure
 - [x] Setup main routes (AppRoutes.jsx)
 - [x] Configure React Router

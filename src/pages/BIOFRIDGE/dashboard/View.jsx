@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getStorage, summarize } from "./bioStorage";
-import { samples, projects, reservations, movements, alerts, auditLog, temperatureReadings, totalSamples } from "./bioData";
-import { Fade, StatusBadge, SparkBars, formatNum, formatDate } from "./bioUI";
-import { DoughnutChart, StatCard } from "../../components/DashboardCharts";
+import { getStorage, summarize } from "../bioStorage";
+import { samples, projects, reservations, movements, alerts, auditLog, temperatureReadings, totalSamples } from "../bioData";
+import { Fade, StatusBadge, SparkBars, formatNum, formatDate } from "../bioUI";
+import { DoughnutChart, StatCard } from "../../../components/DashboardCharts";
 
 const palette = ["#1976d2", "#31b577", "#ff9d2e", "#6a3fd8", "#f34848", "#0288d1"];
 const levelColor = (l) => (l === "critical" ? "#d32f2f" : l === "warning" ? "#c77700" : "#0288d1");

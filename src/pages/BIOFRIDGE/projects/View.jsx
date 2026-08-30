@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { projectUsage, reservations, projects } from "./bioData";
-import { PageHeader, Fade, Stat, StatusBadge, formatNum, formatDate } from "./bioUI";
-import GraphqlModal from "../../components/GraphqlModal";
+import { projectUsage, reservations, projects } from "../bioData";
+import { PageHeader, Fade, Stat, StatusBadge, formatNum, formatDate } from "../bioUI";
+import GraphqlModal from "../../../components/GraphqlModal";
 import { FolderPlus } from "lucide-react";
 
 export default function Projects() {

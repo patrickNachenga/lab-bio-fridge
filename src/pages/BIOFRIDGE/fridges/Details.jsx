@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getStorage, summarize, positionLabel } from "./bioStorage";
-import { samples } from "./bioData";
-import { PageHeader, Fade, Legend, StatusBadge, formatNum } from "./bioUI";
-import GraphqlModal from "../../components/GraphqlModal";
+import { getStorage, summarize, positionLabel } from "../bioStorage";
+import { samples } from "../bioData";
+import { PageHeader, Fade, Legend, StatusBadge, formatNum } from "../bioUI";
+import GraphqlModal from "../../../components/GraphqlModal";
 import { Boxes } from "lucide-react";
 
 export default function FridgeDetail() {

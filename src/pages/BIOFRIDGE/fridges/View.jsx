@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getStorage, summarize } from "./bioStorage";
-import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "./bioUI";
-import { BuilderModal } from "./FridgeBuilder";
+import { getStorage, summarize } from "../bioStorage";
+import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "../bioUI";
+import { BuilderModal } from "./Modal";
 
 export default function Fridges() {
   const nav = useNavigate();

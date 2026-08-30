@@ -97,20 +97,16 @@ const Sidebar = () => {
                     to="/"
                     className="app-brand-link bio-brand-link"
                 >
-
+                    {/* Logo */}
                     <span className="app-brand-logo demo bio-brand-logo">
-
                         <img
                             src="/assets/img/mnhlogo.png"
                             alt="MNH logo"
-                            aria-label="MNH logo"
                         />
-
                     </span>
 
-
+                    {/* Brand text */}
                     <div className="bio-brand-content">
-
                         <div className="bio-brand-title">
                             BIO-REPO
                         </div>
@@ -118,16 +114,10 @@ const Sidebar = () => {
                         <div className="bio-brand-subtitle">
                             Sample Repository
                         </div>
-
                     </div>
-
                 </Link>
 
-
-                {/* =================================================
-                    COLLAPSE BUTTON
-                ================================================= */}
-
+                {/* Sidebar collapse button */}
                 <button
                     type="button"
                     className="bio-sidebar-toggle"
@@ -137,16 +127,19 @@ const Sidebar = () => {
                             ? "Expand sidebar"
                             : "Minimize sidebar"
                     }
+                    title={
+                        collapsed
+                            ? "Expand sidebar"
+                            : "Minimize sidebar"
+                    }
                 >
-
                     <i
                         className={
                             collapsed
                                 ? "bx bx-chevron-right"
                                 : "bx bx-chevron-left"
                         }
-                    ></i>
-
+                    />
                 </button>
 
             </div>

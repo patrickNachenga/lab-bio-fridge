@@ -1,6 +1,6 @@
 import React from "react";
-import { movements, auditLog } from "./bioData";
-import { PageHeader, Fade, Stat, StatusBadge } from "./bioUI";
+import { movements, auditLog } from "../bioData";
+import { PageHeader, Fade, Stat, StatusBadge } from "../bioUI";
 
 export default function Transactions() {
   return (

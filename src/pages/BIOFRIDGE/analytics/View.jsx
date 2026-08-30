@@ -1,7 +1,7 @@
 import React from "react";
-import { getStorage } from "./bioStorage";
-import { samples, projectUsage } from "./bioData";
-import { PageHeader, Fade, BarRow, formatNum } from "./bioUI";
+import { getStorage } from "../bioStorage";
+import { samples, projectUsage } from "../bioData";
+import { PageHeader, Fade, BarRow, formatNum } from "../bioUI";
 
 const palette = ["#1976c8", "#31b577", "#ff9d2e", "#6a3fd8", "#f34848", "#0288d1"];
 

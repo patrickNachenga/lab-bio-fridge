@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { buildFridgeTree } from "./bioStorage";
-import { FRIDGE_TYPES } from "./bioData";
-import { formatNum } from "./bioUI";
-import GraphqlModal from "../../components/GraphqlModal";
+import { buildFridgeTree } from "../bioStorage";
+import { FRIDGE_TYPES } from "../bioData";
+import { formatNum } from "../bioUI";
+import GraphqlModal from "../../../components/GraphqlModal";
 import { Boxes } from "lucide-react";
 
 const TEMPLATES = {

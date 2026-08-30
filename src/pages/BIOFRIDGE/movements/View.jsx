@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { movements } from "./bioData";
-import { PageHeader, Fade, Stat, StatusBadge } from "./bioUI";
-import GraphqlModal from "../../components/GraphqlModal";
+import { movements } from "../bioData";
+import { PageHeader, Fade, Stat, StatusBadge } from "../bioUI";
+import GraphqlModal from "../../../components/GraphqlModal";
 import { ArrowRightLeft } from "lucide-react";
 
 export default function Movements() {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { getStorage, summarize } from "./bioStorage";
-import { samples, projectUsage, movements, excursions, maintenance } from "./bioData";
-import { PageHeader, Fade, StatusBadge, formatNum } from "./bioUI";
+import { getStorage, summarize } from "../bioStorage";
+import { samples, projectUsage, movements, excursions, maintenance } from "../bioData";
+import { PageHeader, Fade, StatusBadge, formatNum } from "../bioUI";
 
 const TABS = ["Inventory", "Fridge Capacity", "Project Storage", "Sample Movements", "Temperature", "Maintenance", "Historical Location"];
 

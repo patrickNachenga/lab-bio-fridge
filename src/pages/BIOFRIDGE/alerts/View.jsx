@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { alerts } from "./bioData";
-import { PageHeader, Fade, Stat, StatusBadge } from "./bioUI";
+import { alerts } from "../bioData";
+import { PageHeader, Fade, Stat, StatusBadge } from "../bioUI";
 
 const lv = { critical: ["#ffe7e7", "#d32f2f"], warning: ["#fff4e0", "#c77700"], info: ["#e8f4fb", "#0288d1"] };
 export default function Alerts() {

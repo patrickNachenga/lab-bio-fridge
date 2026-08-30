@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getStorage, summarize } from "./bioStorage";
-import { PageHeader, Fade, Legend, StatusBadge, formatNum } from "./bioUI";
+import { getStorage, summarize } from "../bioStorage";
+import { PageHeader, Fade, Legend, StatusBadge, formatNum } from "../bioUI";
 
 export default function Mapping() {
   const nav = useNavigate();

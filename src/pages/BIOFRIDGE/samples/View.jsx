@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { samples, SAMPLE_TYPES } from "./bioData";
-import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "./bioUI";
-import GraphqlModal from "../../components/GraphqlModal";
+import { samples, SAMPLE_TYPES } from "../bioData";
+import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "../bioUI";
+import GraphqlModal from "../../../components/GraphqlModal";
 import { Boxes } from "lucide-react";
 
 export default function Samples() {

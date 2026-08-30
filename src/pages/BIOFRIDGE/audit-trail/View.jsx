@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { auditLog } from "./bioData";
-import { PageHeader, Fade, Stat, StatusBadge } from "./bioUI";
+import { auditLog } from "../bioData";
+import { PageHeader, Fade, Stat, StatusBadge } from "../bioUI";
 
 export default function AuditTrail() {
   const [filter, setFilter] = useState("all");
