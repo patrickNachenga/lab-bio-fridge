@@ -12,7 +12,6 @@
 
 [View Demo React After run](http://localhost:4001/)
 ## Features
-
 - Responsive layout for various screen sizes.
 - Clean and modular React components following Atomic Design principles.
 - Integration with popular React libraries for state management, routing, etc.
@@ -20,14 +19,12 @@
 - Pre-configured build setup for efficient development and production builds.
 
 ## Usage
-
 1. Clone the repository: `git clone from git`
 2. Install dependencies: `npm install`
 3. Run the development server: `npx vite --port=4001`
 4. Build for production: `npm run build`
 
 ## Folder Structure
-
 - `src/components`: Atomic Design components (atoms, molecules, organisms, templates, pages).
 - `src/hooks`: Custom React hooks.
 - `src/layout`: Layout components.
@@ -39,7 +36,6 @@
 - `public`: Static assets and HTML template.
 
 ## Contributing
-
 Contributions are welcome! If you find issues or have improvements, please create a new issue or submit a pull request.
 
 ## License
