@@ -2872,7 +2872,7 @@
    * Put the button directly on the right edge
    * of the sidebar and slightly outside it.
    */
-  left: 5px !important;
+  right: 5px !important;
   top: 50% !important;
 
   transform: translateY(-50%) !important;
@@ -2896,7 +2896,7 @@
 
   background:
     linear-gradient(145deg,
-      #1680ff,
+      #ff3116,
       #0764d5) !important;
 
   color: #ffffff !important;

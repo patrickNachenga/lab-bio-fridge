@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import { movements } from "../bioData";
+import React, { useEffect, useState } from "react";
+import { movements as seedMovements } from "../bioData";
+import { getRepositoryState, moveSample, parseLocation, repositoryEventName } from "../bioRepository";
 import { PageHeader, Fade, Stat, StatusBadge } from "../bioUI";
 import GraphqlModal from "../../../components/GraphqlModal";
 import { ArrowRightLeft } from "lucide-react";
 
 export default function Movements() {
   const [show, setShow] = useState(false);
+  const [state, setState] = useState(getRepositoryState);
+  useEffect(() => { const refresh = () => setState(getRepositoryState()); window.addEventListener(repositoryEventName(), refresh); return () => window.removeEventListener(repositoryEventName(), refresh); }, []);
+  const movements = state.movements || seedMovements;
   return (
     <Fade>
       <div className="bio-page">
@@ -36,30 +40,34 @@ export default function Movements() {
           </div>
         </div>
       </div>
-      {show && <MoveModal onClose={() => setShow(false)} />}
+      {show && <MoveModal samples={state.samples || []} onClose={() => setShow(false)} onSave={(sampleId, input) => { moveSample(sampleId, input); setShow(false); }} />}
     </Fade>
   );
 }
 
-function MoveModal({ onClose }) {
+function MoveModal({ onClose, samples, onSave }) {
+  const [sampleId, setSampleId] = useState(samples[0]?.id || "");
+  const [to, setTo] = useState("FRZ-002 / B03 / C01 / R02 / BX10 / C4");
+  const [reason, setReason] = useState("Relocation");
+  const [condition, setCondition] = useState("Good");
   return (
     <GraphqlModal isOpen title="Move Sample" subtitle="Release the old position and record the new location." icon={<ArrowRightLeft size={20} />} onClose={onClose} size="md">
       <>
         <div className="mini-title">Sample</div>
-        <input className="in" defaultValue="BIO-2026-00412" style={{ width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13, marginBottom: 10 }} />
+        <select value={sampleId} onChange={(e) => setSampleId(e.target.value)} style={{ width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13, marginBottom: 10 }}>{samples.map((sample) => <option key={sample.id}>{sample.id}</option>)}</select>
         <div className="mini-title">From</div>
         <div className="bio-mono" style={{ fontSize: 12, padding: "8px 10px", background: "#f2f5fa", borderRadius: 8 }}>FRZ-001 / B01 / C02 / R03 / BX05 / A1</div>
         <div className="mini-title">To</div>
-        <input className="in" defaultValue="FRZ-002 / B03 / C01 / R02 / BX10 / C4" style={{ width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 12, margin: "0 0 10px" }} />
+        <input className="in" value={to} onChange={(e) => setTo(e.target.value)} style={{ width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 12, margin: "0 0 10px" }} />
         <div style={{ display: "flex", gap: 10 }}>
-          <label style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: "#5c6e88", marginBottom: 4 }}>Reason</div><input placeholder="e.g. Freezer maintenance" style={{ width: "100%", padding: 8, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13 }} /></label>
+          <label style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: "#5c6e88", marginBottom: 4 }}>Reason</div><input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="e.g. Freezer maintenance" style={{ width: "100%", padding: 8, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13 }} /></label>
           <label style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: "#5c6e88", marginBottom: 4 }}>Condition</div>
-            <select style={{ width: "100%", padding: 8, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13, background: "#fff" }}><option>Good</option><option>Inside</option><option>Thawing</option></select>
+            <select value={condition} onChange={(e) => setCondition(e.target.value)} style={{ width: "100%", padding: 8, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13, background: "#fff" }}><option>Good</option><option>Inside</option><option>Thawing</option></select>
           </label>
         </div>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 16 }}>
           <button className="btn-bio btn-bio-outline" onClick={onClose}>Cancel</button>
-          <button className="btn-bio btn-bio-primary" onClick={onClose}>Confirm Move</button>
+          <button className="btn-bio btn-bio-primary" disabled={!sampleId || !parseLocation(to).fridge} onClick={() => onSave(sampleId, { ...parseLocation(to), reason, condition })}>Confirm Move</button>
         </div>
       </>
     </GraphqlModal>

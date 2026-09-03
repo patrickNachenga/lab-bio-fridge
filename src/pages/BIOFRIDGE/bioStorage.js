@@ -80,6 +80,33 @@ const FRIDGE_CONFIGS = [
   },
 ];
 
+const STORAGE_CONFIG_KEY = "bioRepo.storageUnits.v1";
+const STORAGE_EVENT = "bio-repository-storage-changed";
+
+function readConfigs() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_CONFIG_KEY) || "null");
+    return Array.isArray(saved) && saved.length ? saved : FRIDGE_CONFIGS;
+  } catch {
+    return FRIDGE_CONFIGS;
+  }
+}
+
+export function persistStorageConfigs(configs) {
+  localStorage.setItem(STORAGE_CONFIG_KEY, JSON.stringify(configs));
+  cached = null;
+  window.dispatchEvent(new CustomEvent(STORAGE_EVENT));
+}
+
+export function addStorageUnit(config) {
+  const configs = readConfigs();
+  persistStorageConfigs([...configs, config]);
+}
+
+export function storageChangeEventName() {
+  return STORAGE_EVENT;
+}
+
 // --- hierarchy label conventions -----------------------------------------------------
 export const LEVELS = ["fridge", "block", "column", "rack", "box"];
 
@@ -94,14 +121,48 @@ export function buildFridgeTree(cfg) {
     children: [],
   };
 
-  cfg.structure.forEach((blockCfg, bi) => {
+  const configured = cfg.structure || [{ levels: [{ type: "BLOCK", count: 1 }, { type: "BOX", count: 1, rows: 9, cols: 9 }] }];
+  const firstLevels = configured[0]?.levels;
+  const structure = firstLevels
+    ? Array.from({ length: Math.max(1, Number(firstLevels.find((level) => level.type === "BLOCK")?.count) || 1) }, () => ({ levels: firstLevels.filter((level) => level.type !== "BLOCK") }))
+    : configured;
+  structure.forEach((blockCfg, bi) => {
     const block = {
       id: `${cfg.id}/B${String(bi + 1).padStart(2, "0")}`,
       code: `B${String(bi + 1).padStart(2, "0")}`,
       label: `B${String(bi + 1).padStart(2, "0")}`,
-      level: "block", children: [],
+      level: "block", nodeType: "BLOCK", node_type: "BLOCK", children: [], parentId: cfg.id,
     };
-    for (let ci = 0; ci < blockCfg.columns; ci++) {
+    const levels = blockCfg.levels || [
+      { type: "COLUMN", count: blockCfg.columns },
+      { type: "RACK", count: blockCfg.racksPerColumn },
+      { type: "BOX", count: blockCfg.boxesPerRack, rows: blockCfg.grid.rows, cols: blockCfg.grid.cols },
+    ];
+    const childLevels = levels.filter((level) => level.type !== "BLOCK");
+    function createChildren(parent, levelIndex, path) {
+      const level = childLevels[levelIndex];
+      if (!level) return;
+      const count = Math.max(1, Number(level.count) || 1);
+      for (let i = 0; i < count; i++) {
+        const type = String(level.type || "NODE").toUpperCase();
+        const short = type === "POSITION" ? "POS" : type.slice(0, 3);
+        const code = `${short}${String(i + 1).padStart(2, "0")}`;
+        const node = {
+          id: `${path}/${code}`, code, label: code, level: type.toLowerCase(), nodeType: type, node_type: type,
+          parentId: parent.id, children: [],
+        };
+        if (type === "BOX" || levelIndex === childLevels.length - 1 && level.rows && level.cols) {
+          node.level = "box";
+          node.rows = Number(level.rows) || 1;
+          node.cols = Number(level.cols) || 1;
+          node.capacity = node.rows * node.cols;
+        }
+        parent.children.push(node);
+        createChildren(node, levelIndex + 1, node.id);
+      }
+    }
+    createChildren(block, 0, block.id);
+    if (!block.children.length) for (let ci = 0; ci < (blockCfg.columns || 1); ci++) {
       const column = {
         id: `${block.id}/C${String(ci + 1).padStart(2, "0")}`,
         code: `C${String(ci + 1).padStart(2, "0")}`,
@@ -200,7 +261,7 @@ export function summarize(node) {
 let cached = null;
 export function getStorage() {
   if (cached) return cached;
-  const fridges = FRIDGE_CONFIGS.map(buildFridgeTree);
+  const fridges = readConfigs().map(buildFridgeTree);
   const allBoxes = [];
   fridges.forEach((f) => collectBoxes(f, allBoxes));
   cached = { fridges, allBoxes };

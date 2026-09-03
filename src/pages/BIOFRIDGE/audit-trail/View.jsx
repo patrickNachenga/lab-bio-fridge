@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { auditLog } from "../bioData";
+import React, { useEffect, useState } from "react";
+import { auditLog as seedAudit } from "../bioData";
+import { getRepositoryState, repositoryEventName } from "../bioRepository";
 import { PageHeader, Fade, Stat, StatusBadge } from "../bioUI";
 
 export default function AuditTrail() {
   const [filter, setFilter] = useState("all");
+  const [state, setState] = useState(getRepositoryState);
+  useEffect(() => { const refresh = () => setState(getRepositoryState()); window.addEventListener(repositoryEventName(), refresh); return () => window.removeEventListener(repositoryEventName(), refresh); }, []);
+  const auditLog = state.auditLog || seedAudit;
   const list = auditLog.filter((a) => filter === "all" || a.action === filter);
   const actions = ["all", ...new Set(auditLog.map((a) => a.action))];
   return (

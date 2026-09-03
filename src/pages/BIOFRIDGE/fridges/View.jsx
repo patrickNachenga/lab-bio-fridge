@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getStorage, summarize } from "../bioStorage";
+import { getStorage, summarize, storageChangeEventName } from "../bioStorage";
 import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "../bioUI";
 import { BuilderModal } from "./Modal";
 
@@ -9,10 +9,16 @@ export default function Fridges() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [showBuilder, setShowBuilder] = useState(false);
-  const [created, setCreated] = useState([]);
+  const [, refresh] = useState(0);
+
+  useEffect(() => {
+    const handler = () => refresh((value) => value + 1);
+    window.addEventListener(storageChangeEventName(), handler);
+    return () => window.removeEventListener(storageChangeEventName(), handler);
+  }, []);
 
   const { fridges } = getStorage();
-  const list = [...fridges, ...created];
+  const list = fridges;
   const filtered = list.filter((f) => {
     const q = search.toLowerCase();
     const sOk = status === "all" || f.status === status;
@@ -76,7 +82,7 @@ export default function Fridges() {
 
         {filtered.length === 0 && <div className="empty-wrap">No fridges match your filters.</div>}
 
-        {showBuilder && <BuilderModal onClose={() => setShowBuilder(false)} onCreated={(f) => { setCreated((p) => [...p, f]); setShowBuilder(false); }} />}
+        {showBuilder && <BuilderModal onClose={() => setShowBuilder(false)} onCreated={() => setShowBuilder(false)} />}
       </div>
     </Fade>
   );

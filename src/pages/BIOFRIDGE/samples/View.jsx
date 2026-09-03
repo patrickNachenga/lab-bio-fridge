@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { samples, SAMPLE_TYPES } from "../bioData";
+import { getRepositoryState, registerSample, repositoryEventName } from "../bioRepository";
 import { PageHeader, Fade, Stat, StatusBadge, formatNum } from "../bioUI";
 import GraphqlModal from "../../../components/GraphqlModal";
 import { Boxes } from "lucide-react";
@@ -8,8 +9,12 @@ export default function Samples() {
   const [q, setQ] = useState("");
   const [type, setType] = useState("all");
   const [detail, setDetail] = useState(null);
+  const [showRegister, setShowRegister] = useState(false);
+  const [state, setState] = useState(getRepositoryState);
+  useEffect(() => { const refresh = () => setState(getRepositoryState()); window.addEventListener(repositoryEventName(), refresh); return () => window.removeEventListener(repositoryEventName(), refresh); }, []);
+  const records = state.samples || samples;
 
-  const filtered = samples.filter((s) => {
+  const filtered = records.filter((s) => {
     const t = type === "all" || s.type === type;
     const text = (s.id + " " + s.barcode + " " + s.project + " " + s.type).toLowerCase();
     return t && text.includes(q.toLowerCase());
@@ -19,13 +24,13 @@ export default function Samples() {
     <Fade>
       <div className="bio-page">
         <PageHeader title="Samples" crumb="Samples" subtitle={`${formatNum(samples.length)} registered biological samples with traceable locations`}
-          actions={<button className="btn-bio btn-bio-primary"><i className="bx bx-plus" /> Register Sample</button>} />
+          actions={<button className="btn-bio btn-bio-primary" onClick={() => setShowRegister(true)}><i className="bx bx-plus" /> Register Sample</button>} />
 
         <div className="bio-grid bio-grid-4">
-          <Stat icon="bx bx-test-tube" title="Total" color="info" value={formatNum(samples.length)} />
-          <Stat icon="bx bx-check-circle" title="Stored" color="ok" value={formatNum(samples.length)} />
+          <Stat icon="bx bx-test-tube" title="Total" color="info" value={formatNum(records.length)} />
+          <Stat icon="bx bx-check-circle" title="Stored" color="ok" value={formatNum(records.filter((s) => s.status === "stored").length)} />
           <Stat icon="bx bx-move-horizontal" title="Moved (30d)" color="warning" value="5" />
-          <Stat icon="bx bx-x-circle" title="Damaged" color="danger" value={samples.filter((s) => s.condition === "Damaged").length} />
+          <Stat icon="bx bx-x-circle" title="Damaged" color="danger" value={records.filter((s) => s.condition === "Damaged").length} />
         </div>
 
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
@@ -58,9 +63,29 @@ export default function Samples() {
         </div>
       </div>
       {detail && <SampleModal s={detail} onClose={() => setDetail(null)} />}
+      {showRegister && <RegisterModal onClose={() => setShowRegister(false)} onSave={(input) => { registerSample(input); setShowRegister(false); }} />}
     </Fade>
   );
 }
+
+function RegisterModal({ onClose, onSave }) {
+  const [form, setForm] = useState({ id: "", barcode: "", projectCode: "", type: SAMPLE_TYPES[0], source: "Human", volume: "1", unit: "mL" });
+  const set = (key) => (event) => setForm((value) => ({ ...value, [key]: event.target.value }));
+  return <GraphqlModal isOpen title="Register Sample" subtitle="Create the sample record before placing it in storage." icon={<Boxes size={20} />} onClose={onClose} size="md"><>
+    <div className="bio-grid bio-grid-2" style={{ gap: 10 }}>
+      <Field label="Sample ID" value={form.id} onChange={set("id")} placeholder="Generated if blank" />
+      <Field label="Barcode" value={form.barcode} onChange={set("barcode")} placeholder="Generated if blank" />
+      <Field label="Project code" value={form.projectCode} onChange={set("projectCode")} />
+      <label><small>Sample type</small><select value={form.type} onChange={set("type")} style={inputStyle}>{SAMPLE_TYPES.map((type) => <option key={type}>{type}</option>)}</select></label>
+      <Field label="Source" value={form.source} onChange={set("source")} />
+      <Field label="Volume" value={form.volume} onChange={set("volume")} />
+    </div>
+    <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 16 }}><button className="btn-bio btn-bio-outline" onClick={onClose}>Cancel</button><button className="btn-bio btn-bio-primary" onClick={() => onSave(form)}>Register sample</button></div>
+  </></GraphqlModal>;
+}
+
+function Field({ label, value, onChange, placeholder }) { return <label><small>{label}</small><input value={value} onChange={onChange} placeholder={placeholder} style={inputStyle} /></label>; }
+const inputStyle = { width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13, background: "#fff" };
 
 function SampleModal({ s, onClose }) {
   return (

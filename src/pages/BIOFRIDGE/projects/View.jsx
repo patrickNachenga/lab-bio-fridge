@@ -1,17 +1,24 @@
-import React, { useState } from "react";
-import { projectUsage, reservations, projects } from "../bioData";
+import React, { useEffect, useState } from "react";
+import { reservations as seedReservations, projects as seedProjects } from "../bioData";
+import { createProject, createStorageRequest, getRepositoryState, projectUsageFrom, repositoryEventName } from "../bioRepository";
 import { PageHeader, Fade, Stat, StatusBadge, formatNum, formatDate } from "../bioUI";
 import GraphqlModal from "../../../components/GraphqlModal";
 import { FolderPlus } from "lucide-react";
 
 export default function Projects() {
   const [req, setReq] = useState(false);
+  const [newProject, setNewProject] = useState(false);
+  const [state, setState] = useState(getRepositoryState);
+  useEffect(() => { const refresh = () => setState(getRepositoryState()); window.addEventListener(repositoryEventName(), refresh); return () => window.removeEventListener(repositoryEventName(), refresh); }, []);
+  const projects = state.projects || seedProjects;
+  const reservations = state.reservations || seedReservations;
+  const projectUsage = projectUsageFrom(state);
 
   return (
     <Fade>
       <div className="bio-page">
         <PageHeader title="Projects" crumb="Projects" subtitle="Project-based storage requests, allocations and live usage"
-          actions={<button className="btn-bio btn-bio-primary" onClick={() => setReq(true)}><i className="bx bx-plus" /> Storage Request</button>} />
+          actions={<><button className="btn-bio btn-bio-outline" onClick={() => setNewProject(true)}><i className="bx bx-folder-plus" /> New Project</button><button className="btn-bio btn-bio-primary" onClick={() => setReq(true)}><i className="bx bx-plus" /> Storage Request</button></>} />
 
         <div className="bio-grid bio-grid-4">
           <Stat icon="bx bx-folder-open" title="Total Projects" color="info" value={projects.length} />
@@ -80,10 +87,11 @@ export default function Projects() {
           </div>
         </div>
       </div>
-      {req && <RequestModal onClose={() => setReq(false)} />}
+      {req && <RequestModal projects={projects} onClose={() => setReq(false)} />}
+      {newProject && <ProjectModal onClose={() => setNewProject(false)} onSave={(input) => { createProject(input); setNewProject(false); }} />}
     </Fade>
   );
-  function RequestModal({ onClose }) {
+  function RequestModal({ onClose, projects: availableProjects }) {
     const [unit, setUnit] = useState("Boxes");
     const [qty, setQty] = useState(2);
     const est = qty * (unit === "Positions" ? 1 : unit === "Boxes" ? 81 : unit === "Rack" ? 648 : unit === "Column" ? 3240 : unit === "Block" ? 9720 : 38880);
@@ -91,7 +99,7 @@ export default function Projects() {
       <GraphqlModal isOpen title="New Storage Request" subtitle="Reserve space before samples arrive." icon={<FolderPlus size={20} />} onClose={onClose} size="md">
         <>
           <div className="mini-title">Project</div>
-          <input className="in" defaultValue="HIV Research Study 2026" style={{ width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13, marginBottom: 12 }} />
+          <select id="request-project" defaultValue={availableProjects[0]?.id} style={{ width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13, marginBottom: 12 }}>{availableProjects.map((project) => <option key={project.id} value={project.id}>{project.code} · {project.name}</option>)}</select>
           <div style={{ display: "flex", gap: 10 }}>
             <label style={{ flex: 1 }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: "#5c6e88", marginBottom: 4 }}>Unit</div>
@@ -111,10 +119,21 @@ export default function Projects() {
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
             <button className="btn-bio btn-bio-outline" onClick={onClose}>Cancel</button>
-            <button className="btn-bio btn-bio-primary" onClick={onClose}>Submit for approval</button>
+            <button className="btn-bio btn-bio-primary" onClick={() => { const project = availableProjects.find((item) => item.id === document.getElementById("request-project")?.value) || availableProjects[0]; createStorageRequest({ projectId: project?.id, project: project?.name, unit, positions: est }); onClose(); }}>Submit for approval</button>
           </div>
         </>
       </GraphqlModal>
     );
   }
 }
+
+function ProjectModal({ onClose, onSave }) {
+  const [form, setForm] = useState({ code: "", name: "", pi: "", samplesExpected: 1000, temp: -80 });
+  const set = (key) => (event) => setForm((value) => ({ ...value, [key]: event.target.value }));
+  return <GraphqlModal isOpen title="Create Project" subtitle="Create the owner and study record before requesting storage." icon={<FolderPlus size={20} />} onClose={onClose} size="md"><>
+    <div className="bio-grid bio-grid-2" style={{ gap: 10 }}><Field label="Project code" value={form.code} onChange={set("code")} /><Field label="Project name" value={form.name} onChange={set("name")} /><Field label="Principal investigator" value={form.pi} onChange={set("pi")} /><Field label="Expected samples" type="number" value={form.samplesExpected} onChange={set("samplesExpected")} /><Field label="Required temperature" type="number" value={form.temp} onChange={set("temp")} /></div>
+    <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 16 }}><button className="btn-bio btn-bio-outline" onClick={onClose}>Cancel</button><button className="btn-bio btn-bio-primary" onClick={() => onSave(form)}>Create project</button></div>
+  </></GraphqlModal>;
+}
+
+function Field({ label, value, onChange, type = "text" }) { return <label><small>{label}</small><input type={type} value={value} onChange={onChange} style={{ width: "100%", padding: 9, borderRadius: 9, border: "1px solid #dbe6f0", fontSize: 13 }} /></label>; }

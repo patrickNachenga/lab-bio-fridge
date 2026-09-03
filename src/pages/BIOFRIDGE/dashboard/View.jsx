@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getStorage, summarize } from "../bioStorage";
 import { samples, projects, reservations, movements, alerts, auditLog, temperatureReadings, totalSamples } from "../bioData";
 import { Fade, StatusBadge, SparkBars, formatNum, formatDate } from "../bioUI";
 import { DoughnutChart, StatCard } from "../../../components/DashboardCharts";
+import { getRepositoryState, repositoryEventName } from "../bioRepository";
 
 const palette = ["#1976d2", "#31b577", "#ff9d2e", "#6a3fd8", "#f34848", "#0288d1"];
 const levelColor = (l) => (l === "critical" ? "#d32f2f" : l === "warning" ? "#c77700" : "#0288d1");
@@ -13,6 +14,10 @@ export default function BioDashboard() {
   const user = useSelector((state) => state.userReducer?.data);
   const nav = useNavigate();
   const { fridges } = getStorage();
+  const [domain, setDomain] = useState(getRepositoryState);
+  useEffect(() => { const refresh = () => setDomain(getRepositoryState()); window.addEventListener(repositoryEventName(), refresh); return () => window.removeEventListener(repositoryEventName(), refresh); }, []);
+  const domainSamples = domain.samples || samples;
+  const domainProjects = domain.projects || projects;
 
   const agg = useMemo(() => {
     let T = 0, O = 0, R = 0, A = 0, M = 0;
@@ -21,7 +26,7 @@ export default function BioDashboard() {
       T += s.total; O += s.occupied; R += s.pending; A += s.available; M += s.maintenance;
     });
     const typeCount = {};
-    samples.forEach((sm) => { typeCount[sm.type] = (typeCount[sm.type] || 0) + 1; });
+    domainSamples.forEach((sm) => { typeCount[sm.type] = (typeCount[sm.type] || 0) + 1; });
     return {
       T, O, R, A, M,
       occ: T ? Math.round((O / T) * 100) : 0,
@@ -31,15 +36,15 @@ export default function BioDashboard() {
       typeCount,
       critical: alerts.filter((a) => a.level === "critical").length,
     };
-  }, [fridges]);
+  }, [fridges, domainSamples]);
 
-  const activeProjects = projects.filter((p) => p.status === "active").length;
+  const activeProjects = domainProjects.filter((p) => p.status === "active").length;
 
   return (
     <Fade>
       <div className="bio-page">
         <Hero name={user?.first_name || "Administrator"} onMap={() => nav("/mapping")} onRequest={() => nav("/projects")} />
-        <Kpis fridges={fridges} agg={agg} activeProjects={activeProjects} />
+        <Kpis fridges={fridges} agg={agg} activeProjects={activeProjects} sampleCount={domainSamples.length} projectCount={domainProjects.length} />
         <FridgeCapacity agg={agg} fridges={fridges} onOpen={(id) => nav(`/fridges/${id}`)} />
         <Charts agg={agg} />
         <Feeds onNav={nav} />
@@ -66,12 +71,12 @@ function Hero({ name, onMap, onRequest }) {
   );
 }
 
-function Kpis({ fridges, agg, activeProjects }) {
+function Kpis({ fridges, agg, activeProjects, sampleCount, projectCount }) {
   return (
     <div className="row g-3">
       <div className="col-xl-3 col-md-6"><StatCard title="Total Fridges" value={fridges.length} icon="bx-fridge" color="primary" subtitle={`${agg.active} active`} /></div>
-      <div className="col-xl-3 col-md-6"><StatCard title="Stored Samples" value={formatNum(totalSamples)} icon="bx-test-tube" color="success" subtitle="Across all units" /></div>
-      <div className="col-xl-3 col-md-6"><StatCard title="Active Projects" value={activeProjects} icon="bx-folder-open" color="info" subtitle={`${projects.length} total projects`} /></div>
+      <div className="col-xl-3 col-md-6"><StatCard title="Stored Samples" value={formatNum(sampleCount || totalSamples)} icon="bx-test-tube" color="success" subtitle="Across all units" /></div>
+      <div className="col-xl-3 col-md-6"><StatCard title="Active Projects" value={activeProjects} icon="bx-folder-open" color="info" subtitle={`${projectCount} total projects`} /></div>
       <div className="col-xl-3 col-md-6"><StatCard title="Active Alerts" value={alerts.length} icon="bx-bell" color="danger" subtitle={`${agg.critical} critical`} /></div>
       <div className="col-xl-3 col-md-6"><StatCard title="Total Capacity" value={formatNum(agg.T)} icon="bx-expand-vertical" color="primary" subtitle="Sample positions" /></div>
       <div className="col-xl-3 col-md-6"><StatCard title="Occupied" value={`${agg.occ}%`} icon="bx-check-shield" color="warning" subtitle={`${formatNum(agg.O)} positions`} /></div>

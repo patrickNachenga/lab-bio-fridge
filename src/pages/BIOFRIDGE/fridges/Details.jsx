@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getStorage, summarize, positionLabel } from "../bioStorage";
+import { getStorage, summarize, positionLabel, collectBoxes } from "../bioStorage";
 import { samples } from "../bioData";
 import { PageHeader, Fade, Legend, StatusBadge, formatNum } from "../bioUI";
 import GraphqlModal from "../../../components/GraphqlModal";
@@ -12,16 +12,11 @@ export default function FridgeDetail() {
   const { fridges } = getStorage();
   const fridge = fridges.find((f) => f.id === id || f.code === id) || fridges[0];
 
-  const [bi, setBi] = useState(0);
-  const [ci, setCi] = useState(0);
-  const [ri, setRi] = useState(0);
   const [selBox, setSelBox] = useState(null);
   const [selCell, setSelCell] = useState(null);
 
-  const block = fridge.children[bi] || fridge.children[0];
-  const col = block.children[ci] || block.children[0];
-  const rack = col.children[ri] || col.children[0];
-  const box = selBox && selBox.id.startsWith(rack.id) ? selBox : rack.children[0] || null;
+  const allBoxes = useMemo(() => collectBoxes(fridge, []), [fridge]);
+  const box = selBox && allBoxes.some((item) => item.id === selBox.id) ? selBox : allBoxes[0] || null;
 
   const stats = useMemo(() => summarize(fridge), [fridge]);
 
@@ -58,7 +53,7 @@ export default function FridgeDetail() {
         </div>
 
         <div className="bio-grid" style={{ gridTemplateColumns: "minmax(360px,1.1fr) minmax(0,1.4fr)" }}>
-          <MapNav fridge={fridge} bi={bi} ci={ci} ri={ri} onBi={setBi} onCi={setCi} onRi={setRi} onBox={setSelBox} />
+          <MapNav fridge={fridge} onBox={setSelBox} selectedBox={box} />
           <BoxPanel box={box} onCell={setSelCell} />
         </div>
       </div>
@@ -85,114 +80,22 @@ function MiniStat({ label, value }) {
   );
 }
 
-function MapNav({ fridge, bi, ci, ri, onBi, onCi, onRi, onBox }) {
-  const block = fridge.children[bi] || fridge.children[0];
-  const col = block.children[ci] || block.children[0];
+function MapNav({ fridge, onBox, selectedBox }) {
   return (
     <div className="bio-card">
-      <div className="bio-card-title"><i className="bx bx-map" /> Live Storage Map <span className="bio-card-sub">{fridge.code}</span></div>
-
-      <div className="mini-title">Blocks</div>
-      <div className="bio-pill-row" style={{ marginBottom: 12 }}>
-        {fridge.children.map((b, i) => (
-          <button key={b.id} className={`bio-chip ${i === bi ? "is-active" : ""}`} onClick={() => { onBi(i); onCi(0); onRi(0); onBox(null); }}>{b.label}</button>
-        ))}
-      </div>
-
-      <div className="mini-title">Columns</div>
-      <div className="bio-pill-row" style={{ marginBottom: 12 }}>
-        {block.children.map((c, i) => (
-          <button key={c.id} className={`bio-chip ${i === ci ? "is-active" : ""}`} onClick={() => { onCi(i); onRi(0); onBox(null); }}>{c.label}</button>
-        ))}
-      </div>
-
-      <div className="mini-title">Racks</div>
-      <div className="bio-grid" style={{ gridTemplateColumns: "repeat(auto-fill,minmax(150px,1fr))", gap: 10 }}>
-        {col.children.map((r, i) => {
-          const s = summarize(r);
-          const color = s.pct > 80 ? "#f34848" : s.pct > 55 ? "#ff9d2e" : "#31b577";
-          return (
-            <div key={r.id} onClick={() => { onRi(i); onBox(null); }}
-              style={{ border: i === ri ? "2px solid #1976d2" : "1px solid #e4ebf5", borderRadius: 12, padding: 10, cursor: "pointer", background: i === ri ? "#eef6ff" : "#fff" }}>
-              <div style={{ fontWeight: 700 }}>{r.label}</div>
-              <div style={{ fontSize: 11, color: "#8a9bb4" }}>{summarize(r).occupied}/{summarize(r).total} occupied</div>
-              <div className="bio-bar" style={{ marginTop: 6 }}><span style={{ width: `${s.pct}%`, background: color }} /></div>
-              <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginTop: 8 }}>
-                {r.children.map((b) => (
-                  <button
-                    key={b.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onRi(i);
-                      onBox(b);
-                    }}
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      boxSizing: "border-box",
-
-                      border: "1px solid #dbe5f1",
-                      borderRadius: 8,
-
-                      padding: "8px 12px",
-                      marginBottom: 5,
-
-                      fontSize: 11,
-                      fontWeight: 600,
-
-                      cursor: "pointer",
-                      background: "#ffffff",
-                      color: boxColor(b),
-
-                      textAlign: "left",
-
-                      transition: "all 0.2s ease",
-
-                      boxShadow: "0 1px 3px rgba(20, 50, 90, 0.06)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "#f5f9ff";
-                      e.currentTarget.style.borderColor = "#9dbde3";
-                      e.currentTarget.style.transform = "translateX(2px)";
-                      e.currentTarget.style.boxShadow =
-                        "0 3px 8px rgba(30, 80, 140, 0.10)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "#ffffff";
-                      e.currentTarget.style.borderColor = "#dbe5f1";
-                      e.currentTarget.style.transform = "translateX(0)";
-                      e.currentTarget.style.boxShadow =
-                        "0 1px 3px rgba(20, 50, 90, 0.06)";
-                    }}
-                  >
-                    <span>{b.label}</span>
-
-                    <span
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 700,
-                        padding: "3px 7px",
-                        borderRadius: 10,
-                        background: "#f0f5fb",
-                      }}
-                    >
-                      {summarize(b).pct}%
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <div className="bio-card-title"><i className="bx bx-map" /> Live Storage Map <span className="bio-card-sub">{fridge.code} · configurable hierarchy</span></div>
+      <div className="storage-tree">{fridge.children.map((node) => <NodeBranch key={node.id} node={node} onBox={onBox} selectedBox={selectedBox} />)}</div>
 
       <div style={{ fontSize: 11, color: "#8a9bb4", marginTop: 12 }}>
         Click a <strong>box</strong> to inspect the position grid, then a cell for sample details &amp; history.
       </div>
     </div>
   );
+}
+
+function NodeBranch({ node, onBox, selectedBox }) {
+  if (node.level === "box") return <button className="bio-chip" style={{ borderColor: selectedBox?.id === node.id ? "#1976d2" : undefined, color: boxColor(node), margin: 3 }} onClick={() => onBox(node)}>{node.label} · {summarize(node).pct}%</button>;
+  return <div style={{ margin: "8px 0 8px 10px", paddingLeft: 10, borderLeft: "2px solid #e4ebf5" }}><div className="mini-title" style={{ marginTop: 0 }}>{node.nodeType || node.level} <span className="bio-card-sub">{node.label}</span></div>{node.children.map((child) => <NodeBranch key={child.id} node={child} onBox={onBox} selectedBox={selectedBox} />)}</div>;
 }
 
 function boxColor(b) {

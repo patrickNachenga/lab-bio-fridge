@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getStorage, summarize } from "../bioStorage";
+import { getStorage, summarize, collectBoxes } from "../bioStorage";
 import { PageHeader, Fade, Legend, StatusBadge, formatNum } from "../bioUI";
 
 export default function Mapping() {
@@ -8,7 +8,7 @@ export default function Mapping() {
   const { fridges } = getStorage();
   const [fid, setFid] = useState(fridges[0].id);
   const fridge = fridges.find((f) => f.id === fid) || fridges[0];
-  const block = fridge.children[0];
+  const boxes = collectBoxes(fridge, []);
 
   return (
     <Fade>
@@ -25,26 +25,9 @@ export default function Mapping() {
 
         <div className="bio-grid bio-grid-3">
           <div className="bio-card" style={{ gridColumn: "span 2" }}>
-            <div className="bio-card-title"><i className="bx bx-sitemap" /> {fridge.code} — Block {block.label} <span className="bio-card-sub">click a box to open its position grid</span></div>
+            <div className="bio-card-title"><i className="bx bx-sitemap" /> {fridge.code} <span className="bio-card-sub">{boxes.length} containers · click a box to open its position grid</span></div>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {block.children.map((c, ci) => (
-                <div key={c.id} style={{ border: "1px solid #e4ebf5", borderRadius: 12, padding: 10, minWidth: 170, flex: "1 1 170px" }}>
-                  <div style={{ fontWeight: 700, fontSize: 12, color: "#33507a" }}>{c.label} · {summarize(c).pct}%</div>
-                  <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 6 }}>
-                    {c.children.map((r) => (
-                      <div key={r.id}>
-                        <div style={{ fontSize: 10, color: "#8a9bb4" }}>{r.label}</div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(22px,1fr))", gap: 3 }}>
-                          {r.children.map((b) => (
-                            <div key={b.id} title={`${b.label} ${summarize(b).pct}%`} onClick={() => nav(`/fridges/${fridge.id}`)}
-                              style={{ width: 22, height: 22, borderRadius: 5, background: boxBg(summarize(b).pct), cursor: "pointer" }} />
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+              {fridge.children.map((node) => <MappingNode key={node.id} node={node} onOpen={() => nav(`/fridges/${fridge.id}`)} />)}
             </div>
           </div>
 
@@ -64,6 +47,11 @@ export default function Mapping() {
       </div>
     </Fade>
   );
+}
+
+function MappingNode({ node, onOpen }) {
+  if (node.level === "box") return <button className="bio-chip" title={`${node.label} · ${summarize(node).pct}%`} onClick={onOpen} style={{ borderColor: boxBg(summarize(node).pct), color: "#33507a" }}>{node.label} · {summarize(node).pct}%</button>;
+  return <div style={{ border: "1px solid #e4ebf5", borderRadius: 12, padding: 10, minWidth: 170, flex: "1 1 170px" }}><div style={{ fontWeight: 700, fontSize: 12, color: "#33507a" }}>{node.nodeType || node.level} · {node.label} · {summarize(node).pct}%</div><div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 6 }}>{node.children.map((child) => <MappingNode key={child.id} node={child} onOpen={onOpen} />)}</div></div>;
 }
 
 function boxBg(pct) {

@@ -17,22 +17,10 @@ export default function StorageLocations() {
             <table className="bio-table">
               <thead><tr><th>Location</th><th>Level</th><th className="num">Total</th><th className="num">Occupied</th><th className="num">Available</th><th className="num">%</th><th>Bar</th></tr></thead>
               <tbody>
-                {fridges.map((f) => (
-                  <React.Fragment key={f.id}>
-                    <Row node={f} level="fridge" open setOpen={() => toggle(f.id)} isOpen={openFx.has(f.id)} onOpen={() => nav(`/fridges/${f.id}`)} />
-                    {openFx.has(f.id) && f.children.map((b) => (
-                      <React.Fragment key={b.id}>
-                        <Row node={b} level="block" />
-                        {b.children.map((c) => (
-                          <React.Fragment key={c.id}>
-                            <Row node={c} level="column" />
-                            {c.children.map((r) => <Row key={r.id} node={r} level="rack" />)}
-                          </React.Fragment>
-                        ))}
-                      </React.Fragment>
-                    ))}
-                  </React.Fragment>
-                ))}
+                {fridges.map((f) => <React.Fragment key={f.id}>
+                  <Row node={f} level="fridge" open setOpen={() => toggle(f.id)} isOpen={openFx.has(f.id)} onOpen={() => nav(`/fridges/${f.id}`)} />
+                  {openFx.has(f.id) && flatten(f.children).map((node) => <Row key={node.id} node={node} level={node.level} />)}
+                </React.Fragment>)}
               </tbody>
             </table>
           </div>
@@ -42,13 +30,17 @@ export default function StorageLocations() {
   );
 }
 
-const INDENT = { fridge: 0, block: 24, column: 48, rack: 72 };
+const INDENT = { block: 24, column: 48, rack: 72, box: 96 };
+function flatten(nodes, output = [], depth = 0) {
+  nodes.forEach((node) => { output.push({ ...node, displayDepth: depth }); flatten(node.children || [], output, depth + 1); });
+  return output;
+}
 function Row({ node, level, open, setOpen, isOpen, onOpen }) {
   const s = summarize(node);
   const color = s.pct > 85 ? "#f34848" : s.pct > 65 ? "#ff9d2e" : "#31b577";
   return (
     <tr style={{ cursor: open ? "pointer" : undefined }} onClick={open ? setOpen : onOpen}>
-      <td style={{ paddingLeft: 12 + (INDENT[level] || 0) }}>
+      <td style={{ paddingLeft: 12 + (INDENT[level] || 120) }}>
         {open && <i className={`bx ${isOpen ? "bx-chevron-down" : "bx-chevron-right"}`} style={{ color: "#1976d2" }} />}
         <strong>{node.label}</strong>
         {level === "fridge" && <span style={{ color: "#8a9bb4", marginLeft: 6 }}>{node.name}</span>}
