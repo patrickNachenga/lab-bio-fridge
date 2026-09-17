@@ -111,6 +111,19 @@ const Navbar = ({ isService = false, activeService = "", sidebarCollapsed, onTog
             top: 0;
             left: var(--bio-sidebar-width, 280px);
             right: 0;
+            /*
+             * The element still carries Bootstrap's "container-fluid"
+             * class, which sets width:100% and auto margins. Combined
+             * with position:fixed + left + right both set, an explicit
+             * width over-constrains the box and the browser silently
+             * drops "right" (per the CSS2.1 abs-pos algorithm), so the
+             * navbar rendered past the right edge of the viewport.
+             * Forcing width back to auto lets left+right define it.
+             */
+            width: auto !important;
+            max-width: none !important;
+            margin: 0 !important;
+            box-sizing: border-box !important;
             z-index: 1100;
             transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
           }
