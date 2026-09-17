@@ -1442,6 +1442,16 @@
 
   margin: 0 !important;
 
+  /*
+   * The Sneat/Bootstrap template (core.css) transforms .layout-menu
+   * off-screen below 1200px and only reveals it via a
+   * "layout-menu-expanded" class this app never toggles. Our sidebar
+   * manages its own collapse/expand purely through width, so the
+   * template's offcanvas transform must be neutralized on every
+   * breakpoint or the sidebar stays permanently hidden on phone/tablet.
+   */
+  transform: none !important;
+
   z-index: 1200;
 
   overflow: visible !important;
@@ -3003,41 +3013,116 @@
   top: calc(50% - 2px) !important;
 }
 
-/* On phones the sidebar starts compact, but can expand over the page from the navbar. */
-@media (max-width: 768px) {
+/* ============================================================
+   PHONE / TABLET — FULLY OFFCANVAS SIDEBAR
+   Below 1200px the sidebar is completely removed from the page
+   (no rail, no reserved space) until the menu button is tapped,
+   at which point it floats the full sidebar over the content.
+   ============================================================ */
+
+@media (max-width: 1199.98px) {
+
+  /* Content never reserves space for the sidebar here — it floats
+     above the page instead of pushing it. */
+  .bio-main-area {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .layout-menu.bio-sidebar {
+    transition:
+      transform 0.32s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Default / "collapsed" state: fully hidden off-canvas. */
+  .bio-sidebar-is-collapsed .layout-menu.bio-sidebar,
+  .layout-menu.bio-sidebar.bio-sidebar-collapsed {
+    width: min(300px, calc(100vw - 24px)) !important;
+    min-width: 0 !important;
+    max-width: min(300px, calc(100vw - 24px)) !important;
+    transform: translate3d(-100%, 0, 0) !important;
+    box-shadow: none !important;
+  }
+
+  /* Open state: full sidebar floating over the page. */
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .layout-menu.bio-sidebar,
   .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) {
-    width: min(280px, calc(100vw - 24px)) !important;
-    max-width: min(280px, calc(100vw - 24px)) !important;
-    box-shadow: 12px 0 40px rgba(1, 13, 35, 0.35);
+    width: min(300px, calc(100vw - 24px)) !important;
+    max-width: min(300px, calc(100vw - 24px)) !important;
+    transform: translate3d(0, 0, 0) !important;
+    box-shadow: 16px 0 55px rgba(1, 13, 41, 0.45) !important;
   }
 
-  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-brand-content {
-    display: block;
-  }
-
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-sidebar-brand,
   .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-sidebar-brand {
     justify-content: space-between !important;
-    padding: 14px !important;
+    padding: 14px 16px !important;
   }
 
-  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-link {
-    width: auto;
-    margin: 0 3px !important;
-    padding: 0 12px !important;
-    justify-content: flex-start !important;
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-brand-content,
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-brand-content {
+    display: flex !important;
+    width: auto !important;
+    opacity: 1 !important;
   }
 
-  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-label {
-    display: block !important;
-  }
-
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-menu-header,
   .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-header {
     display: block !important;
   }
 
-  .bio-sidebar-is-collapsed .layout-menu.bio-sidebar {
-    width: 76px !important;
-    min-width: 76px !important;
-    max-width: 76px !important;
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-menu-label,
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-label {
+    display: block !important;
+  }
+
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-pro-badge,
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-pro-badge {
+    display: inline-flex !important;
+  }
+
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-menu-link,
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-link {
+    width: auto !important;
+    margin: 0 3px !important;
+    padding: 0 12px !important;
+    justify-content: flex-start !important;
+    gap: 11px !important;
+  }
+
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-menu-sub,
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-sub {
+    display: block !important;
+  }
+
+  .bio-app-layout:not(.bio-sidebar-is-collapsed) .bio-sidebar-toggle,
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-sidebar-toggle {
+    display: flex !important;
+  }
+}
+
+/* Dimmed backdrop shown behind the floating sidebar (phone/tablet only). */
+.bio-sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 1199.98px) {
+  .bio-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(3, 12, 28, 0.55);
+    backdrop-filter: blur(2px);
+    z-index: 1190;
+    animation: bioBackdropIn 0.2s ease;
+  }
+}
+
+@keyframes bioBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

@@ -4,7 +4,7 @@ import menuData from "../data/orphanageMenu.json";
 import { useSelector } from "react-redux";
 import "../css/Sidebar.css";
 
-const Sidebar = ({ collapsed, onToggle }) => {
+const Sidebar = ({ collapsed, onToggle, onNavigate = () => {} }) => {
     const user = useSelector((state) => state.userReducer?.data);
 
     const userPermissions = user?.user_permissions;
@@ -169,6 +169,7 @@ const Sidebar = ({ collapsed, onToggle }) => {
                                             userPermissions
                                         }
                                         userRoles={userRoles}
+                                        onNavigate={onNavigate}
                                     />
                                 )
                             )}
@@ -212,6 +213,7 @@ const MenuItem = ({
     collapsed,
     userPermissions,
     userRoles,
+    onNavigate = () => {},
     ...item
 }) => {
 
@@ -379,6 +381,7 @@ const MenuItem = ({
                         ? "_blank"
                         : undefined
                 }
+                onClick={onNavigate}
             >
 
                 {/* ICON */}
@@ -437,6 +440,7 @@ const MenuItem = ({
                                 userRoles={
                                     userRoles
                                 }
+                                onNavigate={onNavigate}
                             />
                         )
                     )}
@@ -473,6 +477,7 @@ const MenuItem = ({
                                 setSubmenuOpen((previous) => !previous);
                             } else if (item.link) {
                                 navigate(item.link);
+                                onNavigate();
                             }
                         }}
                     >
@@ -521,6 +526,7 @@ const MenuItem = ({
                                                         ? "active"
                                                         : ""
                                                 }
+                                                onClick={onNavigate}
                                             >
 
                                                 <i
