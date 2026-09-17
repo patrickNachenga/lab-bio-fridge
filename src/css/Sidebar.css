@@ -3126,3 +3126,63 @@
     opacity: 1;
   }
 }
+
+/* ============================================================
+   COLLAPSE BUTTON — PHONE/TABLET ONLY
+   Desktop already has the navbar's own menu button to toggle the
+   sidebar, so the extra chevron button inside the sidebar itself
+   is only needed as the "close the floating drawer" affordance on
+   small screens.
+   ============================================================ */
+
+@media (min-width: 1200px) {
+  .bio-sidebar-toggle {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   SIDEBAR SCROLLING — SINGLE, MINIMAL, AUTO-HIDING SCROLLBAR
+   The aside itself must never scroll (that produced a visible
+   outer scrollbar stacked on top of the menu list's own one).
+   Only the menu list scrolls, and its thumb stays transparent
+   until the list is actually hovered/scrolled.
+   ============================================================ */
+
+.layout-menu.bio-sidebar {
+  overflow: hidden !important;
+}
+
+.layout-menu.bio-sidebar::-webkit-scrollbar {
+  width: 0 !important;
+  display: none !important;
+}
+
+.bio-menu-inner {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.bio-menu-inner:hover,
+.bio-menu-inner:focus-within {
+  scrollbar-color: rgba(92, 143, 197, 0.4) transparent;
+}
+
+.bio-menu-inner::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.bio-menu-inner::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.bio-menu-inner::-webkit-scrollbar-thumb {
+  background: transparent !important;
+  border-radius: 10px !important;
+  transition: background 0.2s ease;
+}
+
+.bio-menu-inner:hover::-webkit-scrollbar-thumb,
+.bio-menu-inner:focus-within::-webkit-scrollbar-thumb {
+  background: rgba(92, 143, 197, 0.4) !important;
+}
