@@ -98,16 +98,34 @@ const Navbar = ({ isService = false, activeService = "", sidebarCollapsed, onTog
           /* Unique ID-based CSS for complete isolation */
           #${navbarId} {
             all: initial;
-            margin: 10px;
+            display: block;
+            margin: 0;
           }
-          
+
           #${navbarId} .mnh-navbar-main {
             background: white;
             border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             padding: 8px 20px;
-            position: relative;
-            z-index: 1030;
+            position: fixed;
+            top: 0;
+            left: var(--bio-sidebar-width, 280px);
+            right: 0;
+            z-index: 1100;
+            transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+          }
+
+          /* Desktop mini-rail: navbar starts where the collapsed sidebar ends. */
+          .bio-sidebar-is-collapsed #${navbarId} .mnh-navbar-main {
+            left: var(--bio-sidebar-mini-width, 82px);
+          }
+
+          /* Phone/tablet: the sidebar floats over the page instead of
+             pushing it, so the navbar always spans the full width. */
+          @media (max-width: 1199.98px) {
+            #${navbarId} .mnh-navbar-main {
+              left: 0 !important;
+            }
           }
           
           #${navbarId} .mnh-nav-content {

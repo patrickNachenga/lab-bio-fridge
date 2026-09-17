@@ -1529,7 +1529,11 @@
 
 .bio-main-area .mnh-navbar-main {
 
-  width: 100%;
+  /*
+   * Positioning (position/top/left/right/z-index) is owned by
+   * Navbar.jsx's own scoped stylesheet, since it needs to track
+   * the sidebar width live. Only visual formatting lives here.
+   */
 
   margin: 0 !important;
 
@@ -1548,11 +1552,6 @@
 
   backdrop-filter:
     blur(14px);
-
-  position: sticky;
-  top: 0;
-
-  z-index: 1100;
 }
 
 
@@ -1561,6 +1560,11 @@
    ========================================================== */
 
 .bio-content-area {
+
+  /* Compensates for the navbar being taken out of flow by
+     position: fixed, so content starts right below it instead
+     of hiding underneath it. */
+  padding-top: 68px;
 
   min-height:
     calc(100vh - 68px);
