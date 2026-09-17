@@ -1539,9 +1539,10 @@
   backdrop-filter:
     blur(14px);
 
-  position: relative;
+  position: sticky;
+  top: 0;
 
-  z-index: 100;
+  z-index: 1100;
 }
 
 
@@ -3000,4 +3001,43 @@
 
 .bio-sidebar-toggle {
   top: calc(50% - 2px) !important;
+}
+
+/* On phones the sidebar starts compact, but can expand over the page from the navbar. */
+@media (max-width: 768px) {
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) {
+    width: min(280px, calc(100vw - 24px)) !important;
+    max-width: min(280px, calc(100vw - 24px)) !important;
+    box-shadow: 12px 0 40px rgba(1, 13, 35, 0.35);
+  }
+
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-brand-content {
+    display: block;
+  }
+
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-sidebar-brand {
+    justify-content: space-between !important;
+    padding: 14px !important;
+  }
+
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-link {
+    width: auto;
+    margin: 0 3px !important;
+    padding: 0 12px !important;
+    justify-content: flex-start !important;
+  }
+
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-label {
+    display: block !important;
+  }
+
+  .layout-menu.bio-sidebar:not(.bio-sidebar-collapsed) .bio-menu-header {
+    display: block !important;
+  }
+
+  .bio-sidebar-is-collapsed .layout-menu.bio-sidebar {
+    width: 76px !important;
+    min-width: 76px !important;
+    max-width: 76px !important;
+  }
 }

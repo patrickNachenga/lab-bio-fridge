@@ -4,13 +4,11 @@ import menuData from "../data/orphanageMenu.json";
 import { useSelector } from "react-redux";
 import "../css/Sidebar.css";
 
-const Sidebar = () => {
+const Sidebar = ({ collapsed, onToggle }) => {
     const user = useSelector((state) => state.userReducer?.data);
 
     const userPermissions = user?.user_permissions;
     const userRoles = user?.groups;
-
-    const [collapsed, setCollapsed] = useState(false);
 
     const hasPermission = (
         itemPermissions,
@@ -31,38 +29,6 @@ const Sidebar = () => {
             );
 
         return hasRequiredPermission || hasRequiredRole;
-    };
-
-    /* Remember sidebar state */
-    useEffect(() => {
-        const savedState = localStorage.getItem(
-            "bioRepoSidebarCollapsed"
-        );
-
-        if (savedState !== null) {
-            setCollapsed(savedState === "true");
-        }
-    }, []);
-
-    useEffect(() => {
-        window.dispatchEvent(
-            new CustomEvent("bio-sidebar-state", {
-                detail: { collapsed },
-            })
-        );
-    }, [collapsed]);
-
-    const toggleSidebar = () => {
-        setCollapsed((previous) => {
-            const next = !previous;
-
-            localStorage.setItem(
-                "bioRepoSidebarCollapsed",
-                next
-            );
-
-            return next;
-        });
     };
 
     return (
@@ -121,7 +87,7 @@ const Sidebar = () => {
                 <button
                     type="button"
                     className="bio-sidebar-toggle"
-                    onClick={toggleSidebar}
+                    onClick={onToggle}
                     aria-label={
                         collapsed
                             ? "Expand sidebar"
@@ -586,7 +552,6 @@ const MenuItem = ({
 
 
 export default Sidebar;
-
 
 
 

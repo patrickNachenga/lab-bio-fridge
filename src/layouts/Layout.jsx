@@ -9,75 +9,29 @@ const Layout = ({
   activeService = null,
 }) => {
 
-  const [sidebarCollapsed, setSidebarCollapsed] =
-    useState(() => {
-      return (
-        localStorage.getItem(
-          "bioRepoSidebarCollapsed"
-        ) === "true"
-      );
-    });
-
-
-  useEffect(() => {
-
-    const handleSidebarState = (event) => {
-
-      setSidebarCollapsed(
-        event.detail?.collapsed ?? false
-      );
-    };
-
-
-    window.addEventListener(
-      "bio-sidebar-state",
-      handleSidebarState
-    );
-
-
-    return () => {
-
-      window.removeEventListener(
-        "bio-sidebar-state",
-        handleSidebarState
-      );
-
-    };
-
-  }, []);
-
-  const [collapsed, setCollapsed] = useState(() => {
-    return (
-      localStorage.getItem(
-        "bioRepoSidebarCollapsed"
-      ) === "true"
-    );
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const savedState = localStorage.getItem("bioRepoSidebarCollapsed");
+    return window.matchMedia("(max-width: 768px)").matches || savedState === "true";
   });
 
 
   useEffect(() => {
-
-    window.dispatchEvent(
-      new CustomEvent("bio-sidebar-state", {
-        detail: {
-          collapsed,
-        },
-      })
-    );
-
-  }, [collapsed]);
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleViewportChange = (event) => {
+      if (event.matches) setSidebarCollapsed(true);
+    };
+    mediaQuery.addEventListener("change", handleViewportChange);
+    return () => mediaQuery.removeEventListener("change", handleViewportChange);
+  }, []);
 
 
   const toggleSidebar = () => {
 
-    setCollapsed((previous) => {
+    setSidebarCollapsed((previous) => {
 
       const next = !previous;
 
-      localStorage.setItem(
-        "bioRepoSidebarCollapsed",
-        next
-      );
+      localStorage.setItem("bioRepoSidebarCollapsed", String(next));
 
       return next;
 
@@ -101,10 +55,7 @@ const Layout = ({
                 SIDEBAR
             ================================================== */}
 
-      <Sidebar
-        isService={isService}
-        activeService={activeService}
-      />
+      <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} />
 
 
       {/* ==================================================
@@ -116,6 +67,8 @@ const Layout = ({
         <Navbar
           isService={isService}
           activeService={activeService}
+          sidebarCollapsed={sidebarCollapsed}
+          onToggleSidebar={toggleSidebar}
         />
 
 

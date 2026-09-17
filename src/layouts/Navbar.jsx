@@ -24,9 +24,8 @@ import {
   Star,
   Sparkles,
 } from "lucide-react";
-import { use } from "react";
 
-const Navbar = ({ isService = false, activeService = "" }) => {
+const Navbar = ({ isService = false, activeService = "", sidebarCollapsed, onToggleSidebar }) => {
   const user = useSelector((state) => state.userReducer?.data);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -658,18 +657,19 @@ const Navbar = ({ isService = false, activeService = "" }) => {
 
 
 
-           #${navbarId} .mnh-sidebar-toggle-btn {
-            background: none;
-            border: none;
-            color: #5a6a85;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+          #${navbarId} .mnh-sidebar-toggle-btn {
+            background: linear-gradient(135deg, #f3f8ff, #ffffff);
+            border: 1px solid rgba(25, 118, 210, 0.16);
+            color: #1557a6;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.08);
           }
           
           #${navbarId} .mnh-sidebar-toggle-btn:hover {
@@ -683,7 +683,7 @@ const Navbar = ({ isService = false, activeService = "" }) => {
           }
           
           /* When sidebar is collapsed, rotate the icon */
-          body.menu-collapsed #${navbarId} .mnh-sidebar-toggle-btn i {
+          #${navbarId} .mnh-sidebar-toggle-btn.is-collapsed i {
             transform: rotate(180deg);
           }
           
@@ -756,8 +756,14 @@ const Navbar = ({ isService = false, activeService = "" }) => {
           <div className="mnh-nav-content">
             {/* Left Section - Controls */}
             <div className="mnh-nav-controls">
-              {/* Mobile Menu Button */}
-              <button className="mnh-mobile-menu-btn d-xl-none layout-menu-toggle menu-link text-large ms-auto d-block">
+              {/* Sidebar control */}
+              <button
+                type="button"
+                className={`mnh-sidebar-toggle-btn ${sidebarCollapsed ? "is-collapsed" : ""}`}
+                onClick={onToggleSidebar}
+                aria-label={sidebarCollapsed ? "Expand sidebar" : "Minimize sidebar"}
+                title={sidebarCollapsed ? "Expand sidebar" : "Minimize sidebar"}
+              >
                 <Menu size={20} />
               </button>
 
